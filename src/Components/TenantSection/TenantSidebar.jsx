@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 import logo from "../../assets/logo/logo.png";
-import dd from "../../assets/logo/dd.png";
+import dd from "../../assets/logo/icon.png";
 
 const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -57,12 +57,12 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
     localStorage.removeItem("tenantId");
     localStorage.removeItem("tenanttoken");
     localStorage.removeItem("tenant");
-    
+
     // Razorpay specific keys (सही names - underscore और rzp_ prefix के साथ)
     localStorage.removeItem("rzp_checkout_anon_id");
     localStorage.removeItem("rzp_device_id");
     localStorage.removeItem("rzp_stored_checkout_id");
-    
+
     console.log("LocalStorage cleared: All tenant & Razorpay items removed."); // Debug log - production में हटा सकते हो
   };
 
@@ -76,13 +76,16 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
         return;
       }
 
-      const response = await fetch("https://api.gharzoreality.com/api/tenant/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://api.gharzoreality.com/api/tenant/logout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       // हमेशा clear करो, API success/fail पर depend न करो
       clearLocalStorage();
@@ -90,10 +93,14 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
       if (response.ok) {
         const result = await response.json();
         if (!result.success) {
-          console.warn("Logout API returned non-success, but storage cleared anyway.");
+          console.warn(
+            "Logout API returned non-success, but storage cleared anyway."
+          );
         }
       } else {
-        console.warn("Logout API failed (not ok response), but storage cleared anyway.");
+        console.warn(
+          "Logout API failed (not ok response), but storage cleared anyway."
+        );
       }
 
       navigate("/");
@@ -113,15 +120,64 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
   };
 
   const navItems = [
-    { name: "Dashboard", path: "/tenant", icon: Home, gradient: "from-blue-400 to-indigo-500" },
-    { name: "Properties", path: "/tenant/property", icon: Building2, gradient: "from-purple-400 to-pink-500" },
-    { name: "Rent Payments", path: tenantId ? `/tenant/rent-payments/${tenantId}` : "/tenant/rent-payments", icon: CreditCard, gradient: "from-green-400 to-teal-500" },
-    { name: "Complaints", path: tenantId ? `/tenant/complaints/${tenantId}` : "/tenant/complaints", icon: FileText, gradient: "from-yellow-400 to-amber-500" },
-    { name: "Announcements", path: tenantId ? `/tenant/announcements/${tenantId}` : "/tenant/announcements", icon: Megaphone, gradient: "from-emerald-400 to-green-500" },
-    { name: "Documents", path: "/tenant/documents", icon: Receipt, gradient: "from-indigo-400 to-purple-500" },
-    { name: "Roomswitch", path: "/tenant/room-switch", icon: Move, gradient: "from-pink-400 to-rose-500" },
-    { name: "Profile", path: "/tenant/profile", icon: User, gradient: "from-cyan-400 to-blue-500" },
-     { name: "Police Verification ", path: "/tenant/police-verification", icon: User, gradient: "from-cyan-400 to-blue-500" },
+    {
+      name: "Dashboard",
+      path: "/tenant",
+      icon: Home,
+      gradient: "from-blue-400 to-indigo-500",
+    },
+    {
+      name: "Properties",
+      path: "/tenant/property",
+      icon: Building2,
+      gradient: "from-purple-400 to-pink-500",
+    },
+    {
+      name: "Rent Payments",
+      path: tenantId
+        ? `/tenant/rent-payments/${tenantId}`
+        : "/tenant/rent-payments",
+      icon: CreditCard,
+      gradient: "from-green-400 to-teal-500",
+    },
+    {
+      name: "Complaints",
+      path: tenantId ? `/tenant/complaints/${tenantId}` : "/tenant/complaints",
+      icon: FileText,
+      gradient: "from-yellow-400 to-amber-500",
+    },
+    {
+      name: "Announcements",
+      path: tenantId
+        ? `/tenant/announcements/${tenantId}`
+        : "/tenant/announcements",
+      icon: Megaphone,
+      gradient: "from-emerald-400 to-green-500",
+    },
+    {
+      name: "Documents",
+      path: "/tenant/documents",
+      icon: Receipt,
+      gradient: "from-indigo-400 to-purple-500",
+    },
+    {
+      name: "Roomswitch",
+      path: "/tenant/room-switch",
+      icon: Move,
+      gradient: "from-pink-400 to-rose-500",
+    },
+    {
+      name: "Profile",
+      path: "/tenant/profile",
+      icon: User,
+      gradient: "from-cyan-400 to-blue-500",
+    },
+    {
+      name: "Police Verification ",
+      path: "/tenant/police-verification",
+      icon: User,
+      gradient: "from-cyan-400 to-blue-500",
+    },
   ];
 
   const renderSidebarContent = () => (
@@ -140,21 +196,20 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex items-center gap-2 p-4"
+        className="flex items-center justify-center gap-2 p-4"
       >
         <img
           src={dd}
           alt="Logo"
-          className="w-10 h-10 object-contain rounded-md shadow-lg hover:scale-110 transition-transform duration-300"
+          className="w-20 shadow-2xl h-15 object-contain rounded-md shadow-lg hover:scale-110 transition-transform duration-300"
         />
         {(isHovered || isMobileOpen) && (
-          <motion.h2 
+          <motion.h2
             className="text-xl font-bold tracking-wide bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-          >
-          </motion.h2>
+          ></motion.h2>
         )}
       </motion.div>
 
@@ -170,10 +225,7 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
                 }
                 onClick={handleNavLinkClick}
               >
-                <Colorful3DIcon
-                  icon={Icon}
-                  gradient={item.gradient}
-                />
+                <Colorful3DIcon icon={Icon} gradient={item.gradient} />
                 {(isHovered || isMobileOpen) && <span>{item.name}</span>}
               </NavLink>
             </li>
@@ -186,12 +238,9 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleLogout}
-          className="flex items-center justify-center gap-3 w-full py-3 px-3 rounded-md bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white transition-all shadow-lg"
+          className="flex items-center justify-center gap-3 w-full py-3 px-3 rounded-md shadow-xl    hover:from-red-700 hover:to-rose-700 text-white transition-all shadow-lg"
         >
-          <Colorful3DIcon
-            icon={LogOut}
-            gradient="from-red-400 to-rose-500"
-          />
+          <Colorful3DIcon icon={LogOut} gradient="from-red-400 to-rose-500" />
           {(isHovered || isMobileOpen) && <span>Logout</span>}
         </motion.button>
       </div>
@@ -227,10 +276,19 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
         animate={{ x: 0 }}
         onMouseEnter={() => window.innerWidth >= 768 && setIsHovered(true)}
         onMouseLeave={() => window.innerWidth >= 768 && setIsHovered(false)}
-        style={{ background: "linear-gradient(180deg, #ceb86fff, #625da7ff, #c8eb67ff)" }}
+        style={{
+          background: `
+    radial-gradient(circle at bottom, rgba(245,124,0,0.35), transparent 60%),
+    linear-gradient(180deg, #071a2f 0%, #0d2f52 45%, #123e6b 75%, #0b2a4a 100%)
+  `,
+        }}
         className={`
           fixed top-0 left-0 h-screen text-white shadow-2xl transition-all duration-500 ease-in-out z-[9999]
-          ${isMobileOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0"}
+          ${
+            isMobileOpen
+              ? "translate-x-0 w-64"
+              : "-translate-x-full md:translate-x-0"
+          }
           ${isHovered ? "md:w-56" : "md:w-20"}
           flex flex-col overflow-y-auto scrollbar-hide
         `}
