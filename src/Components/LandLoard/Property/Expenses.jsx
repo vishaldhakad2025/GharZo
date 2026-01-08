@@ -57,10 +57,8 @@ const Expenses = () => {
     if (sidebar) {
       const handleMouseEnter = () => setIsSidebarHovered(true);
       const handleMouseLeave = () => setIsSidebarHovered(false);
-
       sidebar.addEventListener("mouseenter", handleMouseEnter);
       sidebar.addEventListener("mouseleave", handleMouseLeave);
-
       return () => {
         sidebar.removeEventListener("mouseenter", handleMouseEnter);
         sidebar.removeEventListener("mouseleave", handleMouseLeave);
@@ -142,7 +140,6 @@ const Expenses = () => {
   // Fetch categories, expenses, and analytics
   useEffect(() => {
     if (!landlordId || !token) return;
-
     const fetchCategories = async () => {
       try {
         const response = await fetch(
@@ -175,7 +172,6 @@ const Expenses = () => {
         setError("An error occurred while fetching categories");
       }
     };
-
     const fetchExpenses = async () => {
       try {
         let url = `https://api.gharzoreality.com/api/expenses?landlord=${landlordId}`;
@@ -219,7 +215,6 @@ const Expenses = () => {
         setError("An error occurred while fetching expenses");
       }
     };
-
     const fetchMonthlyExpenses = async () => {
       try {
         const response = await fetch(
@@ -250,7 +245,6 @@ const Expenses = () => {
         setError("An error occurred while fetching monthly expenses");
       }
     };
-
     const fetchYearlyExpenses = async () => {
       try {
         const response = await fetch(
@@ -279,7 +273,6 @@ const Expenses = () => {
         setError("An error occurred while fetching yearly expenses");
       }
     };
-
     fetchCategories();
     fetchExpenses();
     fetchMonthlyExpenses();
@@ -759,6 +752,7 @@ const Expenses = () => {
   const uniquePaidTo = [
     ...new Set(expenses.map((expense) => expense.paidTo)),
   ].filter(Boolean);
+
   const rentExpenses = expenses.filter((expense) => {
     try {
       return (
@@ -796,19 +790,20 @@ const Expenses = () => {
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-br from-[#5C4EFF] via-[#1fc9b2] to-[#7cf7b7] animate-gradient-bg transition-all duration-500 min-w-0 ${
+      className={`min-h-screen text-white transition-all duration-500 min-w-0 ${
         isSidebarHovered
           ? "md:ml-[256px] md:w-[calc(100%-256px)]"
           : "md:ml-[64px] md:w-[calc(100%-64px)]"
       }`}
-      style={{ boxSizing: "border-box" }}
+      style={{
+        background: `
+          radial-gradient(circle at bottom, rgba(245,124,0,0.35), transparent 60%),
+          linear-gradient(180deg, #071a2f 0%, #0d2f52 45%, #123e6b 75%, #0b2a4a 100%)
+        `,
+      }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-[#5C4EFF] via-[#1fc9b2]/20 to-[#7cf7b7]/20"></div>
       <div className="relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1/4 bg-gradient-to-b from-white/50 to-transparent blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-white/50 to-transparent blur-3xl"></div>
         <div className="relative max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-6">
-          {/* Responsive container: px-2 on mobile, px-4 on sm, px-8 on lg */}
           {isLoading ? (
             <div className="flex flex-col items-center justify-center min-h-[60vh]">
               <div className="relative">
@@ -816,301 +811,195 @@ const Expenses = () => {
                 <div className="absolute inset-0 w-32 h-32 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin [animation-delay:0.15s] [animation-duration:1.5s]"></div>
                 <div className="absolute inset-0 w-32 h-32 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin [animation-delay:0.3s] [animation-duration:1.2s]"></div>
               </div>
-              <h3 className="mt-8 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 animate-text">
+              <h3 className="mt-8 text-3xl font-bold tracking-wide bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
                 Crafting your dashboard...
               </h3>
-              <p className="mt-2 text-gray-600 animate-pulse">
+              <p className="mt-2 text-gray-300 animate-pulse">
                 Gathering your expense insights
               </p>
             </div>
           ) : (
             <>
               {error && (
-                <div className="relative bg-white/90 backdrop-blur-md border border-red-200 rounded-3xl p-6 mb-8 shadow-xl animate-shake">
+                <div className="relative bg-white/10 backdrop-blur-md border border-red-500/30 rounded-3xl p-6 mb-8 shadow-xl">
                   <div className="absolute top-0 right-0 pt-3 pr-3">
                     <button
                       onClick={() => setError(null)}
-                      className="p-2 text-red-400 hover:text-red-600 rounded-full hover:bg-red-50 transition-all"
+                      className="p-2 text-red-300 hover:text-red-100 rounded-full hover:bg-red-500/20 transition-all"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
                   </div>
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center animate-bounce">
-                        <svg
-                          className="w-6 h-6 text-red-500"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
+                      <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                        <svg className="w-6 h-6 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-red-800">
+                      <h3 className="text-lg font-bold text-red-300">
                         Something went wrong
                       </h3>
-                      <p className="text-red-600 mt-1">{error}</p>
+                      <p className="text-red-200 mt-1">{error}</p>
                     </div>
                   </div>
                 </div>
               )}
-
               {showSuccess && (
                 <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-50">
-                  <div className="bg-white/95 backdrop-blur-md border border-green-200 rounded-full px-8 py-4 shadow-2xl max-w-md animate-bounceIn">
+                  <div className="bg-white/20 backdrop-blur-md border border-green-500/30 rounded-full px-8 py-4 shadow-2xl max-w-md">
                     <div className="flex items-center space-x-3">
                       <div className="relative flex-shrink-0">
-                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                          <svg
-                            className="w-5 h-5 text-green-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
+                        <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                          <svg className="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <div className="absolute -inset-1 bg-green-400 rounded-full blur animate-ping"></div>
                       </div>
-                      <p className="text-green-800 font-semibold">
+                      <p className="text-green-200 font-semibold">
                         {successMessage}
                       </p>
                       <button
                         onClick={() => setShowSuccess(false)}
-                        className="ml-auto text-green-500 hover:text-green-700"
+                        className="ml-auto text-green-300 hover:text-green-100"
                       >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </button>
                     </div>
                   </div>
                 </div>
               )}
-
               {/* Header */}
-              <div className="flex flex-col sm:flex-row justify-center items-center mb-8 gap-4 text-center sm:text-center">
+              <div className="flex flex-col sm:flex-row justify-center items-center mb-8 gap-4 text-center">
                 <div className="space-y-1">
-                  <h2 className="text-4xl lg:mt-0 mt-8 font-bold text-white drop-shadow-lg">
-                    Expenses 
+                  <h2 className="text-4xl lg:mt-0 mt-8 font-bold tracking-wide bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent drop-shadow-lg">
+                    Expenses
                   </h2>
-                  {/* <p className="text-gray-700">
-                    Manage and track your expenses with ease
-                  </p> */}
                 </div>
                 <button
-                  className="relative bg-gradient-to-r from-[#5C4EFF] to-[#1fc9b2] hover:from-[#1fc9b2] hover:to-[#5C4EFF] px-4 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2 group lg:ml-auto"
+                  className="relative bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-purple-600 hover:to-indigo-600 px-4 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2 group lg:ml-auto"
                   onClick={() => setIsModalOpen(true)}
                 >
-                  <span className="text-white">Add Expense</span>
+                  <span>Add Expense</span>
                   <svg
-                    className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300 text-white"
+                    className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
-                  <div className="absolute inset-0 rounded-full blur opacity-75 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"></div>
                 </button>
               </div>
-
               {/* Stats Overview */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                {/* ==================== TOTAL EXPENSES CARD ==================== */}
-<div className="group relative overflow-hidden rounded-3xl p-6 bg-gradient-to-br from-white to-indigo-50 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-  <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-  <div className="relative">
-    <div className="flex items-center gap-3 mb-4">
-      <div className="p-3 bg-indigo-100 rounded-2xl shadow-md">
-        <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      </div>
-      <h3 className="text-sm font-semibold text-gray-600 uppercase">Total Expenses</h3>
-    </div>
-    <p className="text-3xl font-bold text-indigo-600 mb-1">
-      ₹{expenses.reduce((sum, exp) => sum + (exp.amount || 0), 0).toLocaleString()}
-    </p>
-    <p className="text-sm text-gray-600">
-      {expenses.length} transactions
-    </p>
-  </div>
-</div>
-
-                <div className="group relative overflow-hidden rounded-3xl p-6 bg-gradient-to-br from-white to-purple-50 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative overflow-hidden rounded-3xl p-6 bg-white/10 backdrop-blur-md shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-white/20">
                   <div className="relative">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="p7 h-7 bg-purple-100 rounded-2xl shadow-md">
-                        <svg
-                          className="w-6 h-6 text-purple-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                          />
+                      <div className="p-3 bg-indigo-500/20 rounded-2xl">
+                        <svg className="w-6 h-6 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </div>
-                      <h3 className="text-sm font-semibold text-gray-600 uppercase">
-                        Categories
-                      </h3>
+                      <h3 className="text-sm font-semibold text-gray-300 uppercase">Total Expenses</h3>
                     </div>
-                    <p className="text-3xl font-bold text-purple-600 mb-1">
-                      {categories.length}
+                    <p className="text-3xl font-bold text-white mb-1">
+                      ₹{expenses.reduce((sum, exp) => sum + (exp.amount || 0), 0).toLocaleString()}
                     </p>
-                    <p className="text-sm text-gray-600">
-                      {categories.reduce(
-                        (sum, cat) => sum + (cat.count || 0),
-                        0
-                      )}{" "}
-                      items
+                    <p className="text-sm text-gray-300">
+                      {expenses.length} transactions
                     </p>
                   </div>
                 </div>
-
-               {/* ==================== THIS MONTH CARD (Dynamic) ==================== */}
-<div className="group relative overflow-hidden rounded-3xl p-6 bg-gradient-to-br from-white to-green-50 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-  <div className="absolute inset-0 bg-gradient-to-r from-green-600/5 to-teal-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-  <div className="relative">
-    <div className="flex items-center gap-3 mb-4">
-      <div className="p-3 bg-green-100 rounded-2xl shadow-md">
-        <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-      </div>
-      <h3 className="text-sm font-semibold text-gray-600 uppercase">This Month</h3>
-    </div>
-    <p className="text-3xl font-bold text-green-600 mb-1">
-      ₹{(monthlyData[new Date().getMonth()] || 0).toLocaleString()}
-    </p>
-    <p className="text-sm text-gray-600">
-      {new Date().toLocaleString('default', { month: 'long' })} expenses
-    </p>
-  </div>
-</div>
-               {/*<div className="group relative overflow-hidden rounded-3xl p-6 bg-gradient-to-br from-white to-orange-50 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-600/5 to-red-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="group relative overflow-hidden rounded-3xl p-6 bg-white/10 backdrop-blur-md shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-white/20">
                   <div className="relative">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="p-3 bg-orange-100 rounded-2xl shadow-md">
-                        <svg
-                          className="w-6 h-6 text-orange-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                          />
+                      <div className="p-3 bg-purple-500/20 rounded-2xl">
+                        <svg className="w-6 h-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                         </svg>
                       </div>
-                      <h3 className="text-sm font-semibold text-gray-600 uppercase">
-                        Properties
-                      </h3>
+                      <h3 className="text-sm font-semibold text-gray-300 uppercase">Categories</h3>
                     </div>
-                    <p className="text-3xl font-bold text-orange-600 mb-1">
-                      {properties.length}
+                    <p className="text-3xl font-bold text-white mb-1">
+                      {categories.length}
                     </p>
-                    <p className="text-sm text-gray-600">Managed properties</p>
+                    <p className="text-sm text-gray-300">
+                      {categories.reduce((sum, cat) => sum + (cat.count || 0), 0)} items
+                    </p>
                   </div>
-                </div>*/} 
+                </div>
+                <div className="group relative overflow-hidden rounded-3xl p-6 bg-white/10 backdrop-blur-md shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-white/20">
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-3 bg-green-500/20 rounded-2xl">
+                        <svg className="w-6 h-6 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-sm font-semibold text-gray-300 uppercase">This Month</h3>
+                    </div>
+                    <p className="text-3xl font-bold text-white mb-1">
+                      ₹{(monthlyData[new Date().getMonth()] || 0).toLocaleString()}
+                    </p>
+                    <p className="text-sm text-gray-300">
+                      {new Date().toLocaleString('default', { month: 'long' })} expenses
+                    </p>
+                  </div>
+                </div>
               </div>
-
               {/* Category Summary */}
-              <div className="bg-white rounded-3xl p-4 sm:p-8 shadow-2xl mb-8">
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-4 sm:p-8 shadow-2xl mb-8 border border-white/20">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                   <div className="space-y-1">
-                    <h2 className="text-2xl font-bold text-gray-900">
+                    <h2 className="text-2xl font-bold text-white">
                       Category Summary
                     </h2>
-                    <p className="text-gray-600">Breakdown of your expenses</p>
+                    <p className="text-gray-300">Breakdown of your expenses</p>
                   </div>
                   <div className="flex gap-3">
                     <select
-                      className="px-4 py-2 bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="px-4 py-2 bg-white/20 border border-white/30 rounded-full text-white focus:ring-2 focus:ring-indigo-500"
                       value={categorySummaryYear}
                       onChange={(e) => setCategorySummaryYear(e.target.value)}
                     >
                       {yearOptions.map((y) => (
-                        <option key={y} value={y}>
+                        <option key={y} value={y} className="bg-gray-900">
                           {y}
                         </option>
                       ))}
                     </select>
                     <select
-                      className="px-4 py-2 bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-full focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="px-4 py-2 bg-white/20 border border-white/30 rounded-full text-white focus:ring-2 focus:ring-purple-500"
                       value={categorySummaryMonth}
                       onChange={(e) => setCategorySummaryMonth(e.target.value)}
                     >
                       {monthOptions.map((month) => (
-                        <option key={month.value} value={month.value}>
+                        <option key={month.value} value={month.value} className="bg-gray-900">
                           {month.label}
                         </option>
                       ))}
                     </select>
                   </div>
                 </div>
-
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6">
-                    <h3 className="text-lg font-semibold text-indigo-800 mb-4">
+                  <div className="bg-white/10 rounded-2xl p-6 border border-white/20">
+                    <h3 className="text-lg font-semibold text-gray-200 mb-4">
                       Grand Total
                     </h3>
-                    <p className="text-4xl font-bold text-indigo-600">
+                    <p className="text-4xl font-bold text-white">
                       ₹{categorySummary?.grandTotal?.toLocaleString() || 0}
                     </p>
-                    <p className="text-sm text-indigo-600 mt-2">
+                    <p className="text-sm text-gray-300 mt-2">
                       {categorySummary?.year} -{" "}
                       {
                         monthOptions.find(
@@ -1120,7 +1009,7 @@ const Expenses = () => {
                     </p>
                   </div>
                   <div className="col-span-1 lg:col-span-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    <h3 className="text-lg font-semibold text-white mb-4">
                       By Category
                     </h3>
                     <div className="space-y-4 max-h-64 overflow-y-auto">
@@ -1137,22 +1026,22 @@ const Expenses = () => {
                           return (
                             <div
                               key={item._id || idx}
-                              className="bg-white rounded-xl p-4 shadow-sm"
+                              className="bg-white/10 rounded-xl p-4 shadow-sm border border-white/20"
                             >
                               <div className="flex items-center justify-between">
-                                <span className="font-semibold text-gray-900">
+                                <span className="font-semibold text-white">
                                   {categoryName}
                                 </span>
-                                <span className="text-lg font-bold text-blue-600">
+                                <span className="text-lg font-bold text-indigo-300">
                                   ₹{item.totalAmount?.toLocaleString() || 0}
                                 </span>
                               </div>
-                              <div className="flex items-center justify-between mt-2 text-sm text-gray-600">
+                              <div className="flex items-center justify-between mt-2 text-sm text-gray-300">
                                 <span>{item.count || 0} transactions</span>
                               </div>
-                              <div className="mt-2 h-2 bg-blue-100 rounded-full overflow-hidden">
+                              <div className="mt-2 h-2 bg-white/20 rounded-full overflow-hidden">
                                 <div
-                                  className="h-full bg-gradient-to-r from-blue-500 to-indigo-600"
+                                  className="h-full bg-gradient-to-r from-indigo-500 to-purple-500"
                                   style={{
                                     width: `${
                                       (item.totalAmount /
@@ -1166,7 +1055,7 @@ const Expenses = () => {
                           );
                         })
                       ) : (
-                        <div className="text-center py-8 text-gray-600">
+                        <div className="text-center py-8 text-gray-300">
                           No category data available
                         </div>
                       )}
@@ -1174,39 +1063,38 @@ const Expenses = () => {
                   </div>
                 </div>
               </div>
-
               {/* Rent Payments */}
               {rentExpenses.length > 0 && (
-                <div className="bg-white rounded-3xl p-8 shadow-2xl mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl mb-8 border border-white/20">
+                  <h2 className="text-2xl font-bold text-white mb-6">
                     Rent Payments
                   </h2>
                   <div className="relative">
                     <div
                       ref={sliderRef}
-                      className="flex overflow-x-auto space-x-6 pb-4 snap-x snap-mandatory"
+                      className="flex overflow-x-auto space-x-6 pb-4 snap-x snap-mandatory scrollbar-hide"
                     >
                       {rentExpenses.map((expense) => (
                         <div
                           key={expense._id}
                           className="min-w-[280px] flex-shrink-0 snap-center"
                         >
-                          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 shadow-md">
+                          <div className="bg-white/10 rounded-2xl p-6 shadow-md border border-white/20">
                             <div className="flex items-center justify-between mb-4">
-                              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                              <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm font-medium">
                                 Paid
                               </span>
-                              <span className="text-sm text-gray-600">
+                              <span className="text-sm text-gray-300">
                                 {new Date(expense.date).toLocaleDateString()}
                               </span>
                             </div>
-                            <p className="text-3xl font-bold text-green-600 mb-2">
+                            <p className="text-3xl font-bold text-green-300 mb-2">
                               ₹{expense.amount.toLocaleString()}
                             </p>
-                            <p className="text-gray-700">
+                            <p className="text-gray-200">
                               To: {expense.paidTo}
                             </p>
-                            <p className="text-sm text-gray-600 mt-1">
+                            <p className="text-sm text-gray-300 mt-1">
                               Mode: {expense.collectionMode}
                             </p>
                           </div>
@@ -1216,41 +1104,40 @@ const Expenses = () => {
                   </div>
                 </div>
               )}
-
               {/* Yearly and Monthly */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div className="bg-white rounded-3xl p-8 shadow-2xl">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
+                  <h2 className="text-2xl font-bold text-white mb-6">
                     Yearly Summary
                   </h2>
                   <div className="space-y-4 max-h-96 overflow-y-auto">
                     {yearlyData.map((item) => (
                       <div
                         key={item.year}
-                        className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                        className="flex items-center justify-between p-4 bg-white/10 rounded-xl border border-white/20"
                       >
-                        <span className="font-semibold text-gray-900">
+                        <span className="font-semibold text-white">
                           {item.year}
                         </span>
-                        <span className="text-xl font-bold text-blue-600">
+                        <span className="text-xl font-bold text-indigo-300">
                           ₹{item.totalAmount.toLocaleString()}
                         </span>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="bg-white rounded-3xl p-8 shadow-2xl">
+                <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900">
+                    <h2 className="text-2xl font-bold text-white">
                       Monthly Summary
                     </h2>
                     <select
-                      className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-full"
+                      className="px-4 py-2 bg-white/20 border border-white/30 rounded-full text-white"
                       value={year}
                       onChange={(e) => setYear(e.target.value)}
                     >
                       {yearOptions.map((y) => (
-                        <option key={y} value={y}>
+                        <option key={y} value={y} className="bg-gray-900">
                           {y}
                         </option>
                       ))}
@@ -1260,9 +1147,9 @@ const Expenses = () => {
                     {monthlyData.map((amount, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                        className="flex items-center justify-between p-4 bg-white/10 rounded-xl border border-white/20"
                       >
-                        <span className="font-semibold text-gray-900">
+                        <span className="font-semibold text-white">
                           {
                             [
                               "Jan",
@@ -1280,7 +1167,7 @@ const Expenses = () => {
                             ][index]
                           }
                         </span>
-                        <span className="text-xl font-bold text-purple-600">
+                        <span className="text-xl font-bold text-purple-300">
                           ₹{amount.toLocaleString()}
                         </span>
                       </div>
@@ -1288,16 +1175,15 @@ const Expenses = () => {
                   </div>
                 </div>
               </div>
-
               {/* Expenses Table */}
-              <div className="bg-white rounded-3xl p-2 sm:p-8 shadow-2xl overflow-x-auto">
-                <h2 className="text-2xl font-bold text-[#5C4EFF] mb-6">
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-2 sm:p-8 shadow-2xl overflow-x-auto border border-white/20">
+                <h2 className="text-2xl font-bold text-white mb-6">
                   Expense List
                 </h2>
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-max text-sm">
                     <thead>
-                      <tr className="bg-[#F3F4F6] text-left text-xs font-semibold text-[#5C4EFF] uppercase tracking-wider">
+                      <tr className="bg-white/10 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
                         <th className="px-2 sm:px-6 py-4">Date</th>
                         <th className="px-2 sm:px-6 py-4">Category</th>
                         <th className="px-2 sm:px-6 py-4">Amount</th>
@@ -1307,41 +1193,41 @@ const Expenses = () => {
                         <th className="px-2 sm:px-6 py-4">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#E5E7EB]">
+                    <tbody className="divide-y divide-white/10">
                       {expenses.map((expense) => (
                         <tr
                           key={expense._id}
-                          className="hover:bg-gray-50 transition-colors"
+                          className="hover:bg-white/5 transition-colors"
                         >
-                          <td className="px-2 sm:px-6 py-4 text-sm text-gray-900">
+                          <td className="px-2 sm:px-6 py-4 text-sm text-gray-200">
                             {new Date(expense.date).toLocaleDateString()}
                           </td>
-                          <td className="px-2 sm:px-6 py-4 text-sm text-gray-900">
+                          <td className="px-2 sm:px-6 py-4 text-sm text-gray-200">
                             {expense.category?.name || "Unknown"}
                           </td>
-                          <td className="px-2 sm:px-6 py-4 text-sm font-bold text-gray-900">
+                          <td className="px-2 sm:px-6 py-4 text-sm font-bold text-white">
                             ₹{expense.amount.toLocaleString()}
                           </td>
                           <td className="px-2 sm:px-6 py-4">
-                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300">
                               {expense.collectionMode}
                             </span>
                           </td>
-                          <td className="px-2 sm:px-6 py-4 text-sm text-gray-900">
+                          <td className="px-2 sm:px-6 py-4 text-sm text-gray-200">
                             {expense.paidBy}
                           </td>
-                          <td className="px-2 sm:px-6 py-4 text-sm text-gray-900">
+                          <td className="px-2 sm:px-6 py-4 text-sm text-gray-200">
                             {expense.paidTo}
                           </td>
                           <td className="px-2 sm:px-6 py-4 text-sm">
                             <button
-                              className="mr-3 text-blue-600 hover:text-blue-800"
+                              className="mr-3 text-indigo-300 hover:text-indigo-100"
                               onClick={() => openEditExpenseModal(expense)}
                             >
                               Edit
                             </button>
                             <button
-                              className="text-red-600 hover:text-red-800"
+                              className="text-red-300 hover:text-red-100"
                               onClick={() => handleDeleteExpense(expense._id)}
                             >
                               Delete
@@ -1356,29 +1242,19 @@ const Expenses = () => {
 
               {/* Add Expense Modal */}
               {isModalOpen && (
-                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-fadeIn">
-                  <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl m-2 sm:m-4 max-h-[90vh] overflow-y-auto">
-                    <div className="sticky top-0 bg-white p-6 border-b border-gray-200 rounded-t-3xl">
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                  <div className="bg-gray-800/95 backdrop-blur-md rounded-3xl shadow-2xl w-full max-w-2xl m-2 sm:m-4 max-h-[90vh] overflow-y-auto border border-white/20">
+                    <div className="sticky top-0 bg-gray-800/95 p-6 border-b border-white/10 rounded-t-3xl">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-2xl font-bold text-gray-900">
+                        <h3 className="text-2xl font-bold text-white">
                           Add New Expense
                         </h3>
                         <button
                           onClick={() => setIsModalOpen(false)}
-                          className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+                          className="p-2 text-gray-300 hover:text-white rounded-full hover:bg-white/10"
                         >
-                          <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
                       </div>
@@ -1386,11 +1262,11 @@ const Expenses = () => {
                     <div className="p-6 space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Property (Optional)
                           </label>
                           <select
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-white"
                             value={expenseData.property}
                             onChange={(e) =>
                               setExpenseData({
@@ -1408,12 +1284,12 @@ const Expenses = () => {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Category
                           </label>
                           <div className="flex gap-2">
                             <select
-                              className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                              className="flex-1 p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-white"
                               value={expenseData.category}
                               onChange={(e) => {
                                 const categoryId = e.target.value;
@@ -1432,7 +1308,7 @@ const Expenses = () => {
                               ))}
                             </select>
                             <button
-                              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+                              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all"
                               onClick={() => setIsAddCategoryOpen(true)}
                             >
                               +
@@ -1440,17 +1316,16 @@ const Expenses = () => {
                           </div>
                         </div>
                       </div>
-
                       {selectedCategory && (
-                        <div className="bg-blue-50 p-4 rounded-lg space-y-2">
+                        <div className="bg-indigo-500/20 p-4 rounded-lg space-y-2 border border-indigo-500/30">
                           <div className="flex items-center justify-between">
-                            <span className="font-medium text-blue-800">
+                            <span className="font-medium text-indigo-300">
                               {selectedCategory.name}
                             </span>
                             <div className="space-x-2">
                               {!isUpdating ? (
                                 <button
-                                  className="text-yellow-600 hover:text-yellow-700"
+                                  className="text-yellow-400 hover:text-yellow-300"
                                   onClick={() => {
                                     setCategoryName(selectedCategory.name);
                                     setEditCategoryId(selectedCategory.id);
@@ -1467,7 +1342,7 @@ const Expenses = () => {
                                     onChange={(e) =>
                                       setCategoryName(e.target.value)
                                     }
-                                    className="p-2 border rounded flex-1"
+                                    className="p-2 bg-gray-700 border border-white/20 rounded text-white"
                                   />
                                   <button
                                     className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
@@ -1478,7 +1353,7 @@ const Expenses = () => {
                                 </div>
                               )}
                               <button
-                                className="text-red-600 hover:text-red-700"
+                                className="text-red-400 hover:text-red-300"
                                 onClick={() =>
                                   handleDeleteCategory(selectedCategory.id)
                                 }
@@ -1489,15 +1364,14 @@ const Expenses = () => {
                           </div>
                         </div>
                       )}
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Amount
                           </label>
                           <input
                             type="number"
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                            className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-white"
                             placeholder="Enter amount"
                             value={expenseData.amount}
                             onChange={(e) =>
@@ -1509,12 +1383,12 @@ const Expenses = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Date
                           </label>
                           <input
                             type="date"
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-white"
                             value={expenseData.date}
                             onChange={(e) =>
                               setExpenseData({
@@ -1525,21 +1399,20 @@ const Expenses = () => {
                           />
                         </div>
                       </div>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Paid By
                           </label>
-                          <p className="border border-xl p-3 rounded">Landlord</p>
+                          <p className="p-3 bg-gray-700 border border-white/20 rounded-lg text-white">Landlord</p>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Paid To
                           </label>
                           <input
                             type="text"
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                            className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-white"
                             placeholder="Recipient name"
                             value={expenseData.paidTo}
                             onChange={(e) =>
@@ -1551,13 +1424,12 @@ const Expenses = () => {
                           />
                         </div>
                       </div>
-
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Description
                         </label>
                         <textarea
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y min-h-[100px]"
+                          className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y min-h-[100px] text-white"
                           placeholder="Describe the expense"
                           value={expenseData.description}
                           onChange={(e) =>
@@ -1568,9 +1440,8 @@ const Expenses = () => {
                           }
                         />
                       </div>
-
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Payment Mode
                         </label>
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -1580,8 +1451,8 @@ const Expenses = () => {
                                 key={mode}
                                 className={`p-3 rounded-lg font-medium transition-all ${
                                   expenseData.collectionMode === mode
-                                    ? "bg-blue-600 text-white shadow-md"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                    ? "bg-indigo-600 text-white shadow-md"
+                                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                                 }`}
                                 onClick={() =>
                                   setExpenseData({
@@ -1596,15 +1467,14 @@ const Expenses = () => {
                           )}
                         </div>
                       </div>
-
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Upload Bill (Optional)
                         </label>
                         <input
                           type="file"
                           accept="image/*"
-                          className="w-full p-3 border border-dashed border-gray-300 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all"
+                          className="w-full p-3 border border-dashed border-white/30 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-600/30 file:text-white hover:file:bg-indigo-600/50 transition-all"
                           onChange={(e) =>
                             setExpenseData({
                               ...expenseData,
@@ -1613,16 +1483,15 @@ const Expenses = () => {
                           }
                         />
                       </div>
-
                       <div className="flex gap-4 pt-4">
                         <button
-                          className="flex-1 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-all"
+                          className="flex-1 bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition-all"
                           onClick={handleAddExpense}
                         >
                           Add Expense
                         </button>
                         <button
-                          className="flex-1 bg-gray-200 text-gray-800 p-3 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                          className="flex-1 bg-gray-700 text-white p-3 rounded-lg font-semibold hover:bg-gray-600 transition-all"
                           onClick={() => setIsModalOpen(false)}
                         >
                           Cancel
@@ -1635,11 +1504,11 @@ const Expenses = () => {
 
               {/* Edit Expense Modal */}
               {isEditExpenseOpen && (
-                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-fadeIn">
-                  <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl m-2 sm:m-4 max-h-[90vh] overflow-y-auto">
-                    <div className="sticky top-0 bg-white p-6 border-b border-gray-200 rounded-t-3xl">
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                  <div className="bg-gray-800/95 backdrop-blur-md rounded-3xl shadow-2xl w-full max-w-2xl m-2 sm:m-4 max-h-[90vh] overflow-y-auto border border-white/20">
+                    <div className="sticky top-0 bg-gray-800/95 p-6 border-b border-white/10 rounded-t-3xl">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-2xl font-bold text-gray-900">
+                        <h3 className="text-2xl font-bold text-white">
                           Edit Expense
                         </h3>
                         <button
@@ -1659,20 +1528,10 @@ const Expenses = () => {
                             });
                             setSelectedCategory(null);
                           }}
-                          className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+                          className="p-2 text-gray-300 hover:text-white rounded-full hover:bg-white/10"
                         >
-                          <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
                       </div>
@@ -1680,11 +1539,11 @@ const Expenses = () => {
                     <div className="p-6 space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Property (Optional)
                           </label>
                           <select
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-white"
                             value={expenseData.property}
                             onChange={(e) =>
                               setExpenseData({
@@ -1702,12 +1561,12 @@ const Expenses = () => {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Category
                           </label>
                           <div className="flex gap-2">
                             <select
-                              className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                              className="flex-1 p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-white"
                               value={expenseData.category}
                               onChange={(e) => {
                                 const categoryId = e.target.value;
@@ -1726,7 +1585,7 @@ const Expenses = () => {
                               ))}
                             </select>
                             <button
-                              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+                              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all"
                               onClick={() => setIsAddCategoryOpen(true)}
                             >
                               +
@@ -1734,17 +1593,16 @@ const Expenses = () => {
                           </div>
                         </div>
                       </div>
-
                       {selectedCategory && (
-                        <div className="bg-blue-50 p-4 rounded-lg space-y-2">
+                        <div className="bg-indigo-500/20 p-4 rounded-lg space-y-2 border border-indigo-500/30">
                           <div className="flex items-center justify-between">
-                            <span className="font-medium text-blue-800">
+                            <span className="font-medium text-indigo-300">
                               {selectedCategory.name}
                             </span>
                             <div className="space-x-2">
                               {!isUpdating ? (
                                 <button
-                                  className="text-yellow-600 hover:text-yellow-700"
+                                  className="text-yellow-400 hover:text-yellow-300"
                                   onClick={() => {
                                     setCategoryName(selectedCategory.name);
                                     setEditCategoryId(selectedCategory.id);
@@ -1761,7 +1619,7 @@ const Expenses = () => {
                                     onChange={(e) =>
                                       setCategoryName(e.target.value)
                                     }
-                                    className="p-2 border rounded flex-1"
+                                    className="p-2 bg-gray-700 border border-white/20 rounded text-white"
                                   />
                                   <button
                                     className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
@@ -1772,7 +1630,7 @@ const Expenses = () => {
                                 </div>
                               )}
                               <button
-                                className="text-red-600 hover:text-red-700"
+                                className="text-red-400 hover:text-red-300"
                                 onClick={() =>
                                   handleDeleteCategory(selectedCategory.id)
                                 }
@@ -1783,15 +1641,14 @@ const Expenses = () => {
                           </div>
                         </div>
                       )}
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Amount
                           </label>
                           <input
                             type="number"
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                            className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-white"
                             placeholder="Enter amount"
                             value={expenseData.amount}
                             onChange={(e) =>
@@ -1803,12 +1660,12 @@ const Expenses = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Date
                           </label>
                           <input
                             type="date"
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-white"
                             value={expenseData.date}
                             onChange={(e) =>
                               setExpenseData({
@@ -1819,14 +1676,13 @@ const Expenses = () => {
                           />
                         </div>
                       </div>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Paid By
                           </label>
                           <select
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                            className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-white"
                             value={expenseData.paidBy}
                             onChange={(e) =>
                               setExpenseData({
@@ -1844,12 +1700,12 @@ const Expenses = () => {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-medium text-gray-300 mb-2">
                             Paid To
                           </label>
                           <input
                             type="text"
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                            className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-white"
                             placeholder="Recipient name"
                             value={expenseData.paidTo}
                             onChange={(e) =>
@@ -1861,13 +1717,12 @@ const Expenses = () => {
                           />
                         </div>
                       </div>
-
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Description
                         </label>
                         <textarea
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y min-h-[100px]"
+                          className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-y min-h-[100px] text-white"
                           placeholder="Describe the expense"
                           value={expenseData.description}
                           onChange={(e) =>
@@ -1878,9 +1733,8 @@ const Expenses = () => {
                           }
                         />
                       </div>
-
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Payment Mode
                         </label>
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -1890,8 +1744,8 @@ const Expenses = () => {
                                 key={mode}
                                 className={`p-3 rounded-lg font-medium transition-all ${
                                   expenseData.collectionMode === mode
-                                    ? "bg-blue-600 text-white shadow-md"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                    ? "bg-indigo-600 text-white shadow-md"
+                                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                                 }`}
                                 onClick={() =>
                                   setExpenseData({
@@ -1906,15 +1760,14 @@ const Expenses = () => {
                           )}
                         </div>
                       </div>
-
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Upload Bill (Optional)
                         </label>
                         <input
                           type="file"
                           accept="image/*"
-                          className="w-full p-3 border border-dashed border-gray-300 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all"
+                          className="w-full p-3 border border-dashed border-white/30 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-600/30 file:text-white hover:file:bg-indigo-600/50 transition-all"
                           onChange={(e) =>
                             setExpenseData({
                               ...expenseData,
@@ -1923,16 +1776,15 @@ const Expenses = () => {
                           }
                         />
                       </div>
-
                       <div className="flex gap-4 pt-4">
                         <button
-                          className="flex-1 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-all"
+                          className="flex-1 bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition-all"
                           onClick={handleUpdateExpense}
                         >
                           Update Expense
                         </button>
                         <button
-                          className="flex-1 bg-gray-200 text-gray-800 p-3 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                          className="flex-1 bg-gray-700 text-white p-3 rounded-lg font-semibold hover:bg-gray-600 transition-all"
                           onClick={() => {
                             setIsEditExpenseOpen(false);
                             setEditExpenseId(null);
@@ -1957,43 +1809,34 @@ const Expenses = () => {
                   </div>
                 </div>
               )}
+
               {/* Add Category Modal */}
               {isAddCategoryOpen && (
-                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-fadeIn">
-                  <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md m-2 sm:m-4">
-                    <div className="p-6 border-b border-gray-200 rounded-t-3xl">
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                  <div className="bg-gray-800/95 backdrop-blur-md rounded-3xl shadow-2xl w-full max-w-md m-2 sm:m-4 border border-white/20">
+                    <div className="p-6 border-b border-white/10 rounded-t-3xl">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-2xl font-bold text-gray-900">
+                        <h3 className="text-2xl font-bold text-white">
                           Add New Category
                         </h3>
                         <button
                           onClick={() => setIsAddCategoryOpen(false)}
-                          className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+                          className="p-2 text-gray-300 hover:text-white rounded-full hover:bg-white/10"
                         >
-                          <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
                       </div>
                     </div>
                     <div className="p-6 space-y-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Category Name
                         </label>
                         <input
                           type="text"
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-white"
                           placeholder="Enter category name"
                           value={categoryName}
                           onChange={(e) => setCategoryName(e.target.value)}
@@ -2001,13 +1844,13 @@ const Expenses = () => {
                       </div>
                       <div className="flex gap-4">
                         <button
-                          className="flex-1 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-all"
+                          className="flex-1 bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition-all"
                           onClick={handleAddCategory}
                         >
                           Add Category
                         </button>
                         <button
-                          className="flex-1 bg-gray-200 text-gray-800 p-3 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                          className="flex-1 bg-gray-700 text-white p-3 rounded-lg font-semibold hover:bg-gray-600 transition-all"
                           onClick={() => setIsAddCategoryOpen(false)}
                         >
                           Cancel
@@ -2020,41 +1863,31 @@ const Expenses = () => {
 
               {/* Edit Category Modal */}
               {isEditCategoryOpen && (
-                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-fadeIn">
-                  <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md m-2 sm:m-4">
-                    <div className="p-6 border-b border-gray-200 rounded-t-3xl">
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                  <div className="bg-gray-800/95 backdrop-blur-md rounded-3xl shadow-2xl w-full max-w-md m-2 sm:m-4 border border-white/20">
+                    <div className="p-6 border-b border-white/10 rounded-t-3xl">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-2xl font-bold text-gray-900">
+                        <h3 className="text-2xl font-bold text-white">
                           Edit Category
                         </h3>
                         <button
                           onClick={() => setIsEditCategoryOpen(false)}
-                          className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
+                          className="p-2 text-gray-300 hover:text-white rounded-full hover:bg-white/10"
                         >
-                          <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
                       </div>
                     </div>
                     <div className="p-6 space-y-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Category Name
                         </label>
                         <input
                           type="text"
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                          className="w-full p-3 bg-gray-700 border border-white/20 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-white"
                           placeholder="Enter category name"
                           value={categoryName}
                           onChange={(e) => setCategoryName(e.target.value)}
@@ -2062,13 +1895,13 @@ const Expenses = () => {
                       </div>
                       <div className="flex gap-4">
                         <button
-                          className="flex-1 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-all"
+                          className="flex-1 bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition-all"
                           onClick={handleUpdateCategory}
                         >
                           Update Category
                         </button>
                         <button
-                          className="flex-1 bg-gray-200 text-gray-800 p-3 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                          className="flex-1 bg-gray-700 text-white p-3 rounded-lg font-semibold hover:bg-gray-600 transition-all"
                           onClick={() => setIsEditCategoryOpen(false)}
                         >
                           Cancel

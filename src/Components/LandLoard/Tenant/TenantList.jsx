@@ -28,15 +28,15 @@ const TenantList = () => {
         }
       );
 
-      console.log("Full API Response:", response.data);  // Debug: Full response
-      console.log("Token used:", token);  // Debug: Check token
+      console.log("Full API Response:", response.data);
+      console.log("Token used:", token);
 
       const tenantData =
         response.data.tenants || response.data.data || response.data || [];
       if (!Array.isArray(tenantData)) {
         throw new Error("Invalid tenant data format");
       }
-      console.log("Processed Tenants:", tenantData);  // Debug: Processed data
+      console.log("Processed Tenants:", tenantData);
 
       setTenants(tenantData);
       setFilteredTenants(tenantData);
@@ -48,7 +48,7 @@ const TenantList = () => {
         });
       }
     } catch (error) {
-      console.error("Fetch Error:", error);  // Better error logging
+      console.error("Fetch Error:", error);
       toast.error(
         error.response?.data?.message ||
           "Failed to fetch tenants. Please try again.",
@@ -65,11 +65,10 @@ const TenantList = () => {
 
   useEffect(() => {
     fetchTenants();
-    // Note: Add dependencies like [token, landlordId] if landlord switching is implemented via state/context
-  }, []);  // Currently empty; update as needed for refetch on changes
+  }, []);
 
   const handleSearch = (e) => {
-    if (loading) return;  // Prevent search during loading
+    if (loading) return;
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
 
@@ -93,135 +92,156 @@ const TenantList = () => {
       return;
     }
     navigate(`/landlord/tenant-details/${tenantId}`);
-    console.log("Navigating to tenant:", tenantId);  // Fixed: Log tenantId instead of undefined 'ten'
+    console.log("Navigating to tenant:", tenantId);
   };
 
   const addNewTenant = () => {
-    navigate("/landlord/add-tenant");  // Assuming this is the add tenant route
+    navigate("/landlord/add-tenant");
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-20 py-10 bg-gray-100 min-h-screen flex flex-col">
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+    <div
+      className="min-h-screen py-8 px-4 text-gray-100 lg:ml-20"
+      style={{
+        background: `radial-gradient(circle at center bottom, rgba(245, 124, 0, 0.35), transparent 60%), linear-gradient(rgb(7, 26, 47) 0%, rgb(13, 47, 82) 45%, rgb(18, 62, 107) 75%, rgb(11, 42, 74) 100%)`,
+      }}
+    >
+      <ToastContainer theme="dark" position="top-right" autoClose={3000} />
 
-      {/* Header */}
-      <div className="mb-8 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-indigo-700">
-          Tenant List
-        </h2>
-      </div>
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-5xl font-extrabold text-orange-300 drop-shadow-2xl">
+            Tenant List
+          </h2>
+          <p className="text-gray-300 mt-3 text-lg">
+            Manage and view all your registered tenants
+          </p>
+        </motion.div>
 
-      {/* Search */}
-      <div className="relative mb-8">
-        <input
-          type="text"
-          className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-3 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition placeholder-gray-400 text-gray-800 text-base"
-          placeholder="Search by name, mobile, or email"
-          value={searchTerm}
-          onChange={handleSearch}
-          disabled={loading}  // Disable during loading
-        />
-        <FaSearch className="absolute top-3.5 left-3 text-gray-500" />
-      </div>
+        {/* Search Bar */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="relative mb-10 max-w-2xl mx-auto"
+        >
+          <FaSearch className="absolute left-6 top-1/2 transform -translate-y-1/2 text-2xl text-orange-400" />
+          <input
+            type="text"
+            className="w-full pl-16 pr-6 py-5 bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl text-white placeholder-gray-400 text-lg focus:outline-none focus:ring-4 focus:ring-orange-400/50 transition shadow-xl"
+            placeholder="Search by name, mobile, or email..."
+            value={searchTerm}
+            onChange={handleSearch}
+            disabled={loading}
+          />
+        </motion.div>
 
-      {/* Tenant List */}
-      <div className="flex-grow">
-        {loading ? (
-          <div className="text-center text-gray-600 flex items-center justify-center">
-            <FaSpinner className="animate-spin mr-2" /> Loading tenants...
-          </div>
-        ) : filteredTenants.length === 0 ? (
-          <div className="text-center text-gray-600 py-12">
-            <p className="text-lg mb-4">No tenants found.</p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={addNewTenant}
-              className="flex items-center gap-2 mx-auto text-white px-6 py-3 rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-green-400 hover:from-blue-600 hover:to-green-500 transition-colors"
+        {/* Tenant Grid */}
+        <div className="min-h-[60vh]">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <FaSpinner className="animate-spin text-6xl text-orange-400 mb-6" />
+              <p className="text-2xl text-gray-300">Loading tenants...</p>
+            </div>
+          ) : filteredTenants.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-20"
             >
-              <FaPlus className="text-lg" />
-              <span>Add Your First Tenant</span>
-            </motion.button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredTenants.map((tenant, index) => (
-              <motion.div
-                key={tenant.tenantId || tenant.id || index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="bg-white border border-gray-200 shadow-lg rounded-xl p-6 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+              <div className="p-6 bg-white/10 backdrop-blur-xl rounded-3xl inline-block mb-8">
+                <p className="text-3xl font-bold text-gray-300 mb-4">
+                  No tenants found
+                </p>
+                <p className="text-gray-400 mb-8">
+                  {searchTerm ? "Try adjusting your search" : "Start by adding your first tenant"}
+                </p>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={addNewTenant}
+                className="flex items-center gap-4 mx-auto px-10 py-5 bg-orange-600/80 text-white text-xl font-bold rounded-2xl shadow-2xl hover:bg-orange-500 transition backdrop-blur-sm"
               >
-                <div>
-                  <h5 className="text-xl font-semibold text-indigo-700 mb-3">
-                    {tenant.name || "Unnamed Tenant"}
-                  </h5>
-                  <p className="text-sm text-gray-700 mb-1">
-                    <strong>Mobile:</strong> {tenant.mobile || "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-700 mb-1">
-                    <strong>Email:</strong> {tenant.email || "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-700 mb-1">
-                    <strong>Work:</strong> {tenant.work || "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-700 mb-1">
-                    <strong>Address:</strong> {tenant.permanentAddress || "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-700 mb-1">
-                    <strong>DOB:</strong>{" "}
-                    {tenant.dob
-                      ? new Date(tenant.dob).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-700">
-                    <strong>Marital Status:</strong>{" "}
-                    {tenant.maritalStatus || "N/A"}
-                  </p>
-                </div>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="mt-4 w-full bg-gradient-to-r from-blue-500 to-green-400 hover:from-blue-600 hover:to-green-500 text-white px-4 py-2 rounded-lg  transition-colors"
-                  onClick={() => viewDetails(tenant.tenantId || tenant.id)}
+                <FaPlus className="text-2xl" />
+                Add Your First Tenant
+              </motion.button>
+            </motion.div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              {filteredTenants.map((tenant, index) => (
+                <motion.div
+                  key={tenant.tenantId || tenant.id || index}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  whileHover={{ y: -10, scale: 1.03 }}
+                  className="bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 p-8 flex flex-col justify-between hover:shadow-orange-500/30 transition-all duration-500"
                 >
-                  View Details
-                </motion.button>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
+                  <div>
+                    <h5 className="text-2xl font-bold text-orange-300 mb-4 truncate">
+                      {tenant.name || "Unnamed Tenant"}
+                    </h5>
+                    <div className="space-y-3 text-gray-300">
+                      <p className="text-sm">
+                        <strong>Mobile:</strong> {tenant.mobile || "N/A"}
+                      </p>
+                      <p className="text-sm truncate">
+                        <strong>Email:</strong> {tenant.email || "N/A"}
+                      </p>
+                      <p className="text-sm">
+                        <strong>Work:</strong> {tenant.work || "N/A"}
+                      </p>
+                      <p className="text-sm">
+                        <strong>DOB:</strong>{" "}
+                        {tenant.dob
+                          ? new Date(tenant.dob).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })
+                          : "N/A"}
+                      </p>
+                      <p className="text-sm">
+                        <strong>Status:</strong>{" "}
+                        <span className="capitalize text-orange-400">
+                          {tenant.maritalStatus || "N/A"}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
 
-      {/* Back Button (Bottom) */}
-     <div className="mt-10 flex justify-center">
-  <motion.button
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    onClick={() => navigate("/landlord")}   // Ye change kar diya
-    className="flex items-center gap-2 text-white px-6 py-3 rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-green-400 hover:from-blue-600 hover:to-green-500 transition-colors font-medium"
-  >
-    <FaArrowLeft className="text-lg" />
-    <span className="hidden sm:inline">Back to Dashboard</span>
-    <span className="sm:hidden">Back</span>
-  </motion.button>
-</div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="mt-6 w-full bg-orange-600/80 text-white py-4 rounded-2xl font-bold text-lg hover:bg-orange-500 transition shadow-xl backdrop-blur-sm"
+                    onClick={() => viewDetails(tenant.tenantId || tenant.id)}
+                  >
+                    View Details
+                  </motion.button>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Back Button */}
+        <div className="mt-16 flex justify-center">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/landlord")}
+            className="flex items-center gap-4 px-10 py-5 bg-white/10 backdrop-blur-xl text-white text-xl font-bold rounded-2xl border border-white/30 hover:bg-white/20 transition shadow-2xl"
+          >
+            <FaArrowLeft className="text-2xl" />
+            <span>Back to Dashboard</span>
+          </motion.button>
+        </div>
+      </div>
     </div>
   );
 };

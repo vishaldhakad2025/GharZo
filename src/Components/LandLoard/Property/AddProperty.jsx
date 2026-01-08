@@ -487,33 +487,31 @@ const AddProperty = ({ propertyData }) => {
     setErrors({});
   };
 
-  const inputStyle =
-    "w-full rounded-lg px-0 py-2 bg-gray-50 text-black placeholder-gray-500 border border-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10 transition-all";
-  const iconStyle =
-    "absolute left-2 top-5 transform -translate-y-1/2 text-blue-400 drop-shadow-lg";
-
   const isUpdate = !!id;
 
   return (
     <div
-      className={`px-2 py-4 md:px-20 min-h-screen text-white bg-white transition-all duration-500 min-w-0 ${
+      className={`px-2 py-4 md:px-20 min-h-screen text-white transition-all duration-500 min-w-0 ${
         isSidebarHovered ? "md:ml-[256px] md:w-[calc(100%-256px)]" : "md:ml-[64px] md:w-[calc(100%-64px)]"
       }`}
-      style={{ boxSizing: "border-box" }}
+      style={{
+        background: `radial-gradient(circle at center bottom, rgba(245, 124, 0, 0.35), transparent 60%), linear-gradient(rgb(7, 26, 47) 0%, rgb(13, 47, 82) 45%, rgb(18, 62, 107) 75%, rgb(11, 42, 74) 100%)`,
+        boxSizing: "border-box"
+      }}
     >
       <motion.div
-        className="mx-auto p-4 bg-gray-100 border border-green-800 shadow-xl rounded-2xl mt-20 mb-20 lg:mt-10 w-[370px] md:w-[600px] lg:w-[1000px]  "
+        className="mx-auto p-6 bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl mt-10 mb-20 w-[370px] md:w-[600px] lg:w-[1000px]"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl font-extrabold mb-6 text-center text-black drop-shadow-lg">
+        <h2 className="text-4xl font-extrabold mb-8 text-center text-orange-300 drop-shadow-lg">
           {isUpdate ? "Update Property" : "Add Property"}
         </h2>
 
         {message && (
           <p
-            className={`mb-4 text-center font-medium ${
+            className={`mb-6 text-center font-medium text-lg ${
               message.includes("Success") ? "text-green-400" : "text-red-400"
             }`}
           >
@@ -521,13 +519,14 @@ const AddProperty = ({ propertyData }) => {
           </p>
         )}
 
-        <form className="space-y-8" onSubmit={handleSubmit}>
+        <form className="space-y-10" onSubmit={handleSubmit}>
           {/* PROPERTY DETAILS */}
           <section>
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-black">
+            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-orange-300">
+              <FaHome className="text-orange-400" />
               Property Details
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 { name: "name", placeholder: "Property Name", icon: FaHome },
                 {
@@ -565,22 +564,23 @@ const AddProperty = ({ propertyData }) => {
               ].map((f, i) => (
                 <div className="relative" key={i}>
                   <motion.div
-                    whileHover={{ rotateX: 10, rotateY: -10 }}
-                    className="absolute"
+                    whileHover={{ scale: 1.2 }}
+                    className="absolute left-3 top-4 z-10"
                   >
-                    {<f.icon className={iconStyle} />}
+                    <f.icon className="text-2xl text-orange-400 drop-shadow-md" />
                   </motion.div>
                   {f.select ? (
                     <select
                       name={f.name}
                       value={formData[f.name]}
                       onChange={handlePropertyChange}
-                      className={`${inputStyle} ${
-                        errors[f.name] ? "border-red-500" : ""
-                      }`}
+                      className={`w-full pl-12 pr-4 py-3 bg-white/10 backdrop-blur-md border ${
+                        errors[f.name] ? "border-red-500/70" : "border-white/30"
+                      } rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all`}
                     >
+                      <option value="" className="bg-gray-800">Select Type</option>
                       {f.options.map((o) => (
-                        <option key={o} value={o}>
+                        <option key={o} value={o} className="bg-gray-800">
                           {o}
                         </option>
                       ))}
@@ -591,9 +591,10 @@ const AddProperty = ({ propertyData }) => {
                       value={formData[f.name]}
                       onChange={handlePropertyChange}
                       placeholder={f.placeholder}
-                      className={`${inputStyle} h-24 resize-y ${
-                        errors[f.name] ? "border-red-500" : ""
-                      }`}
+                      rows="4"
+                      className={`w-full pl-12 pr-4 py-3 bg-white/10 backdrop-blur-md border ${
+                        errors[f.name] ? "border-red-500/70" : "border-white/30"
+                      } rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all resize-none`}
                     />
                   ) : (
                     <input
@@ -608,13 +609,13 @@ const AddProperty = ({ propertyData }) => {
                       value={formData[f.name]}
                       onChange={handlePropertyChange}
                       placeholder={f.placeholder}
-                      className={`${inputStyle} ${
-                        errors[f.name] ? "border-red-500" : ""
-                      }`}
+                      className={`w-full pl-12 pr-4 py-3 bg-white/10 backdrop-blur-md border ${
+                        errors[f.name] ? "border-red-500/70" : "border-white/30"
+                      } rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all`}
                     />
                   )}
                   {errors[f.name] && (
-                    <p className="text-red-500 text-sm mt-1 pl-10">
+                    <p className="text-red-400 text-sm mt-2 pl-12">
                       {errors[f.name]}
                     </p>
                   )}
@@ -625,59 +626,61 @@ const AddProperty = ({ propertyData }) => {
 
           {/* IMAGES */}
           <section>
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-black">
-              Property Images
+            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-orange-300">
+              <FaImage className="text-orange-400" />
+              Property Images (Max 10)
             </h3>
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-4">
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {images.map((img, index) => (
-                  <div key={index} className="relative">
+                  <div key={index} className="relative group">
                     <img
                       src={img}
-                      alt={`Property ${index}`}
-                      className="h-24 w-24 object-cover rounded-lg border border-gray-300 shadow"
+                      alt={`Property ${index + 1}`}
+                      className="h-32 w-full object-cover rounded-xl border border-white/20 shadow-lg"
                     />
                     <button
                       type="button"
                       onClick={() => handleDeleteImage(index)}
-                      className="absolute top-0 right-0 bg-red-600 text-white p-1 rounded-full shadow-lg"
+                      className="absolute top-2 right-2 bg-red-600/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition backdrop-blur-sm"
                     >
-                      <FaTrash />
+                      <FaTrash className="text-sm" />
                     </button>
                   </div>
                 ))}
               </div>
+
               <div className="relative">
-                <FaImage className={iconStyle} />
+                <FaImage className="absolute left-4 top-4 text-2xl text-orange-400 z-10" />
                 <input
                   type="file"
                   accept="image/*"
                   multiple
                   onChange={handleImageChange}
-                  className="w-full border border-blue-800 rounded-lg px-10 py-2"
+                  className="w-full pl-14 pr-4 py-4 bg-white/10 backdrop-blur-md border border-white/30 rounded-xl text-white file:mr-4 file:py-2 file:px-6 file:rounded-lg file:border-0 file:bg-orange-600/80 file:text-white hover:file:bg-orange-500 cursor-pointer transition"
                 />
               </div>
             </div>
           </section>
 
           {/* BUTTONS */}
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row justify-center gap-6 pt-8">
             <button
               type="button"
               onClick={resetForm}
-              className="px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500"
+              className="px-10 py-3 bg-white/10 backdrop-blur-md text-white font-semibold rounded-xl border border-white/30 hover:bg-white/20 transition"
             >
-              Reset
+              Reset Form
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-300"
+              className="px-10 py-3 bg-orange-600/80 backdrop-blur-md text-white font-semibold rounded-xl hover:bg-orange-500 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-lg"
             >
               {submitting
                 ? isUpdate
-                  ? "Updating..."
-                  : "Submitting..."
+                  ? "Updating Property..."
+                  : "Adding Property..."
                 : isUpdate
                 ? "Update Property"
                 : "Add Property"}

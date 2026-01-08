@@ -212,26 +212,26 @@ const LandlordSwitchRequests = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending':
-        return 'bg-gradient-to-br from-[#5C4EFF] to-[#1fc9b2] text-white border-[#1fc9b2]';
+        return 'bg-orange-600/80 text-white';
       case 'approved':
-        return 'bg-gradient-to-br from-[#1fc9b2] to-[#5C4EFF] text-white border-[#5C4EFF]';
+        return 'bg-teal-600/80 text-white';
       case 'rejected':
-        return 'bg-gradient-to-br from-[#DC2626] to-[#B91C1C] text-white border-[#B91C1C]';
+        return 'bg-red-600/80 text-white';
       default:
-        return 'bg-gradient-to-br from-[#4B5563] to-[#374151] text-white border-[#374151]';
+        return 'bg-gray-600/80 text-white';
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
       case 'pending':
-        return <FaClock className="text-lg" />;
+        return <FaClock className="text-sm" />;
       case 'approved':
-        return <FaCheckCircle className="text-lg" />;
+        return <FaCheckCircle className="text-sm" />;
       case 'rejected':
-        return <FaTimesCircle className="text-lg" />;
+        return <FaTimesCircle className="text-sm" />;
       default:
-        return <FaClock className="text-lg" />;
+        return <FaClock className="text-sm" />;
     }
   };
 
@@ -239,54 +239,53 @@ const LandlordSwitchRequests = () => {
     switch (tabId) {
       case 'pending':
         return {
-          active: 'bg-gradient-to-br from-[#5C4EFF] to-[#1fc9b2] text-white border-b-2 border-[#1fc9b2]',
-          inactive: 'text-[#4B5563] hover:bg-[#5C4EFF]/10 hover:text-[#1fc9b2]',
-          iconBg: 'bg-gradient-to-br from-[#5C4EFF] to-[#1fc9b2]',
+          active: 'bg-orange-600/80 text-white border-b-4 border-orange-400',
+          inactive: 'text-gray-400 hover:bg-white/10 hover:text-orange-300',
+          iconBg: 'bg-orange-600/80',
         };
       case 'approved':
         return {
-          active: 'bg-gradient-to-br from-[#1fc9b2] to-[#5C4EFF] text-white border-b-2 border-[#5C4EFF]',
-          inactive: 'text-[#4B5563] hover:bg-[#1fc9b2]/10 hover:text-[#5C4EFF]',
-          iconBg: 'bg-gradient-to-br from-[#1fc9b2] to-[#5C4EFF]',
+          active: 'bg-teal-600/80 text-white border-b-4 border-teal-400',
+          inactive: 'text-gray-400 hover:bg-white/10 hover:text-teal-300',
+          iconBg: 'bg-teal-600/80',
         };
       case 'rejected':
         return {
-          active: 'bg-gradient-to-br from-[#DC2626] to-[#B91C1C] text-white border-b-2 border-[#B91C1C]',
-          inactive: 'text-[#4B5563] hover:bg-[#DC2626]/10 hover:text-[#B91C1C]',
-          iconBg: 'bg-gradient-to-br from-[#DC2626] to-[#B91C1C]',
+          active: 'bg-red-600/80 text-white border-b-4 border-red-400',
+          inactive: 'text-gray-400 hover:bg-white/10 hover:text-red-300',
+          iconBg: 'bg-red-600/80',
         };
       default:
         return {
-          active: 'bg-gradient-to-br from-[#4B5563] to-[#374151] text-white border-b-2 border-[#374151]',
-          inactive: 'text-[#4B5563] hover:bg-[#4B5563]/10 hover:text-[#374151]',
-          iconBg: 'bg-gradient-to-br from-[#4B5563] to-[#374151]',
+          active: 'bg-gray-600/80 text-white border-b-4 border-gray-400',
+          inactive: 'text-gray-400 hover:bg-white/10',
+          iconBg: 'bg-gray-600/80',
         };
     }
   };
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-br from-[#e7eaff] via-white to-[#7cf7b7] p-4 md:p-6 relative text-gray-800 transition-all duration-500 min-w-0 ${
+      className={`min-h-screen p-4 relative text-gray-100 transition-all duration-500 min-w-0 ${
         isSidebarHovered ? "md:ml-[256px] md:w-[calc(100%-256px)]" : "md:ml-[64px] md:w-[calc(100%-64px)]"
       }`}
-      style={{ boxSizing: "border-box" }}
+      style={{
+        background: `radial-gradient(circle at center bottom, rgba(245, 124, 0, 0.35), transparent 60%), linear-gradient(rgb(7, 26, 47) 0%, rgb(13, 47, 82) 45%, rgb(18, 62, 107) 75%, rgb(11, 42, 74) 100%)`,
+        boxSizing: "border-box"
+      }}
     >
       {/* Header */}
-      <header className="bg-gradient-to-r from-[#5C4EFF] to-[#1fc9b2] text-white shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold">Room Switch Requests</h1>
-              {/* <p className="text-[#e0f7f3] mt-1">Manage tenant room switch requests efficiently</p> */}
-            </div>
-            
-          </div>
-        </div>
+      <header className="max-w-7xl mx-auto mb-8 text-center">
+        <h2 className="text-4xl font-extrabold text-orange-300 drop-shadow-lg">
+          Room Switch Requests
+        </h2>
+        <p className="text-gray-300 mt-2">Manage tenant room switch requests</p>
       </header>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+      <main className="max-w-7xl mx-auto space-y-8">
         {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-lg">
-          <div className="flex border-b border-[#E5E7EB]">
+        <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
+          <div className="flex border-b border-white/10">
             {[
               { id: 'pending', label: 'Pending', count: requests.filter((req) => req.status === 'pending').length, icon: <FaClock className="text-lg" /> },
               { id: 'approved', label: 'Approved', count: requests.filter((req) => req.status === 'approved').length, icon: <FaCheckCircle className="text-lg" /> },
@@ -297,303 +296,201 @@ const LandlordSwitchRequests = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex-1 py-4 px-6 text-center font-semibold flex items-center justify-center gap-2 transition duration-300 ${
+                  className={`flex-1 py-4 px-6 text-center font-medium flex items-center justify-center gap-3 transition duration-300 ${
                     activeTab === tab.id ? styles.active : styles.inactive
                   }`}
                 >
-                  <span
-                    className={`p-2 ${styles.iconBg} text-white rounded-full shadow-md transform ${
-                      activeTab === tab.id ? 'scale-110' : 'scale-100'
-                    } transition duration-300 perspective-1000`}
-                    style={{ transformStyle: 'preserve-3d' }}
-                  >
+                  <div className={`p-3 rounded-xl ${styles.iconBg} shadow-lg`}>
                     {tab.icon}
-                  </span>
-                  {tab.label} ({tab.count})
+                  </div>
+                  <div>
+                    <div className="text-lg">{tab.label}</div>
+                    <div className="text-sm opacity-80">({tab.count})</div>
+                  </div>
                 </button>
               );
             })}
           </div>
         </div>
+
         {/* Date Filters */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-6">
+          <h3 className="text-xl font-bold text-orange-300 mb-4">Filter by Date Range</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-[#4B5563] mb-2">From Date</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">From Date</label>
               <input
                 type="date"
                 value={fromDate}
                 onChange={(e) => setFromDate(e.target.value)}
-                className="w-full p-3 border border-[#E5E7EB] rounded-lg focus:ring-2 focus:ring-[#3B82F6] focus:border-[#3B82F6] transition duration-300 bg-gradient-to-br from-[#F3F4F6] to-[#E5E7EB]"
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-md border border-white/30 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#4B5563] mb-2">To Date</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">To Date</label>
               <input
                 type="date"
                 value={toDate}
                 onChange={(e) => setToDate(e.target.value)}
-                className="w-full p-3 border border-[#E5E7EB] rounded-lg focus:ring-2 focus:ring-[#3B82F6] focus:border-[#3B82F6] transition duration-300 bg-gradient-to-br from-[#F3F4F6] to-[#E5E7EB]"
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-md border border-white/30 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
               />
             </div>
           </div>
         </div>
+
         {/* Content */}
         {loading ? (
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-            <div className="flex flex-col items-center gap-4">
-              <div className="relative w-12 h-12">
-                <div className="absolute inset-0 border-4 border-[#93C5FD] rounded-full animate-spin border-t-[#3B82F6]"></div>
-                <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6] to-[#1E40AF] rounded-full shadow-md transform scale-75 perspective-1000" style={{ transformStyle: 'preserve-3d' }}></div>
-              </div>
-              <p className="text-lg font-semibold text-[#4B5563]">Loading requests...</p>
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-16 text-center">
+            <div className="inline-block relative w-16 h-16">
+              <div className="absolute inset-0 border-4 border-white/30 rounded-full animate-spin border-t-orange-400"></div>
             </div>
+            <p className="text-xl font-medium text-gray-300 mt-6">Loading requests...</p>
           </div>
         ) : error ? (
-          <div className="bg-[#FEF2F2] border border-[#FECACA] rounded-lg shadow-lg p-6 text-center">
-            <div className="flex flex-col items-center gap-4">
-              <div className="p-3 bg-gradient-to-br from-[#DC2626] to-[#B91C1C] text-white rounded-full shadow-md transform hover:scale-110 transition duration-300 perspective-1000" style={{ transformStyle: 'preserve-3d' }}>
-                <FaTimesCircle className="text-2xl" />
-              </div>
-              <p className="text-[#DC2626] mb-4">{error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="relative bg-[#DC2626] text-white px-6 py-2 rounded-lg hover:bg-[#B91C1C] transition duration-300 transform hover:scale-105 shadow-md"
-              >
-                <span className="relative z-10">Retry</span>
-                <div className="absolute inset-0 bg-[#991B1B] opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
-              </button>
+          <div className="bg-red-900/30 backdrop-blur-xl rounded-2xl shadow-2xl border border-red-500/50 p-10 text-center">
+            <div className="p-4 bg-red-600/80 rounded-full inline-block mb-4">
+              <FaTimesCircle className="text-4xl" />
             </div>
+            <p className="text-xl font-medium text-red-300 mb-6">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-8 py-3 bg-orange-600/80 text-white rounded-xl hover:bg-orange-500 transition shadow-lg"
+            >
+              Retry
+            </button>
           </div>
         ) : filteredRequests.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-            <div className="flex flex-col items-center gap-4">
-              <div className="p-3 bg-gradient-to-br from-[#4B5563] to-[#374151] text-white rounded-full shadow-md transform hover:scale-110 transition duration-300 perspective-1000" style={{ transformStyle: 'preserve-3d' }}>
-                <FaClock className="text-2xl" />
-              </div>
-              <p className="text-[#4B5563] mb-4">No requests found for the selected criteria.</p>
-              <button
-                onClick={() => {
-                  setFromDate('');
-                  setToDate('');
-                  setActiveTab('pending');
-                }}
-                className="relative bg-[#3B82F6] text-white px-6 py-2 rounded-lg hover:bg-[#2563EB] transition duration-300 transform hover:scale-105 shadow-md"
-              >
-                <span className="relative z-10">Clear Filters</span>
-                <div className="absolute inset-0 bg-[#1E40AF] opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
-              </button>
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-16 text-center">
+            <div className="p-4 bg-orange-600/80 rounded-full inline-block mb-4">
+              <FaClock className="text-4xl" />
             </div>
+            <p className="text-xl font-medium text-gray-300 mb-6">No requests found</p>
+            <button
+              onClick={() => {
+                setFromDate('');
+                setToDate('');
+                setActiveTab('pending');
+              }}
+              className="px-8 py-3 bg-orange-600/80 text-white rounded-xl hover:bg-orange-500 transition shadow-lg"
+            >
+              Clear Filters
+            </button>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-lg overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-            <table className="min-w-full divide-y divide-[#E5E7EB] w-[1000px]"> {/* Fixed min width to force scroll if needed */}
-              <thead className="bg-[#F9FAFB]">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider hidden lg:table-cell w-48">
-                    Property
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider hidden md:table-cell w-40">
-                    Current Room
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider hidden md:table-cell w-40">
-                    Requested Room
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider w-24">
-                    Status
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider hidden lg:table-cell w-32">
-                    Date
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider hidden xl:table-cell w-32">
-                    Response
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-[#4B5563] uppercase tracking-wider w-56">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-[#E5E7EB]">
-                {filteredRequests.map((req) => (
-                  <tr key={req._id} className="hover:bg-[#F3F4F6] transition duration-200">
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] hidden lg:table-cell">
-                      {req.propertyId?.name || 'N/A'}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] hidden md:table-cell">
-                      R{req.currentRoomId} • B{req.currentBedId}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] hidden md:table-cell">
-                      R{req.requestedRoomId} • B{req.requestedBedId}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <span
-                        className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full shadow-md transform hover:scale-105 transition duration-300 perspective-1000 ${getStatusColor(
-                          req.status
-                        )}`}
-                        style={{ transformStyle: 'preserve-3d' }}
-                      >
-                        {getStatusIcon(req.status)} <span className="ml-1">{req.status}</span>
-                      </span>
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] hidden lg:table-cell">
-                      {new Date(req.requestDate).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] hidden xl:table-cell">
-                      {req.responseDate
-                        ? new Date(req.responseDate).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                          })
-                        : '—'}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                      {req.status === 'pending' ? (
-                        <div className="flex flex-col sm:flex-row space-y-2 sm:space-x-3 space-x-0">
-                          <button
-                            onClick={() =>
-                              handleAction(req._id, 'approve', {
-                                propertyId: req.propertyId._id,
-                                currentRoomId: req.currentRoomId,
-                                currentBedId: req.currentBedId,
-                                requestedRoomId: req.requestedRoomId,
-                                requestedBedId: req.requestedBedId,
-                              })
-                            }
-                            disabled={actionLoading[req._id]}
-                            className="relative bg-gradient-to-br from-[#1fc9b2] to-[#5C4EFF] text-white px-3 py-2 rounded-lg hover:from-[#5C4EFF] hover:to-[#1fc9b2] disabled:bg-[#b2f7e7]/50 transition duration-300 transform hover:scale-105 shadow-md flex-shrink-0 w-full sm:w-auto"
-                          >
-                            <span className="relative z-10 flex items-center justify-center">
-                              {actionLoading[req._id] ? (
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-white/10">
+                <thead className="bg-white/5">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-orange-300 uppercase">Property</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300 uppercase">Current</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300 uppercase">Requested</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300 uppercase">Status</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300 uppercase">Date</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300 uppercase">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/10">
+                  {filteredRequests.map((req) => (
+                    <tr key={req._id} className="hover:bg-white/5 transition">
+                      <td className="px-6 py-4 text-sm font-medium text-white">
+                        {req.propertyId?.name || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">
+                        Room {req.currentRoomId} • Bed {req.currentBedId}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">
+                        Room {req.requestedRoomId} • Bed {req.requestedBedId}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium shadow-lg ${getStatusColor(req.status)} backdrop-blur-sm`}>
+                          {getStatusIcon(req.status)}
+                          <span className="ml-2 capitalize">{req.status}</span>
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">
+                        {new Date(req.requestDate).toLocaleDateString('en-IN', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </td>
+                      <td className="px-6 py-4">
+                        {req.status === 'pending' ? (
+                          <div className="flex flex-wrap gap-3">
+                            <button
+                              onClick={() =>
+                                handleAction(req._id, 'approve', {
+                                  propertyId: req.propertyId._id,
+                                  currentRoomId: req.currentRoomId,
+                                  currentBedId: req.currentBedId,
+                                  requestedRoomId: req.requestedRoomId,
+                                  requestedBedId: req.requestedBedId,
+                                })
+                              }
+                              disabled={actionLoading[req._id]}
+                              className="px-5 py-2.5 bg-teal-600/80 text-white text-sm font-medium rounded-xl hover:bg-teal-500 disabled:opacity-60 transition flex items-center gap-2 shadow-lg backdrop-blur-sm"
+                            >
+                              {actionLoading[req._id] ? 'Processing...' : (
                                 <>
-                                  <svg
-                                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <circle
-                                      className="opacity-25"
-                                      cx="12"
-                                      cy="12"
-                                      r="10"
-                                      stroke="currentColor"
-                                      strokeWidth="4"
-                                    ></circle>
-                                    <path
-                                      className="opacity-75"
-                                      fill="currentColor"
-                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12c0-3.042 1.135-5.824 3-7.938v2.177c0 .077.02.155.056.232C6.206 4.387 6.02 4.5 6 4.5c-.2 0-.4.1-.5.2-.1.1-.2.3-.2.5v3c0 .2.1.4.2.5.1.1.3.2.5.2.02 0 .04-.01.06-.02.036-.01.07-.03.1-.05.03-.02.06-.04.09-.06z"
-                                    ></path>
-                                  </svg>
-                                  Processing...
-                                </>
-                              ) : (
-                                <>
-                                  <FaCheckCircle className="mr-2" />
+                                  <FaCheckCircle />
                                   Approve
                                 </>
                               )}
-                            </span>
-                            <div className="absolute inset-0 bg-[#034E3B] opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
-                          </button>
-                          <button
-                            onClick={() => openRejectModal(req._id)}
-                            disabled={actionLoading[req._id]}
-                            className="relative bg-gradient-to-br from-[#DC2626] to-[#B91C1C] text-white px-3 py-2 rounded-lg hover:from-[#991B1B] hover:to-[#7F1D1D] disabled:bg-[#FCA5A5]/50 transition duration-300 transform hover:scale-105 shadow-md flex-shrink-0 w-full sm:w-auto"
-                          >
-                            <span className="relative z-10 flex items-center justify-center">
-                              {actionLoading[req._id] ? (
-                                <>
-                                  <svg
-                                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <circle
-                                      className="opacity-25"
-                                      cx="12"
-                                      cy="12"
-                                      r="10"
-                                      stroke="currentColor"
-                                      strokeWidth="4"
-                                    ></circle>
-                                    <path
-                                      className="opacity-75"
-                                      fill="currentColor"
-                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12c0-3.042 1.135-5.824 3-7.938v2.177c0 .077.02.155.056.232C6.206 4.387 6.02 4.5 6 4.5c-.2 0-.4.1-.5.2-.1.1-.2.3-.2.5v3c0 .2.1.4.2.5.1.1.3.2.5.2.02 0 .04-.01.06-.02.036-.01.07-.03.1-.05.03-.02.06-.04.09-.06z"
-                                    ></path>
-                                  </svg>
-                                  Processing...
-                                </>
-                              ) : (
-                                <>
-                                  <FaTimesCircle className="mr-2" />
-                                  Reject
-                                </>
-                              )}
-                            </span>
-                            <div className="absolute inset-0 bg-[#7F1D1D] opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
-                          </button>
-                        </div>
-                      ) : (
-                        <span className="text-[#9CA3AF]">No actions</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                            </button>
+                            <button
+                              onClick={() => openRejectModal(req._id)}
+                              disabled={actionLoading[req._id]}
+                              className="px-5 py-2.5 bg-red-600/80 text-white text-sm font-medium rounded-xl hover:bg-red-500 disabled:opacity-60 transition flex items-center gap-2 shadow-lg backdrop-blur-sm"
+                            >
+                              <FaTimesCircle />
+                              Reject
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="text-gray-500 text-sm">No actions available</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
         {/* Reject Modal */}
         {showRejectModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[80vh] overflow-y-auto">
-              <div className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="p-2 bg-gradient-to-br from-[#DC2626] to-[#B91C1C] text-white rounded-full mr-3">
-                    <FaTimesCircle className="text-xl" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">Reject Room Switch Request</h3>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
+            <div className="bg-white/10 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/30 max-w-md w-full p-8">
+              <div className="flex items-center mb-6">
+                <div className="p-4 bg-red-600/80 rounded-xl mr-4">
+                  <FaTimesCircle className="text-2xl" />
                 </div>
-                <p className="text-sm text-gray-600 mb-4">Please provide a reason for rejecting this request:</p>
-                <textarea
-                  value={rejectReason}
-                  onChange={(e) => setRejectReason(e.target.value)}
-                  placeholder="Enter rejection reason..."
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC2626] focus:border-[#DC2626] transition duration-300 resize-vertical min-h-[100px]"
-                  rows={4}
-                />
-                <div className="flex space-x-3 mt-6 justify-end">
-                  <button
-                    onClick={closeRejectModal}
-                    className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-300"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => handleAction(currentRequestId, 'reject')}
-                    disabled={!rejectReason.trim() || actionLoading[currentRequestId]}
-                    className="px-4 py-2 bg-gradient-to-br from-[#DC2626] to-[#B91C1C] text-white rounded-lg hover:from-[#991B1B] hover:to-[#7F1D1D] disabled:opacity-50 transition duration-300 disabled:cursor-not-allowed"
-                  >
-                    {actionLoading[currentRequestId] ? (
-                      <>
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 inline text-white" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12c0-3.042 1.135-5.824 3-7.938v2.177c0 .077.02.155.056.232C6.206 4.387 6.02 4.5 6 4.5c-.2 0-.4.1-.5.2-.1.1-.2.3-.2.5v3c0 .2.1.4.2.5.1.1.3.2.5.2.02 0 .04-.01.06-.02.036-.01.07-.03.1-.05.03-.02.06-.04.09-.06z"></path>
-                        </svg>
-                        Processing...
-                      </>
-                    ) : (
-                      'Reject'
-                    )}
-                  </button>
-                </div>
+                <h3 className="text-2xl font-bold text-orange-300">Reject Request</h3>
+              </div>
+              <p className="text-gray-300 mb-4">Please provide a reason for rejection:</p>
+              <textarea
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                placeholder="Enter reason..."
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-md border border-white/30 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 transition resize-none"
+                rows={5}
+              />
+              <div className="flex justify-end gap-4 mt-8">
+                <button
+                  onClick={closeRejectModal}
+                  className="px-6 py-3 bg-white/10 text-gray-300 rounded-xl hover:bg-white/20 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleAction(currentRequestId, 'reject')}
+                  disabled={!rejectReason.trim() || actionLoading[currentRequestId]}
+                  className="px-6 py-3 bg-red-600/80 text-white rounded-xl hover:bg-red-500 disabled:opacity-60 transition shadow-lg"
+                >
+                  {actionLoading[currentRequestId] ? 'Processing...' : 'Confirm Reject'}
+                </button>
               </div>
             </div>
           </div>

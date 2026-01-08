@@ -598,7 +598,7 @@ const performDelete = async (categoryId) => {
       });
       handleCloseDuesSidebar();
     } catch (error) {
-      console.error("❌ Error assigning dues:", error.response?.data || error);
+      console.error("Error assigning dues:", error.response?.data || error);
       toast.error(
         error.response?.data?.message ||
           "Failed to assign dues. Please try again.",
@@ -613,10 +613,17 @@ const performDelete = async (categoryId) => {
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-blue-50 p-4 md:p-6 relative text-gray-800 transition-all duration-500 min-w-0 ${
-        isSidebarHovered ? "md:ml-[256px] md:w-[calc(100%-256px)]" : "md:ml-[64px] md:w-[calc(100%-64px)]"
+      className={`min-h-screen text-white transition-all duration-500 min-w-0 ${
+        isSidebarHovered
+          ? "md:ml-[256px] md:w-[calc(100%-256px)]"
+          : "md:ml-[64px] md:w-[calc(100%-64px)]"
       }`}
-      style={{ boxSizing: "border-box" }}
+      style={{
+        background: `
+          radial-gradient(circle at bottom, rgba(245,124,0,0.25), transparent 70%),
+          linear-gradient(180deg, #0a1f3a 0%, #0f335c 45%, #144a7a 75%, #0d2f55 100%)
+        `,
+      }}
     >
       <ToastContainer
         position="top-right"
@@ -628,27 +635,24 @@ const performDelete = async (categoryId) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme="dark"
       />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto p-4 sm:p-6">
         {/* Header */}
-        <div className="text-center md:text-left mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600">
+        <header className="bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl mb-8 p-6 sm:p-8 border border-white/10 text-center">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-wide bg-gradient-to-r from-orange-300 to-white bg-clip-text text-transparent drop-shadow-2xl">
             Dues Management
           </h1>
-          {/* <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto md:mx-0">
-            Effortlessly manage due categories, assign bills to tenants, and keep your finances organized with intuitive controls.
-          </p> */}
-        </div>
+        </header>
 
         {/* Stats and Add Button */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <div className="text-lg font-semibold text-indigo-700 bg-indigo-100 px-4 py-2 rounded-full">
+          <div className="px-6 py-3 bg-white/5 backdrop-blur-md rounded-full border border-white/10 font-semibold text-orange-300">
             Total Categories: {categories.length}
           </div>
           <button
             onClick={handleAddCategoryClick}
-            className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 transform hover:-translate-y-0.5 w-full sm:w-auto flex items-center justify-center gap-2"
+            className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -658,49 +662,43 @@ const performDelete = async (categoryId) => {
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8 min-w-fit">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
           {categories.map((category) => (
             <div
               key={category._id}
-              className="bg-white/80 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/20 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group relative overflow-hidden flex-shrink-0 flex-grow-0"
+              className="bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 p-6 hover:shadow-3xl transition-all duration-300 group relative overflow-hidden"
             >
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-
               <div className="relative z-10">
-                {/* Icon and Name */}
                 <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 to-blue-100 rounded-2xl flex items-center justify-center shadow-md">
-                      <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-indigo-600/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-indigo-400/30">
+                      <svg className="w-6 h-6 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-gray-800">{category.name}</h3>
-                      <p className="text-xs text-gray-500 capitalize">{category.type} Type</p>
+                      <h3 className="text-lg font-bold text-white">{category.name}</h3>
+                      <p className="text-xs text-gray-300 capitalize">{category.type} Type</p>
                     </div>
                   </div>
-
-                  {/* Status Badge */}
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      category.status === "ACTIVE" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                    className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md ${
+                      category.status === "ACTIVE"
+                        ? "bg-green-600/30 text-green-200 border border-green-400/40"
+                        : "bg-red-600/30 text-red-200 border border-red-400/40"
                     }`}
                   >
                     {category.status}
                   </span>
                 </div>
 
-                {/* Amount */}
-                <div className="mb-4 p-3 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl">
-                  <p className="text-sm font-medium text-gray-600">Amount</p>
-                  <p className="text-lg font-bold text-indigo-700">₹{category.amount}</p>
+                <div className="mb-4 p-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
+                  <p className="text-sm font-medium text-gray-300">Amount</p>
+                  <p className="text-xl font-bold text-orange-300">₹{category.amount}</p>
                 </div>
 
-                {/* Toggle Switch */}
-                <div className="flex justify-between items-center mb-4">
-                  <label className="text-sm font-medium text-gray-700">Active</label>
+                <div className="flex justify-between items-center mb-6">
+                  <span className="text-sm text-gray-300">Active</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -708,24 +706,22 @@ const performDelete = async (categoryId) => {
                       onChange={() => handleToggle(category._id)}
                       className="sr-only peer"
                     />
-                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <div className="w-11 h-6 bg-gray-600/50 rounded-full peer peer-checked:bg-orange-600/60 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
                   </label>
                 </div>
 
-                {/* Add Dues Button */}
                 <button
                   onClick={() => handleAddDues(category)}
-                  className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-xl font-medium shadow-lg hover:shadow-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed mb-4"
+                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={category.status !== "ACTIVE" || loadingLandlordId}
                 >
                   Assign Dues
                 </button>
 
-                {/* Edit and Delete Buttons */}
-                <div className="flex gap-2 justify-end">
+                <div className="flex gap-3">
                   <button
                     onClick={() => handleEdit(category)}
-                    className="flex items-center gap-1 px-3 py-2 text-sm text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all duration-200"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-indigo-600/20 backdrop-blur-md rounded-xl text-indigo-300 border border-indigo-400/30 hover:bg-indigo-600/30 transition-all"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -734,7 +730,7 @@ const performDelete = async (categoryId) => {
                   </button>
                   <button
                     onClick={() => handleDelete(category._id)}
-                    className="flex items-center gap-1 px-3 py-2 text-sm text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-all duration-200"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-red-600/20 backdrop-blur-md rounded-xl text-red-300 border border-red-400/30 hover:bg-red-600/30 transition-all"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -747,149 +743,98 @@ const performDelete = async (categoryId) => {
           ))}
         </div>
 
-        {/* Added Dues Table 
-        {dues.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div className="px-6 py-4 bg-gradient-to-r from-indigo-600 to-blue-600">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Recently Assigned Dues
-              </h2>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tenant</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {dues.map((due, index) => (
-                    <tr key={index} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{due.category}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{due.tenantId}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-600">₹{due.amount}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(due.dueDate).toLocaleDateString("en-GB")}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          {due.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-        */}
-
         {/* Add Category Modal */}
         {isSidebarOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={handleCloseSidebar}
           >
             <div
-              className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100 max-h-[90vh] overflow-y-auto"
+              className="w-full max-w-md bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="bg-gradient-to-r from-indigo-600 to-blue-600 p-6">
+              <div className="bg-gradient-to-r from-orange-600 to-orange-700 p-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-white">
                     {selectedCategory ? "Edit Category" : "Add New Category"}
                   </h2>
                   <button
                     onClick={handleCloseSidebar}
-                    className="text-white hover:text-gray-200 text-3xl font-bold"
+                    className="text-white hover:text-gray-200 text-3xl"
                   >
-                    &times;
+                    ×
                   </button>
                 </div>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Category Name *</label>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Category Name *</label>
                   <input
                     type="text"
                     value={categoryName}
                     onChange={(e) => setCategoryName(e.target.value)}
-                    className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                    className="w-full p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
                     placeholder="e.g. Maintenance, Electricity"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Billing Type *</label>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Billing Type *</label>
                   <div className="space-y-3">
-                    <label className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition-all border-2 border-transparent hover:border-indigo-200">
+                    <label className="flex items-center gap-4 p-4 bg-white/5 backdrop-blur-md rounded-xl cursor-pointer border border-white/10 hover:border-orange-400/50 transition-all">
                       <input
                         type="radio"
                         name="billingMode"
                         value="variable"
                         checked={categoryType === "variable"}
                         onChange={() => handleTypeChange("variable")}
-                        className="text-indigo-600"
+                        className="text-orange-500"
                       />
                       <div>
-                        <span className="font-semibold text-gray-800">Variable Amount</span>
-                        <p className="text-sm text-gray-600">Set different amounts for each tenant</p>
+                        <span className="font-semibold text-white">Variable Amount</span>
+                        <p className="text-sm text-gray-400">Set different amounts for each tenant</p>
                       </div>
                     </label>
-                    <label className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition-all border-2 border-transparent hover:border-indigo-200">
+                    <label className="flex items-center gap-4 p-4 bg-white/5 backdrop-blur-md rounded-xl cursor-pointer border border-white/10 hover:border-orange-400/50 transition-all">
                       <input
                         type="radio"
                         name="billingMode"
                         value="fixed"
                         checked={categoryType === "fixed"}
                         onChange={() => handleTypeChange("fixed")}
-                        className="text-indigo-600"
+                        className="text-orange-500"
                       />
                       <div>
-                        <span className="font-semibold text-gray-800">Fixed Amount</span>
-                        <p className="text-sm text-gray-600">Apply the same amount to all tenants</p>
+                        <span className="font-semibold text-white">Fixed Amount</span>
+                        <p className="text-sm text-gray-400">Apply the same amount to all tenants</p>
                       </div>
                     </label>
                   </div>
                 </div>
                 {categoryType === "fixed" && (
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Fixed Amount (₹) *</label>
+                    <label className="block text-sm font-semibold text-gray-300 mb-2">Fixed Amount (₹) *</label>
                     <input
                       type="number"
                       value={fixedAmount}
                       onChange={(e) => setFixedAmount(e.target.value)}
-                      className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                      className="w-full p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
                       placeholder="Enter amount"
                       min="0"
                       step="0.01"
                     />
                   </div>
                 )}
-                <div className="bg-blue-50 p-4 rounded-xl text-sm text-blue-800">
-                  <p className="font-medium mb-2">What happens next:</p>
-                  <ul className="space-y-1 list-disc pl-5">
-                    <li>Category will be ready for tenant assignments</li>
-                    <li>Toggle active status anytime</li>
-                    <li>Edit or delete as needed</li>
-                  </ul>
-                </div>
-                <div className="flex gap-3 pt-4">
+                <div className="flex gap-4 pt-4">
                   <button
                     type="button"
                     onClick={handleCloseSidebar}
-                    className="flex-1 bg-gray-200 text-gray-800 py-4 rounded-xl hover:bg-gray-300 transition-all font-medium"
+                    className="flex-1 py-4 bg-white/10 backdrop-blur-md rounded-xl text-white hover:bg-white/20 transition-all font-medium border border-white/20"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-4 rounded-xl hover:from-indigo-700 hover:to-blue-700 transition-all font-medium shadow-lg"
+                    className="flex-1 py-4 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-xl font-medium shadow-lg hover:from-orange-700 hover:to-orange-800 transition-all"
                   >
                     {selectedCategory ? "Update Category" : "Create Category"}
                   </button>
@@ -899,39 +844,36 @@ const performDelete = async (categoryId) => {
           </div>
         )}
 
-        {/* Add Dues Modal */}
+        {/* Assign Dues Modal */}
         {isDuesSidebarOpen && selectedCategory && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={handleCloseDuesSidebar}
           >
             <div
-              className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100 max-h-[90vh] overflow-y-auto"
+              className="w-full max-w-md bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                    </svg>
                     Assign {selectedCategory.name}
                   </h2>
                   <button
                     onClick={handleCloseDuesSidebar}
-                    className="text-white hover:text-gray-200 text-3xl font-bold"
+                    className="text-white hover:text-gray-200 text-3xl"
                   >
-                    &times;
+                    ×
                   </button>
                 </div>
               </div>
               <form onSubmit={handleDuesSubmit} className="p-6 space-y-6">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Select Tenant *</label>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Select Tenant *</label>
                   <select
                     value={selectedTenant}
                     onChange={(e) => setSelectedTenant(e.target.value)}
-                    className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                    className="w-full p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
                     disabled={loadingTenants || tenants.length === 0}
                   >
                     <option value="">Choose a tenant</option>
@@ -941,25 +883,12 @@ const performDelete = async (categoryId) => {
                       </option>
                     ))}
                   </select>
-                  {loadingTenants && (
-                    <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
-                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Loading tenants...
-                    </p>
-                  )}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Amount (₹) *</label>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Amount (₹) *</label>
                   <input
                     type="number"
-                    className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                    className="w-full p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
                     placeholder={
                       selectedCategory.type === "fixed" ? `Suggested: ₹${selectedCategory.amount}` : "Enter custom amount"
                     }
@@ -969,23 +898,23 @@ const performDelete = async (categoryId) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Due Date *</label>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Due Date *</label>
                   <input
                     type="date"
-                    className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                    className="w-full p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
                   />
                 </div>
-                <div className="flex gap-3 pt-4">
+                <div className="flex gap-4 pt-4">
                   <button
                     type="button"
                     onClick={handleCloseDuesSidebar}
-                    className="flex-1 bg-gray-200 text-gray-800 py-4 rounded-xl hover:bg-gray-300 transition-all font-medium"
+                    className="flex-1 py-4 bg-white/10 backdrop-blur-md rounded-xl text-white hover:bg-white/20 transition-all font-medium border border-white/20"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all font-medium shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="flex-1 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-medium shadow-lg hover:from-green-700 hover:to-emerald-700 transition-all"
                     disabled={!selectedTenant || loadingTenants || loadingLandlordId}
                   >
                     Assign Dues

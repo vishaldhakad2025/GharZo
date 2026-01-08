@@ -31,20 +31,14 @@ const AddSubAdmin = () => {
   const [permissionsList, setPermissionsList] = useState([]);
   const [propertiesList, setPropertiesList] = useState([]);
   const [selectedPermissions, setSelectedPermissions] = useState([]);
-  const [selectedProperties, setSelectedProperties] = useState([]); // Array of objects in the exact format: [{ propertyId: string, agreementDuration: { years: number }, agreementEndDate: string (ISO) }]
+  const [selectedProperties, setSelectedProperties] = useState([]);
   const [showPermissionModal, setShowPermissionModal] = useState(false);
   const [selectedPermission, setSelectedPermission] = useState(null);
   const [showPropertyModal, setShowPropertyModal] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [agreementDuration, setAgreementDuration] = useState(""); // Store as string for input
+  const [agreementDuration, setAgreementDuration] = useState("");
   const [agreementEndDate, setAgreementEndDate] = useState("");
-
-  // Aadhaar verification states
-  const [otp, setOtp] = useState("");
-  const [txnId, setTxnId] = useState(null);
-  const [showOtpInput, setShowOtpInput] = useState(false);
-  const [aadhaarVerified, setAadhaarVerified] = useState(false);
 
   // Fetch permissions and properties on component mount
   useEffect(() => {
@@ -272,7 +266,7 @@ const AddSubAdmin = () => {
 
     // Validate end date is in the future
     const endDate = new Date(agreementEndDate);
-    const today = new Date("2025-09-18"); // Hardcoded as per context
+    const today = new Date();
     if (endDate <= today) {
       toast.error("Agreement end date must be in the future", {
         position: "top-center",
@@ -324,72 +318,6 @@ const AddSubAdmin = () => {
     });
   };
 
-  // Generate Aadhaar OTP
-  const generateOtp = async () => {
-    const aadhaar = formData.aadhaarNumber;
-    if (!aadhaar || !/^\d{12}$/.test(aadhaar)) {
-      toast.error("Valid 12-digit Aadhaar number is required");
-      return;
-    }
-    try {
-      const response = await fetch("https://api.gharzoreality.com/api/kyc/aadhaar/generate-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ aadhaarNumber: aadhaar }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        setTxnId(data.txnId);
-        setShowOtpInput(true);
-        toast.success(data.message || "OTP generated successfully");
-      } else {
-        toast.error(data.message || "Failed to generate OTP");
-      }
-    } catch (error) {
-      console.error("OTP generation error:", error);
-      toast.error(error.message || "Error generating OTP");
-    }
-  };
-
-  // Verify Aadhaar OTP
-  const verifyOtp = async () => {
-    if (!otp || otp.length !== 6) {
-      toast.error("Valid 6-digit OTP is required");
-      return;
-    }
-    if (!txnId) return;
-    try {
-      const response = await fetch("https://api.gharzoreality.com/api/kyc/aadhaar/submit-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ txnId, otp }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        const responseData = data.data;
-        // Check name match
-        if (formData.name && formData.name.toUpperCase() !== (responseData.full_name || '').toUpperCase()) {
-          toast.warning(`Name mismatch: Entered (${formData.name}) vs Aadhaar (${responseData.full_name}). Using Aadhaar name.`);
-        }
-        setFormData((prev) => ({
-          ...prev,
-          name: responseData.full_name || prev.name,
-          aadhaarNumber: responseData.aadhaar_number || prev.aadhaarNumber,
-        }));
-        setAadhaarVerified(true);
-        setShowOtpInput(false);
-        setOtp("");
-        setTxnId(null);
-        toast.success(data.message || "Aadhaar verified successfully");
-      } else {
-        toast.error(data.message || "Failed to verify OTP");
-      }
-    } catch (error) {
-      console.error("OTP verification error:", error);
-      toast.error(error.message || "Error verifying OTP");
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -419,16 +347,6 @@ const AddSubAdmin = () => {
       }
     }
 
-    // Aadhaar verification check
-    if (!aadhaarVerified) {
-      toast.error("Please verify Aadhaar", {
-        position: "top-center",
-        autoClose: 2000,
-      });
-      setIsLoading(false);
-      return;
-    }
-
     // Validate assignedProperties - ensure all have proper format
     if (selectedProperties.length > 0) {
       for (const property of selectedProperties) {
@@ -437,7 +355,7 @@ const AddSubAdmin = () => {
           !property.agreementDuration?.years ||
           property.agreementDuration.years <= 0 ||
           !property.agreementEndDate ||
-          new Date(property.agreementEndDate) <= new Date("2025-09-18")
+          new Date(property.agreementEndDate) <= new Date()
         ) {
           toast.error(
             "Please provide valid details for all assigned properties (positive duration and future end date)",
@@ -496,7 +414,7 @@ const AddSubAdmin = () => {
 
         toast.success(
           <div className="flex items-center gap-3">
-            <FaCheck className="w-6 h-6 text-green-500 animate-bounce" />
+            <FaCheck className="w-6 h-6 text-green-400 animate-bounce" />
             <span className="font-semibold text-lg">
               Sub-Admin Added Successfully!
             </span>
@@ -508,7 +426,7 @@ const AddSubAdmin = () => {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-            theme: "light",
+            theme: "dark",
           }
         );
 
@@ -528,10 +446,6 @@ const AddSubAdmin = () => {
         setSelectedProperties([]);
         setAgreementDuration("");
         setAgreementEndDate("");
-        setAadhaarVerified(false);
-        setOtp("");
-        setTxnId(null);
-        setShowOtpInput(false);
 
         // Clear file inputs
         document.getElementById("profilePhoto").value = "";
@@ -567,10 +481,6 @@ const AddSubAdmin = () => {
     setSelectedProperties([]);
     setAgreementDuration("");
     setAgreementEndDate("");
-    setAadhaarVerified(false);
-    setOtp("");
-    setTxnId(null);
-    setShowOtpInput(false);
     document.getElementById("profilePhoto").value = "";
     document.getElementById("idProofImage").value = "";
   };
@@ -579,7 +489,7 @@ const AddSubAdmin = () => {
   const isPropertyUpdateDisabled = () => {
     const durationYears = parseInt(agreementDuration);
     const endDate = new Date(agreementEndDate);
-    const today = new Date("2025-09-18"); // Context date
+    const today = new Date();
     return (
       !agreementDuration ||
       isNaN(durationYears) ||
@@ -604,19 +514,19 @@ const AddSubAdmin = () => {
     return selectedProperties.map((prop, index) => {
       const property = propertiesList.find((p) => p._id === prop.propertyId);
       return (
-        <div key={index} className="bg-indigo-50 p-3 rounded-lg mb-2">
-          <p className="text-sm text-gray-700 font-medium">
+        <div key={index} className="bg-white/10 backdrop-blur-sm p-4 rounded-xl mb-3 border border-white/20">
+          <p className="text-sm text-gray-200 font-medium">
             Property: {property?.name || "Unnamed Property"} (ID:{" "}
             {prop.propertyId})
           </p>
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-gray-300">
             Duration: {prop.agreementDuration.years || 0} year(s)
           </p>
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-gray-300">
             End Date: {formatDate(prop.agreementEndDate)}
           </p>
           {/* Option to edit or remove */}
-          <div className="flex gap-2 mt-2">
+          <div className="flex gap-3 mt-3">
             <button
               type="button"
               onClick={() => {
@@ -625,7 +535,6 @@ const AddSubAdmin = () => {
                 );
                 if (property) {
                   setSelectedProperty(property);
-                  // Pre-fill with existing values or defaults
                   setAgreementDuration(
                     prop.agreementDuration.years.toString() || "2"
                   );
@@ -637,7 +546,7 @@ const AddSubAdmin = () => {
                   setShowPropertyModal(true);
                 }
               }}
-              className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+              className="text-xs bg-indigo-600/60 text-white px-3 py-2 rounded-lg hover:bg-indigo-600/80 transition"
             >
               Edit
             </button>
@@ -652,7 +561,7 @@ const AddSubAdmin = () => {
                   autoClose: 2000,
                 });
               }}
-              className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+              className="text-xs bg-red-600/60 text-white px-3 py-2 rounded-lg hover:bg-red-600/80 transition"
             >
               Remove
             </button>
@@ -663,512 +572,183 @@ const AddSubAdmin = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gradient-to-br from-indigo-100 via-white to-indigo-50 shadow-xl rounded-2xl border border-gray-200">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 tracking-wide">
-        <FaUser className="inline mr-2" /> Add New Sub-Owner
-      </h2>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Main Glassmorphic Form Card */}
+      {/* <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-6 sm:p-8 lg:p-10"> */}
+        <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center tracking-wide bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent drop-shadow-lg">
+          <FaUser className="inline mr-3 text-indigo-300" />
+          Add New Sub-Owner
+        </h2>
 
-      <form
-        onSubmit={handleSubmit}
-        className="grid grid-cols-1 md:grid-cols-2 gap-5"
-      >
-        {/* Name */}
-        <div className="relative">
-          <FaUser className="absolute left-3 top-3 text-gray-400" />
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
-            required
-          />
-        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          {/* Name */}
+          <div className="relative">
+            <FaUser className="absolute left-4 top-4 text-gray-300 text-lg" />
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="pl-12 p-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all w-full text-white placeholder-gray-400"
+              required
+            />
+          </div>
 
-        {/* Email */}
-        <div className="relative">
-          <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleChange}
-            className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
-            required
-          />
-        </div>
+          {/* Email */}
+          <div className="relative">
+            <FaEnvelope className="absolute left-4 top-4 text-gray-300 text-lg" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={handleChange}
+              className="pl-12 p-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all w-full text-white placeholder-gray-400"
+              required
+            />
+          </div>
 
-        {/* Mobile */}
-        <div className="relative">
-          <FaPhone className="absolute left-3 top-3 text-gray-400" />
-          <input
-            type="text"
-            name="mobile"
-            placeholder="Mobile Number"
-            value={formData.mobile}
-            onChange={handleChange}
-            className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
-            required
-          />
-        </div>
+          {/* Mobile */}
+          <div className="relative">
+            <FaPhone className="absolute left-4 top-4 text-gray-300 text-lg" />
+            <input
+              type="text"
+              name="mobile"
+              placeholder="Mobile Number"
+              value={formData.mobile}
+              onChange={handleChange}
+              className="pl-12 p-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all w-full text-white placeholder-gray-400"
+              required
+            />
+          </div>
 
-        {/* Password */}
-        <div className="relative">
-          <FaLock className="absolute left-3 top-3 text-gray-400" />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
-            required
-          />
-        </div>
+          {/* Password */}
+          <div className="relative">
+            <FaLock className="absolute left-4 top-4 text-gray-300 text-lg" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              className="pl-12 p-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all w-full text-white placeholder-gray-400"
+              required
+            />
+          </div>
 
-        {/* Permissions */}
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-            <FaLock className="mr-2" /> Permissions
-          </label>
-          <div className="border rounded-lg p-3 bg-gray-50">
-            <div className="flex flex-wrap gap-2 mb-3">
-              <button
-                type="button"
-                onClick={handleSelectAllPermissions}
-                className="px-3 py-1 rounded-full text-xs bg-green-100 text-green-800 font-medium hover:bg-green-200"
-              >
-                Select All
-              </button>
-              <button
-                type="button"
-                onClick={handleDeselectAllPermissions}
-                className="px-3 py-1 rounded-full text-xs bg-red-100 text-red-800 font-medium hover:bg-red-200"
-              >
-                Deselect All
-              </button>
-              {permissionsList.slice(0, 6).map((permission) => (
-                <button
-                  key={permission.id}
-                  type="button"
-                  onClick={() => handlePermissionToggle(permission.id)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                    selectedPermissions.includes(String(permission.id))
-                      ? "bg-orange-100 text-orange-800 border border-orange-300"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  {permission.name}
-                </button>
-              ))}
-              {permissionsList.length > 6 && (
+          {/* Permissions */}
+          <div className="md:col-span-2">
+            <label className="block text-lg font-medium text-gray-200 mb-3 flex items-center">
+              <FaLock className="mr-3 text-indigo-300" /> Permissions
+            </label>
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5">
+              <div className="flex flex-wrap gap-3 mb-4">
                 <button
                   type="button"
-                  onClick={() => setShowPermissionModal(true)}
-                  className="px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-800 font-medium hover:bg-blue-200"
+                  onClick={handleSelectAllPermissions}
+                  className="px-4 py-2 rounded-full text-sm bg-green-600/40 text-green-200 font-medium hover:bg-green-600/60 border border-green-500/30 transition"
                 >
-                  +{permissionsList.length - 6} More
+                  Select All
                 </button>
+                <button
+                  type="button"
+                  onClick={handleDeselectAllPermissions}
+                  className="px-4 py-2 rounded-full text-sm bg-red-600/40 text-red-200 font-medium hover:bg-red-600/60 border border-red-500/30 transition"
+                >
+                  Deselect All
+                </button>
+                {permissionsList.slice(0, 6).map((permission) => (
+                  <button
+                    key={permission.id}
+                    type="button"
+                    onClick={() => handlePermissionToggle(permission.id)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      selectedPermissions.includes(String(permission.id))
+                        ? "bg-indigo-600/60 text-white border border-indigo-400/50"
+                        : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
+                    }`}
+                  >
+                    {permission.name}
+                  </button>
+                ))}
+                {permissionsList.length > 6 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowPermissionModal(true)}
+                    className="px-4 py-2 rounded-full text-sm bg-indigo-600/40 text-indigo-200 font-medium hover:bg-indigo-600/60 border border-indigo-400/30 transition"
+                  >
+                    +{permissionsList.length - 6} More
+                  </button>
+                )}
+              </div>
+              {selectedPermissions.length > 0 && (
+                <p className="text-sm text-indigo-300">
+                  Selected: {selectedPermissions.length} permissions
+                </p>
               )}
             </div>
-            {selectedPermissions.length > 0 && (
-              <p className="text-sm text-orange-600">
-                Selected: {selectedPermissions.length} permissions
-              </p>
-            )}
           </div>
-        </div>
 
-        {/* Assigned Properties */}
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-            <FaHome className="mr-2" /> Assigned Properties (All from API)
-          </label>
-          <div className="border rounded-lg p-3 bg-gray-50">
-            {/* Show all properties from API */}
-            <div className="mb-4">
-              <h4 className="text-sm font-semibold text-gray-800 mb-2">
-                All Properties (Toggle to Assign):
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {propertiesList.length === 0 ? (
-                  <span className="text-gray-500 text-sm">
-                    Loading properties... (Fetched from
-                    https://api.gharzoreality.com/api/landlord/properties)
-                  </span>
-                ) : (
-                  propertiesList.map((property) => (
-                    <button
-                      key={property._id}
-                      type="button"
-                      onClick={() => handlePropertyToggle(property._id)}
-                      className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                        selectedProperties.some(
-                          (p) => p.propertyId === property._id
-                        )
-                          ? "bg-orange-100 text-orange-800 border border-orange-300"
-                          : "bg-green-100 text-green-800 hover:bg-green-200"
-                      }`}
-                    >
-                      {property.name ||
-                        `Property ID: ${property._id.substring(0, 8)}...`}
-                    </button>
-                  ))
-                )}
-                {propertiesList.length > 6 && (
-                  <button
-                    type="button"
-                    onClick={() => setShowPropertyModal(true)}
-                    className="px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-800 font-medium hover:bg-blue-200"
-                  >
-                    +{propertiesList.length - 6} More
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Selected Properties Display in Exact Format */}
-            {selectedProperties.length > 0 && (
-              <div className="mt-4">
-                <h4 className="text-sm font-semibold text-gray-800 mb-2">
-                  Assigned Properties (Exact Format):
+          {/* Assigned Properties */}
+          <div className="md:col-span-2">
+            <label className="block text-lg font-medium text-gray-200 mb-3 flex items-center">
+              <FaHome className="mr-3 text-indigo-300" /> Assigned Properties
+            </label>
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5">
+              <div className="mb-5">
+                <h4 className="text-base font-semibold text-gray-200 mb-3">
+                  All Properties (Toggle to Assign):
                 </h4>
-                {getSelectedPropertiesDisplay()}
-                <p className="text-xs text-gray-500 mt-2">
-                  JSON Format: {JSON.stringify(selectedProperties)}
-                </p>
-              </div>
-            )}
-
-            {/* Temporary inputs for editing/adding details */}
-            {selectedProperty && (
-              <div className="mt-3 p-3 bg-yellow-50 rounded-lg">
-                <p className="text-sm text-yellow-800 mb-2">
-                  Editing/Adding Details for: {selectedProperty.name}
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="relative">
-                    <FaCalendarAlt className="absolute left-3 top-3 text-gray-400" />
-                    <input
-                      type="number"
-                      placeholder="Agreement Duration (Years)"
-                      value={agreementDuration}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (
-                          value === "" ||
-                          (parseInt(value) > 0 && !isNaN(parseInt(value)))
-                        ) {
-                          setAgreementDuration(value);
-                        }
-                      }}
-                      className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
-                      min="1"
-                      step="1"
-                    />
-                    {agreementDuration &&
-                      (isNaN(parseInt(agreementDuration)) ||
-                        parseInt(agreementDuration) <= 0) && (
-                        <p className="text-xs text-red-500 mt-1">
-                          Duration must be a positive number
-                        </p>
-                      )}
-                  </div>
-                  <div className="relative">
-                    <FaCalendarAlt className="absolute left-3 top-3 text-gray-400" />
-                    <input
-                      type="date"
-                      value={agreementEndDate}
-                      onChange={(e) => setAgreementEndDate(e.target.value)}
-                      min="2025-09-19" // Next day after current date (Sep 18, 2025)
-                      className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
-                    />
-                  </div>
+                <div className="flex flex-wrap gap-3">
+                  {propertiesList.length === 0 ? (
+                    <span className="text-gray-400 text-sm">
+                      Loading properties...
+                    </span>
+                  ) : (
+                    propertiesList.map((property) => (
+                      <button
+                        key={property._id}
+                        type="button"
+                        onClick={() => handlePropertyToggle(property._id)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                          selectedProperties.some(
+                            (p) => p.propertyId === property._id
+                          )
+                            ? "bg-orange-600/60 text-white border border-orange-400/50"
+                            : "bg-white/10 text-gray-300 hover:bg-white/20 border border-white/20"
+                        }`}
+                      >
+                        {property.name ||
+                          `Property ID: ${property._id.substring(0, 8)}...`}
+                      </button>
+                    ))
+                  )}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => handlePropertySelect(selectedProperty._id)}
-                  disabled={isPropertyUpdateDisabled()}
-                  className={`mt-3 w-full py-2 rounded-lg font-medium transition ${
-                    isPropertyUpdateDisabled()
-                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                      : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
-                  }`}
-                >
-                  Save/Update Property Details
-                </button>
               </div>
-            )}
-          </div>
-        </div>
 
-        {/* Profile Photo */}
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-            <FaUpload className="mr-2" /> Profile Photo
-          </label>
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-indigo-400 transition">
-            <input
-              type="file"
-              id="profilePhoto"
-              name="profilePhoto"
-              accept="image/*"
-              onChange={(e) => handleFileChange(e, "profilePhoto")}
-              className="hidden"
-            />
-            <label
-              htmlFor="profilePhoto"
-              className="cursor-pointer flex flex-col items-center"
-            >
-              <FaUpload className="w-8 h-8 text-gray-400 mb-2" />
-              <span className="text-sm text-gray-500">
-                {formData.profilePhoto
-                  ? formData.profilePhoto.name
-                  : "Click to upload"}
-              </span>
-            </label>
-          </div>
-        </div>
-
-        {/* ID Proof Image */}
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-            <FaIdCard className="mr-2" /> ID Proof Image
-          </label>
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-indigo-400 transition">
-            <input
-              type="file"
-              id="idProofImage"
-              name="idProofImage"
-              accept="image/*"
-              onChange={(e) => handleFileChange(e, "idProofImage")}
-              className="hidden"
-            />
-            <label
-              htmlFor="idProofImage"
-              className="cursor-pointer flex flex-col items-center"
-            >
-              <FaUpload className="w-8 h-8 text-gray-400 mb-2" />
-              <span className="text-sm text-gray-500">
-                {formData.idProofImage
-                  ? formData.idProofImage.name
-                  : "Click to upload"}
-              </span>
-            </label>
-          </div>
-        </div>
-
-        {/* Aadhaar Verification */}
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-            <FaIdCard className="mr-2" /> Aadhaar Verification
-          </label>
-          <div className="space-y-3">
-            {!aadhaarVerified ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div className="relative">
-                    <FaIdCard className="absolute left-3 top-3 text-gray-400" />
-                    <input
-                      type="text"
-                      name="aadhaarNumber"
-                      placeholder="Enter 12-digit Aadhaar Number"
-                      value={formData.aadhaarNumber}
-                      onChange={handleChange}
-                      maxLength={12}
-                      className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={generateOtp}
-                    disabled={!formData.aadhaarNumber || formData.aadhaarNumber.length !== 12}
-                    className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center"
-                  >
-                    Generate OTP
-                  </button>
+              {/* Selected Properties Display */}
+              {selectedProperties.length > 0 && (
+                <div className="mt-6">
+                  <h4 className="text-base font-semibold text-gray-200 mb-3">
+                    Assigned Properties:
+                  </h4>
+                  {getSelectedPropertiesDisplay()}
                 </div>
-                {showOtpInput && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              )}
+
+              {/* Temporary inputs for editing property details */}
+              {selectedProperty && (
+                <div className="mt-6 p-5 bg-white/10 rounded-xl border border-white/20">
+                  <p className="text-sm text-indigo-300 mb-4">
+                    Editing Details for: {selectedProperty.name}
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="relative">
-                      <FaLock className="absolute left-3 top-3 text-gray-400" />
-                      <input
-                        type="text"
-                        placeholder="Enter 6-digit OTP"
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                        maxLength={6}
-                        className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={verifyOtp}
-                      disabled={otp.length !== 6}
-                      className="bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center"
-                    >
-                      Verify OTP
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="flex items-center justify-between p-3 bg-green-100 rounded-lg border border-green-200">
-                <span className="text-green-600 font-medium flex items-center">
-                  <FaCheck className="mr-2 w-4 h-4" />
-                  Aadhaar Verified Successfully
-                </span>
-                <span className="text-sm text-gray-500">({formData.aadhaarNumber})</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="col-span-1 md:col-span-2 flex flex-col md:flex-row gap-4">
-          <button
-            type="submit"
-            disabled={isLoading || !aadhaarVerified}
-            className={`flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#00C2FF] to-[#00FFAA] text-white py-3 rounded-lg shadow-lg hover:from-[#00AEEA] hover:to-[#00E099] transition duration-300 transform hover:scale-105 ${
-              isLoading || !aadhaarVerified ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            {isLoading ? (
-              <>
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                Adding...
-              </>
-            ) : (
-              <>
-                <FaCheck className="w-5 h-5" />
-                Add Sub-Owner
-              </>
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={handleReset}
-            className="flex-1 bg-red-500 text-white py-3 rounded-lg shadow-lg hover:bg-red-600 transition duration-300 transform hover:scale-105"
-          >
-            <FaTimes className="inline mr-2" /> Reset Form
-          </button>
-        </div>
-      </form>
-
-      {/* Toast container for notifications */}
-      <ToastContainer />
-
-    {/* Permission Modal */}
-{showPermissionModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[80vh] overflow-y-auto">
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold text-gray-800 flex items-center">
-            <FaLock className="mr-2 text-indigo-500" />
-            Permissions
-          </h3>
-          <button
-            onClick={() => setShowPermissionModal(false)}
-            className="text-gray-400 hover:text-gray-600 text-2xl"
-          >
-            ×
-          </button>
-        </div>
-
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-96 overflow-y-auto">
-            {permissionsList.map((permission) => (
-              <div
-                key={permission.id}
-                onClick={() => handlePermissionToggle(permission.id)} // Directly toggle permission
-                className={`p-3 border rounded-lg cursor-pointer hover:shadow-md transition ${
-                  selectedPermissions.includes(String(permission.id))
-                    ? "border-orange-300 bg-orange-50"
-                    : "border-gray-200 hover:border-indigo-300"
-                }`}
-              >
-                <p className="font-medium text-sm text-gray-800 truncate">
-                  {permission.name}
-                </p>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={() => setShowPermissionModal(false)}
-            className="w-full py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-      {/* Property Modal */}
-      {showPropertyModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[80vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold text-gray-800 flex items-center">
-                  <FaHome className="mr-2 text-indigo-500" />
-                  Property Details
-                </h3>
-                <button
-                  onClick={() => {
-                    setShowPropertyModal(false);
-                    setSelectedProperty(null);
-                    setAgreementDuration("");
-                    setAgreementEndDate("");
-                  }}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
-                >
-                  ×
-                </button>
-              </div>
-
-              {selectedProperty ? (
-                <div className="space-y-4">
-                  <div className="bg-indigo-50 p-4 rounded-lg">
-                    {selectedProperty.images &&
-                    selectedProperty.images.length > 0 ? (
-                      <img
-                        src={selectedProperty.images[0]}
-                        alt={selectedProperty.name || "Property Image"}
-                        className="w-full h-48 object-cover rounded-lg mb-4"
-                      />
-                    ) : (
-                      <div className="w-full h-48 bg-gray-200 flex items-center justify-center rounded-lg mb-4">
-                        <span className="text-gray-500">
-                          No Image Available
-                        </span>
-                      </div>
-                    )}
-                    <p className="font-semibold text-gray-800 text-lg">
-                      {selectedProperty.name || "Unnamed Property"}
-                    </p>
-                    <p className="text-sm text-gray-600 flex items-center">
-                      <FaMapMarkerAlt className="mr-2 text-indigo-500" />
-                      {selectedProperty.location || "No location provided"}
-                    </p>
-                    <p className="text-sm text-gray-600 flex items-center">
-                      <FaHome className="mr-2 text-indigo-500" />
-                      Type: {selectedProperty.type || "No type specified"}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      <span className="font-medium">ID:</span>{" "}
-                      <span className="inline-block bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs font-semibold">
-                        {selectedProperty._id}
-                      </span>
-                    </p>
-                  </div>
-                  <div className="grid grid-cols-1 gap-3">
-                    <div className="relative">
-                      <FaCalendarAlt className="absolute left-3 top-3 text-gray-400" />
+                      <FaCalendarAlt className="absolute left-4 top-4 text-gray-300" />
                       <input
                         type="number"
                         placeholder="Agreement Duration (Years)"
@@ -1182,85 +762,304 @@ const AddSubAdmin = () => {
                             setAgreementDuration(value);
                           }
                         }}
-                        className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
+                        className="pl-12 p-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-indigo-500 w-full text-white"
                         min="1"
-                        step="1"
                       />
-                      {agreementDuration &&
-                        (isNaN(parseInt(agreementDuration)) ||
-                          parseInt(agreementDuration) <= 0) && (
-                          <p className="text-xs text-red-500 mt-1">
-                            Duration must be a positive number
-                          </p>
-                        )}
                     </div>
                     <div className="relative">
-                      <FaCalendarAlt className="absolute left-3 top-3 text-gray-400" />
+                      <FaCalendarAlt className="absolute left-4 top-4 text-gray-300" />
                       <input
                         type="date"
                         value={agreementEndDate}
                         onChange={(e) => setAgreementEndDate(e.target.value)}
-                        min="2025-09-19"
-                        className="pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 shadow-sm w-full"
+                        min={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
+                        className="pl-12 p-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-indigo-500 w-full text-white"
                       />
                     </div>
                   </div>
                   <button
+                    type="button"
                     onClick={() => handlePropertySelect(selectedProperty._id)}
                     disabled={isPropertyUpdateDisabled()}
-                    className={`w-full py-2 rounded-lg font-medium transition ${
+                    className={`mt-4 w-full py-3 rounded-xl font-medium transition ${
                       isPropertyUpdateDisabled()
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+                        ? "bg-gray-600/50 text-gray-400 cursor-not-allowed"
+                        : "bg-indigo-600/70 text-white hover:bg-indigo-600"
                     }`}
                   >
-                    {selectedProperties.some(
-                      (p) => p.propertyId === selectedProperty._id
-                    )
-                      ? "Update Property Details"
-                      : "Assign Property"}
-                  </button>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-96 overflow-y-auto">
-                    {propertiesList.map((property) => (
-                      <div
-                        key={property._id}
-                        onClick={() => handlePropertyClick(property)}
-                        className={`p-3 border rounded-lg cursor-pointer hover:shadow-md transition ${
-                          selectedProperties.some(
-                            (p) => p.propertyId === property._id
-                          )
-                            ? "border-orange-300 bg-orange-50"
-                            : "border-gray-200 hover:border-indigo-300"
-                        }`}
-                      >
-                        <p className="font-medium text-sm text-gray-800 truncate">
-                          {property.name || "Unnamed Property"}
-                        </p>
-                        <p className="text-xs text-gray-500 truncate">
-                          {property.location || "No location provided"}
-                        </p>
-                        <p className="text-xs text-gray-400">
-                          ID: {property._id.substring(0, 8)}...
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    onClick={() => {
-                      setShowPropertyModal(false);
-                      setAgreementDuration("");
-                      setAgreementEndDate("");
-                    }}
-                    className="w-full py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
-                  >
-                    Close
+                    Save Property Details
                   </button>
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Profile Photo */}
+          <div className="md:col-span-2">
+            <label className="block text-lg font-medium text-gray-200 mb-3 flex items-center">
+              <FaUpload className="mr-3 text-indigo-300" /> Profile Photo
+            </label>
+            <div className="border-2 border-dashed border-white/30 rounded-xl p-8 text-center hover:border-indigo-400/60 transition">
+              <input
+                type="file"
+                id="profilePhoto"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, "profilePhoto")}
+                className="hidden"
+              />
+              <label
+                htmlFor="profilePhoto"
+                className="cursor-pointer flex flex-col items-center"
+              >
+                <FaUpload className="w-12 h-12 text-gray-300 mb-4" />
+                <span className="text-gray-300">
+                  {formData.profilePhoto
+                    ? formData.profilePhoto.name
+                    : "Click to upload profile photo"}
+                </span>
+              </label>
+            </div>
+          </div>
+
+          {/* ID Proof Image */}
+          <div className="md:col-span-2">
+            <label className="block text-lg font-medium text-gray-200 mb-3 flex items-center">
+              <FaIdCard className="mr-3 text-indigo-300" /> ID Proof Image
+            </label>
+            <div className="border-2 border-dashed border-white/30 rounded-xl p-8 text-center hover:border-indigo-400/60 transition">
+              <input
+                type="file"
+                id="idProofImage"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e, "idProofImage")}
+                className="hidden"
+              />
+              <label
+                htmlFor="idProofImage"
+                className="cursor-pointer flex flex-col items-center"
+              >
+                <FaUpload className="w-12 h-12 text-gray-300 mb-4" />
+                <span className="text-gray-300">
+                  {formData.idProofImage
+                    ? formData.idProofImage.name
+                    : "Click to upload ID proof"}
+                </span>
+              </label>
+            </div>
+          </div>
+
+          {/* Aadhaar Number */}
+          <div className="md:col-span-2">
+            <label className="block text-lg font-medium text-gray-200 mb-3 flex items-center">
+              <FaIdCard className="mr-3 text-indigo-300" /> Aadhaar Number
+            </label>
+            <div className="relative">
+              <FaIdCard className="absolute left-4 top-4 text-gray-300 text-lg" />
+              <input
+                type="text"
+                name="aadhaarNumber"
+                placeholder="Enter 12-digit Aadhaar Number"
+                value={formData.aadhaarNumber}
+                onChange={handleChange}
+                maxLength={12}
+                className="pl-12 p-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-indigo-500 w-full text-white placeholder-gray-400"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="md:col-span-2 flex flex-col sm:flex-row gap-4 mt-8">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`flex-1 flex items-center justify-center gap-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-xl shadow-lg hover:from-indigo-700 hover:to-purple-700 transition duration-300 transform hover:scale-105 font-semibold ${
+                isLoading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
+            >
+              {isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                  Adding...
+                </>
+              ) : (
+                <>
+                  <FaCheck className="w-6 h-6" />
+                  Add Sub-Owner
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleReset}
+              className="flex-1 flex items-center justify-center gap-3 bg-red-600/70 text-white py-4 rounded-xl shadow-lg hover:bg-red-600 transition duration-300 transform hover:scale-105 font-semibold"
+            >
+              <FaTimes className="w-6 h-6" />
+              Reset Form
+            </button>
+          </div>
+        </form>
+      {/* </div> */}
+
+      <ToastContainer theme="dark" />
+
+      {/* Permission Modal */}
+      {showPermissionModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-white flex items-center">
+                <FaLock className="mr-3 text-indigo-300" />
+                All Permissions
+              </h3>
+              <button
+                onClick={() => setShowPermissionModal(false)}
+                className="text-gray-300 hover:text-white text-3xl"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {permissionsList.map((permission) => (
+                <div
+                  key={permission.id}
+                  onClick={() => handlePermissionToggle(permission.id)}
+                  className={`p-4 border rounded-xl cursor-pointer transition-all ${
+                    selectedPermissions.includes(String(permission.id))
+                      ? "bg-indigo-600/60 border-indigo-400/60 text-white"
+                      : "bg-white/10 border-white/20 text-gray-300 hover:bg-white/20"
+                  }`}
+                >
+                  <p className="font-medium text-base">
+                    {permission.name}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setShowPermissionModal(false)}
+              className="mt-8 w-full py-3 bg-gray-600/60 text-white rounded-xl hover:bg-gray-600 transition"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Property Modal */}
+      {showPropertyModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-white flex items-center">
+                <FaHome className="mr-3 text-indigo-300" />
+                Property Details
+              </h3>
+              <button
+                onClick={() => {
+                  setShowPropertyModal(false);
+                  setSelectedProperty(null);
+                  setAgreementDuration("");
+                  setAgreementEndDate("");
+                }}
+                className="text-gray-300 hover:text-white text-3xl"
+              >
+                ×
+              </button>
+            </div>
+
+            {selectedProperty ? (
+              <div className="space-y-6">
+                <div className="bg-white/10 rounded-xl p-5 border border-white/20">
+                  {selectedProperty.images && selectedProperty.images.length > 0 ? (
+                    <img
+                      src={selectedProperty.images[0]}
+                      alt={selectedProperty.name}
+                      className="w-full h-56 object-cover rounded-xl mb-4"
+                    />
+                  ) : (
+                    <div className="w-full h-56 bg-gray-700/50 rounded-xl flex items-center justify-center mb-4">
+                      <span className="text-gray-400">No Image Available</span>
+                    </div>
+                  )}
+                  <p className="text-xl font-bold text-white">
+                    {selectedProperty.name || "Unnamed Property"}
+                  </p>
+                  <p className="text-gray-300 flex items-center mt-2">
+                    <FaMapMarkerAlt className="mr-2 text-indigo-300" />
+                    {selectedProperty.location || "No location"}
+                  </p>
+                  <p className="text-gray-300 mt-1">
+                    Type: {selectedProperty.type || "N/A"}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <FaCalendarAlt className="absolute left-4 top-4 text-gray-300" />
+                    <input
+                      type="number"
+                      placeholder="Duration (Years)"
+                      value={agreementDuration}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (
+                          value === "" ||
+                          (parseInt(value) > 0 && !isNaN(parseInt(value)))
+                        ) {
+                          setAgreementDuration(value);
+                        }
+                      }}
+                      className="pl-12 p-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-indigo-500 w-full text-white"
+                    />
+                  </div>
+                  <div className="relative">
+                    <FaCalendarAlt className="absolute left-4 top-4 text-gray-300" />
+                    <input
+                      type="date"
+                      value={agreementEndDate}
+                      onChange={(e) => setAgreementEndDate(e.target.value)}
+                      min={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
+                      className="pl-12 p-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-indigo-500 w-full text-white"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => handlePropertySelect(selectedProperty._id)}
+                  disabled={isPropertyUpdateDisabled()}
+                  className={`w-full py-4 rounded-xl font-semibold transition ${
+                    isPropertyUpdateDisabled()
+                      ? "bg-gray-600/50 text-gray-400 cursor-not-allowed"
+                      : "bg-indigo-600 text-white hover:bg-indigo-700"
+                  }`}
+                >
+                  {selectedProperties.some((p) => p.propertyId === selectedProperty._id)
+                    ? "Update Details"
+                    : "Assign Property"}
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+                {propertiesList.map((property) => (
+                  <div
+                    key={property._id}
+                    onClick={() => handlePropertyClick(property)}
+                    className={`p-4 border rounded-xl cursor-pointer transition-all ${
+                      selectedProperties.some((p) => p.propertyId === property._id)
+                        ? "bg-indigo-600/60 border-indigo-400/60 text-white"
+                        : "bg-white/10 border-white/20 text-gray-300 hover:bg-white/20"
+                    }`}
+                  >
+                    <p className="font-medium">{property.name || "Unnamed"}</p>
+                    <p className="text-sm opacity-80">{property.location || "No location"}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

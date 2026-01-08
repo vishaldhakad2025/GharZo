@@ -362,7 +362,7 @@ const AddProperty = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h2 className="text-3xl font-bold mb-6 text-center text-black drop-shadow-lg">
+      <h2 className="text-3xl font-bold mb-6 text-center text-blue-900 drop-shadow-lg">
         Add Property
       </h2>
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { motion, AnimatePresence } from "framer-motion";
 
 const LandlordAnnouncements = () => {
@@ -299,205 +298,63 @@ const LandlordAnnouncements = () => {
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-br from-[#e7eaff] via-white to-[#7cf7b7] p-4 md:p-6 relative text-gray-800 transition-all duration-500 min-w-0 ${
+      className={`min-h-screen p-4 md:p-6 relative text-gray-100 transition-all duration-500 min-w-0 ${
         isSidebarHovered ? "md:ml-[256px] md:w-[calc(100%-256px)]" : "md:ml-[64px] md:w-[calc(100%-64px)]"
       }`}
-      style={{ boxSizing: "border-box" }}
+      style={{
+        background: `radial-gradient(circle at center bottom, rgba(245, 124, 0, 0.35), transparent 60%), linear-gradient(rgb(7, 26, 47) 0%, rgb(13, 47, 82) 45%, rgb(18, 62, 107) 75%, rgb(11, 42, 74) 100%)`,
+        boxSizing: "border-box"
+      }}
     >
       <AnimatePresence>
-        <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl min-h-screen flex flex-col p-2 sm:p-4">
-          <ToastContainer />
-          <div className="mb-8">
-            <h2 className="text-3xl sm:text-2xl font-extrabold mb-2 text-[#5C4EFF] text-center tracking-tight">
-              Announcements
-            </h2>
-            <p className="text-[#183c2c] text-center mb-6 text-sm sm:text-base">
-              Create, edit, and manage announcements for your tenants and properties.
-            </p>
-          </div>
+        <div className="max-w-4xl mx-auto">
+          <ToastContainer theme="dark" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-6 min-h-screen flex flex-col"
+          >
+            <div className="mb-8 text-center">
+              <h2 className="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight">
+                <span style={{ color: '#F36F20' }}>GHARZO</span>
+              </h2>
+              <p className="text-gray-300 mb-6 text-sm sm:text-base">
+                Create, edit, and manage announcements for your tenants and properties.
+              </p>
+            </div>
 
-          {/* Create Announcement Form */}
-          <div className="mb-10 bg-gradient-to-br from-[#e7eaff] via-white to-[#7cf7b7] rounded-xl shadow-md p-4 sm:p-6">
-            <h3 className="text-xl sm:text-lg font-semibold mb-4 text-[#5C4EFF] text-center">
-              <span className="text-[#5C4EFF]">Create Announcement</span>
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    className="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-400 sm:text-sm bg-white"
-                    placeholder="Enter announcement title"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="propertyId" className="block text-sm font-medium text-gray-700 mb-1">
-                    Select Property *
-                  </label>
-                  <select
-                    id="propertyId"
-                    name="propertyId"
-                    value={formData.propertyId}
-                    onChange={handleChange}
-                    className="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white sm:text-sm"
-                    required
-                  >
-                    <option value="">Select a property</option>
-                    {propertiesLoading ? (
-                      <option disabled>Loading properties...</option>
-                    ) : (
-                      properties.map((property) => (
-                        <option key={property._id} value={property._id}>
-                          {property.name || property.propertyName}
-                        </option>
-                      ))
-                    )}
-                  </select>
-                </div>
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-400 sm:text-sm bg-white"
-                  rows="3"
-                  placeholder="Enter announcement message"
-                  required
-                />
-              </div>
-              <div className="flex flex-wrap gap-4 items-center">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="sendToAll"
-                    name="sendToAll"
-                    checked={formData.sendToAll}
-                    onChange={handleChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="sendToAll" className="ml-2 text-sm text-gray-700">
-                    Send to All Tenants
-                  </label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="isActive"
-                    name="isActive"
-                    checked={formData.isActive}
-                    onChange={handleChange}
-                    className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="isActive" className="ml-2 text-sm text-gray-700">
-                    Active
-                  </label>
-                </div>
-              </div>
-              {!formData.sendToAll && formData.propertyId && (
-                <div>
-                  <label htmlFor="tenantId" className="block text-sm font-medium text-gray-700 mb-1">
-                    Select Tenant *
-                  </label>
-                  <select
-                    id="tenantId"
-                    name="tenantId"
-                    value={formData.tenantId}
-                    onChange={handleChange}
-                    className="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white sm:text-sm"
-                    required
-                  >
-                    <option value="">Select a tenant from this property</option>
-                    {tenantsLoading ? (
-                      <option disabled>Loading tenants for this property...</option>
-                    ) : tenants.length > 0 ? (
-                      tenants.map((tenant) => (
-                        <option key={tenant.tenantId || tenant._id} value={tenant.tenantId || tenant._id}>
-                          {tenant.name || 'Unnamed Tenant'} (Mobile: {tenant.mobile}, Room: {tenant.accommodations?.[0]?.roomId || 'N/A'})
-                        </option>
-                      ))
-                    ) : (
-                      <option disabled>No tenants found for this property</option>
-                    )}
-                  </select>
-                  {tenants.length === 0 && !tenantsLoading && formData.propertyId && (
-                    <p className="text-sm text-red-600 mt-1">No tenants assigned to this property yet.</p>
-                  )}
-                </div>
-              )}
-              <button
-                type="submit"
-                disabled={loading || tenantsLoading || propertiesLoading}
-                className="w-full py-3 px-4 bg-[#4A90E2] text-white font-semibold rounded-lg hover:bg-[#357ABD] focus:outline-none focus:ring-2 focus:ring-[#4A90E2] disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out mt-2"
-              >
-                {loading ? 'Submitting...' : 'Create Announcement'}
-              </button>
-            </form>
-          </div>
-          {/* Edit Announcement Modal */}
-          {editModalOpen && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2"
-            >
-              <div className="bg-white p-6 sm:p-4 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-                <h3 className="text-xl sm:text-lg font-semibold mb-4 text-[#5C4EFF] text-center">
-                  <span className="text-[#5C4EFF]">Edit Announcement</span>
-                </h3>
-                <form onSubmit={handleEditSubmit} className="space-y-4">
+            {/* Create Announcement Form */}
+            <div className="mb-10 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl shadow-xl p-6">
+              <h3 className="text-2xl font-bold mb-6 text-center text-orange-300">
+                Create Announcement
+              </h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="edit-title" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
                       Title
                     </label>
                     <input
                       type="text"
-                      id="edit-title"
+                      id="title"
                       name="title"
                       value={formData.title}
                       onChange={handleChange}
-                      className="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-400 sm:text-sm bg-white"
+                      className="block w-full p-3 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400 bg-white/10 backdrop-blur-sm"
+                      placeholder="Enter announcement title"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="edit-message" className="block text-sm font-medium text-gray-700 mb-1">
-                      Message
-                    </label>
-                    <textarea
-                      id="edit-message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      className="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-400 sm:text-sm bg-white"
-                      rows="3"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="edit-propertyId" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="propertyId" className="block text-sm font-medium text-gray-300 mb-1">
                       Select Property *
                     </label>
                     <select
-                      id="edit-propertyId"
+                      id="propertyId"
                       name="propertyId"
                       value={formData.propertyId}
                       onChange={handleChange}
-                      className="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white sm:text-sm"
+                      className="block w-full p-3 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-white bg-white/10 backdrop-blur-sm"
                       required
                     >
                       <option value="">Select a property</option>
@@ -512,163 +369,322 @@ const LandlordAnnouncements = () => {
                       )}
                     </select>
                   </div>
-                  <div className="flex flex-wrap gap-4 items-center">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="edit-sendToAll"
-                        name="sendToAll"
-                        checked={formData.sendToAll}
-                        onChange={handleChange}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="edit-sendToAll" className="ml-2 text-sm text-gray-700">
-                        Send to All Tenants
-                      </label>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="edit-isActive"
-                        name="isActive"
-                        checked={formData.isActive}
-                        onChange={handleChange}
-                        className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor="edit-isActive" className="ml-2 text-sm text-gray-700">
-                        Active
-                      </label>
-                    </div>
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="block w-full p-3 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400 bg-white/10 backdrop-blur-sm"
+                    rows="3"
+                    placeholder="Enter announcement message"
+                    required
+                  />
+                </div>
+                <div className="flex flex-wrap gap-6 items-center">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="sendToAll"
+                      name="sendToAll"
+                      checked={formData.sendToAll}
+                      onChange={handleChange}
+                      className="h-4 w-4 text-orange-500 focus:ring-orange-400 border-white/40 rounded bg-white/10"
+                    />
+                    <label htmlFor="sendToAll" className="ml-2 text-sm text-gray-300">
+                      Send to All Tenants
+                    </label>
                   </div>
-                  {!formData.sendToAll && formData.propertyId && (
-                    <div>
-                      <label htmlFor="edit-tenantId" className="block text-sm font-medium text-gray-700 mb-1">
-                        Select Tenant *
-                      </label>
-                      <select
-                        id="edit-tenantId"
-                        name="tenantId"
-                        value={formData.tenantId}
-                        onChange={handleChange}
-                        className="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white sm:text-sm"
-                        required
-                      >
-                        <option value="">Select a tenant from this property</option>
-                        {tenantsLoading ? (
-                          <option disabled>Loading tenants for this property...</option>
-                        ) : tenants.length > 0 ? (
-                          tenants.map((tenant) => (
-                            <option key={tenant.tenantId || tenant._id} value={tenant.tenantId || tenant._id}>
-                              {tenant.name || 'Unnamed Tenant'} (Mobile: {tenant.mobile}, Room: {tenant.accommodations?.[0]?.roomId || 'N/A'})
-                            </option>
-                          ))
-                        ) : (
-                          <option disabled>No tenants found for this property</option>
-                        )}
-                      </select>
-                      {tenants.length === 0 && !tenantsLoading && formData.propertyId && (
-                        <p className="text-sm text-red-600 mt-1">No tenants assigned to this property yet.</p>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="isActive"
+                      name="isActive"
+                      checked={formData.isActive}
+                      onChange={handleChange}
+                      className="h-4 w-4 text-green-400 focus:ring-green-400 border-white/40 rounded bg-white/10"
+                    />
+                    <label htmlFor="isActive" className="ml-2 text-sm text-gray-300">
+                      Active
+                    </label>
+                  </div>
+                </div>
+                {!formData.sendToAll && formData.propertyId && (
+                  <div>
+                    <label htmlFor="tenantId" className="block text-sm font-medium text-gray-300 mb-1">
+                      Select Tenant *
+                    </label>
+                    <select
+                      id="tenantId"
+                      name="tenantId"
+                      value={formData.tenantId}
+                      onChange={handleChange}
+                      className="block w-full p-3 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-white bg-white/10 backdrop-blur-sm"
+                      required
+                    >
+                      <option value="">Select a tenant from this property</option>
+                      {tenantsLoading ? (
+                        <option disabled>Loading tenants for this property...</option>
+                      ) : tenants.length > 0 ? (
+                        tenants.map((tenant) => (
+                          <option key={tenant.tenantId || tenant._id} value={tenant.tenantId || tenant._id}>
+                            {tenant.name || 'Unnamed Tenant'} (Mobile: {tenant.mobile}, Room: {tenant.accommodations?.[0]?.roomId || 'N/A'})
+                          </option>
+                        ))
+                      ) : (
+                        <option disabled>No tenants found for this property</option>
                       )}
-                    </div>
-                  )}
-                  <div className="flex justify-end gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setEditModalOpen(false)}
-                      className="py-2 px-4 bg-[#4A90E2] text-white font-semibold rounded-lg hover:bg-[#357ABD] focus:outline-none focus:ring-2 focus:ring-[#4A90E2] transition duration-150 ease-in-out"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={loading || tenantsLoading || propertiesLoading}
-                      className="py-2 px-4 bg-[#4A90E2] text-white font-semibold rounded-lg hover:bg-[#357ABD] focus:outline-none focus:ring-2 focus:ring-[#4A90E2] disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
-                    >
-                      {loading ? 'Saving...' : 'Save Changes'}
-                    </button>
+                    </select>
+                    {tenants.length === 0 && !tenantsLoading && formData.propertyId && (
+                      <p className="text-sm text-red-400 mt-1">No tenants assigned to this property yet.</p>
+                    )}
                   </div>
-                </form>
-              </div>
-            </motion.div>
-          )}
-          {/* Fetch Announcements Section */}
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-              <h3 className="text-xl sm:text-lg font-semibold text-[#5C4EFF]">All Announcements</h3>
-              <button
-                onClick={fetchAnnouncements}
-                disabled={fetchLoading}
-                className="mt-2 sm:mt-0 py-2 px-4 bg-[#4A90E2] text-white font-semibold rounded-lg hover:bg-[#357ABD] focus:outline-none focus:ring-2 focus:ring-[#4A90E2] disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
-              >
-                {fetchLoading ? 'Fetching...' : 'Refresh Announcements'}
-              </button>
+                )}
+                <button
+                  type="submit"
+                  disabled={loading || tenantsLoading || propertiesLoading}
+                  className="w-full py-3 px-4 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out mt-4 bg-orange-600/80 hover:bg-orange-500 backdrop-blur-sm"
+                >
+                  {loading ? 'Submitting...' : 'Create Announcement'}
+                </button>
+              </form>
             </div>
-            {fetchLoading && (
-              <div className="text-center text-gray-600 text-sm">Loading announcements...</div>
-            )}
-            {fetchError && (
-              <div className="mt-4 p-4 bg-red-100 text-red-800 rounded-lg shadow">
-                <h3 className="font-semibold text-sm">Error</h3>
-                <p className="text-sm">{fetchError}</p>
-              </div>
-            )}
-            {announcements.length > 0 ? (
-              <div className="space-y-4">
-                {announcements.map((announcement) => (
+
+            {/* Edit Announcement Modal */}
+            <AnimatePresence>
+              {editModalOpen && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+                >
                   <motion.div
-                    key={announcement._id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="p-4 bg-gradient-to-br from-[#e7eaff] via-white to-[#7cf7b7] border border-[#5C4EFF] rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 shadow"
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    className="bg-white/10 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/30 p-6 sm:p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto"
                   >
-                    <div>
-                      <h4 className="font-semibold text-lg sm:text-base text-[#5C4EFF]">
-                        {announcement.title}
-                      </h4>
-                      <p className="text-[#183c2c] text-sm mt-1">{announcement.message}</p>
-                      <div className="flex flex-wrap gap-2 mt-2 text-xs text-[#183c2c]">
-                       {/* <span>ID: {announcement._id}</span>*/}
-                        <span>
-                          Created: {new Date(announcement.createdAt).toLocaleString()}
-                        </span>
-                        <span>
-                          Active:{" "}
-                          <span className={announcement.isActive ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
-                            {announcement.isActive ? "Yes" : "No"}
-                          </span>
-                        </span>
-                        {!announcement.sendToAll && announcement.tenantId && (
-                          <span>Tenant ID: {announcement.tenantId}</span>
-                        )}
-                        {announcement.propertyId && (
-                          <span>Property ID: {announcement.propertyId}</span>
-                        )}
+                    <h3 className="text-2xl font-bold mb-6 text-center text-orange-300">
+                      Edit Announcement
+                    </h3>
+                    <form onSubmit={handleEditSubmit} className="space-y-4">
+                      <div>
+                        <label htmlFor="edit-title" className="block text-sm font-medium text-gray-300 mb-1">
+                          Title
+                        </label>
+                        <input
+                          type="text"
+                          id="edit-title"
+                          name="title"
+                          value={formData.title}
+                          onChange={handleChange}
+                          className="block w-full p-3 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400 bg-white/10 backdrop-blur-sm"
+                          required
+                        />
                       </div>
-                    </div>
-                    <div className="flex gap-2 sm:gap-3">
-                      <button
-                        onClick={() => handleEdit(announcement)}
-                        className="py-1 px-3 bg-[#4A90E2] text-white font-semibold rounded-lg hover:bg-[#357ABD] focus:outline-none focus:ring-2 focus:ring-[#4A90E2] transition duration-150 ease-in-out text-sm"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(announcement._id)}
-                        className="py-1 px-3 bg-[#4A90E2] text-white font-semibold rounded-lg hover:bg-[#357ABD] focus:outline-none focus:ring-2 focus:ring-[#4A90E2] transition duration-150 ease-in-out text-sm"
-                      >
-                        Delete
-                      </button>
-                    </div>
+                      <div>
+                        <label htmlFor="edit-message" className="block text-sm font-medium text-gray-300 mb-1">
+                          Message
+                        </label>
+                        <textarea
+                          id="edit-message"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          className="block w-full p-3 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-white placeholder-gray-400 bg-white/10 backdrop-blur-sm"
+                          rows="3"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="edit-propertyId" className="block text-sm font-medium text-gray-300 mb-1">
+                          Select Property *
+                        </label>
+                        <select
+                          id="edit-propertyId"
+                          name="propertyId"
+                          value={formData.propertyId}
+                          onChange={handleChange}
+                          className="block w-full p-3 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-white bg-white/10 backdrop-blur-sm"
+                          required
+                        >
+                          <option value="">Select a property</option>
+                          {propertiesLoading ? (
+                            <option disabled>Loading properties...</option>
+                          ) : (
+                            properties.map((property) => (
+                              <option key={property._id} value={property._id}>
+                                {property.name || property.propertyName}
+                              </option>
+                            ))
+                          )}
+                        </select>
+                      </div>
+                      <div className="flex flex-wrap gap-6 items-center">
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id="edit-sendToAll"
+                            name="sendToAll"
+                            checked={formData.sendToAll}
+                            onChange={handleChange}
+                            className="h-4 w-4 text-orange-500 focus:ring-orange-400 border-white/40 rounded bg-white/10"
+                          />
+                          <label htmlFor="edit-sendToAll" className="ml-2 text-sm text-gray-300">
+                            Send to All Tenants
+                          </label>
+                        </div>
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id="edit-isActive"
+                            name="isActive"
+                            checked={formData.isActive}
+                            onChange={handleChange}
+                            className="h-4 w-4 text-green-400 focus:ring-green-400 border-white/40 rounded bg-white/10"
+                          />
+                          <label htmlFor="edit-isActive" className="ml-2 text-sm text-gray-300">
+                            Active
+                          </label>
+                        </div>
+                      </div>
+                      {!formData.sendToAll && formData.propertyId && (
+                        <div>
+                          <label htmlFor="edit-tenantId" className="block text-sm font-medium text-gray-300 mb-1">
+                            Select Tenant *
+                          </label>
+                          <select
+                            id="edit-tenantId"
+                            name="tenantId"
+                            value={formData.tenantId}
+                            onChange={handleChange}
+                            className="block w-full p-3 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-white bg-white/10 backdrop-blur-sm"
+                            required
+                          >
+                            <option value="">Select a tenant from this property</option>
+                            {tenantsLoading ? (
+                              <option disabled>Loading tenants for this property...</option>
+                            ) : tenants.length > 0 ? (
+                              tenants.map((tenant) => (
+                                <option key={tenant.tenantId || tenant._id} value={tenant.tenantId || tenant._id}>
+                                  {tenant.name || 'Unnamed Tenant'} (Mobile: {tenant.mobile}, Room: {tenant.accommodations?.[0]?.roomId || 'N/A'})
+                                </option>
+                              ))
+                            ) : (
+                              <option disabled>No tenants found for this property</option>
+                            )}
+                          </select>
+                          {tenants.length === 0 && !tenantsLoading && formData.propertyId && (
+                            <p className="text-sm text-red-400 mt-1">No tenants assigned to this property yet.</p>
+                          )}
+                        </div>
+                      )}
+                      <div className="flex justify-end gap-4 mt-6">
+                        <button
+                          type="button"
+                          onClick={() => setEditModalOpen(false)}
+                          className="py-2 px-6 text-white font-semibold rounded-lg bg-red-600/80 hover:bg-red-500 transition backdrop-blur-sm"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={loading || tenantsLoading || propertiesLoading}
+                          className="py-2 px-6 text-white font-semibold rounded-lg bg-orange-600/80 hover:bg-orange-500 transition disabled:opacity-50 backdrop-blur-sm"
+                        >
+                          {loading ? 'Saving...' : 'Save Changes'}
+                        </button>
+                      </div>
+                    </form>
                   </motion.div>
-                ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* All Announcements Section */}
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                <h3 className="text-2xl font-bold text-orange-300">All Announcements</h3>
+                <button
+                  onClick={fetchAnnouncements}
+                  disabled={fetchLoading}
+                  className="mt-4 sm:mt-0 py-2 px-6 text-white font-semibold rounded-lg bg-orange-600/80 hover:bg-orange-500 disabled:opacity-60 transition backdrop-blur-sm"
+                >
+                  {fetchLoading ? 'Fetching...' : 'Refresh Announcements'}
+                </button>
               </div>
-            ) : (
-              !fetchLoading && (
-                <div className="text-center text-[#183c2c] text-sm">No announcements found.</div>
-              )
-            )}
-          </div>
+
+              {fetchLoading && (
+                <div className="text-center text-gray-400 py-8">Loading announcements...</div>
+              )}
+
+              {fetchError && (
+                <div className="p-6 bg-red-900/30 backdrop-blur-sm border border-red-500/50 rounded-xl text-red-300">
+                  <p className="font-medium">Error: {fetchError}</p>
+                </div>
+              )}
+
+              {announcements.length > 0 ? (
+                <div className="space-y-6">
+                  {announcements.map((announcement) => (
+                    <motion.div
+                      key={announcement._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="p-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl shadow-xl flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6"
+                    >
+                      <div className="flex-1">
+                        <h4 className="font-bold text-2xl text-orange-400 mb-2">
+                          {announcement.title}
+                        </h4>
+                        <p className="text-gray-300 text-base leading-relaxed">{announcement.message}</p>
+                        <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-400">
+                          <span>Created: {new Date(announcement.createdAt).toLocaleString()}</span>
+                          <span>
+                            Status: <span className={announcement.isActive ? "text-green-400 font-bold" : "text-red-400 font-bold"}>
+                              {announcement.isActive ? "Active" : "Inactive"}
+                            </span>
+                          </span>
+                          {!announcement.sendToAll && announcement.tenantId && (
+                            <span>Tenant ID: {announcement.tenantId}</span>
+                          )}
+                          {announcement.propertyId && (
+                            <span>Property ID: {announcement.propertyId}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex gap-3 flex-col sm:flex-row">
+                        <button
+                          onClick={() => handleEdit(announcement)}
+                          className="py-2.5 px-6 text-white font-semibold rounded-lg bg-orange-600/80 hover:bg-orange-500 transition backdrop-blur-sm"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(announcement._id)}
+                          className="py-2.5 px-6 bg-red-600/80 text-white font-semibold rounded-lg hover:bg-red-500 transition backdrop-blur-sm"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                !fetchLoading && (
+                  <div className="text-center text-gray-400 py-12 text-lg">
+                    No announcements found.
+                  </div>
+                )
+              )}
+            </div>
+          </motion.div>
         </div>
       </AnimatePresence>
     </div>

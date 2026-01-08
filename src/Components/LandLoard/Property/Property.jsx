@@ -15,9 +15,9 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import baseurl from "../../../../BaseUrl.js"; // Adjust path to your BaseUrl.js
+import baseurl from "../../../../BaseUrl.js";
 
-// Image Slider Component
+// Compact Image Slider Component
 const ImageSlider = ({ images }) => {
   const [current, setCurrent] = useState(0);
 
@@ -28,24 +28,42 @@ const ImageSlider = ({ images }) => {
   if (!images || images.length === 0) return null;
 
   return (
-    <div className="relative w-full h-48 bg-gray-200 overflow-hidden">
+    <div className="relative w-full h-48 bg-gradient-to-b from-black/30 to-transparent overflow-hidden rounded-t-2xl group">
       <img
         src={images[current]}
         alt="property"
-        className="w-full h-48 object-cover transition-all duration-500"
+        className="w-full h-full object-cover transition-all duration-500 ease-in-out"
       />
+      {/* Subtle Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+      {/* Arrows - smaller & subtle */}
       <button
         onClick={prevSlide}
-        className="absolute top-1/2 left-2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+        className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/20 text-white p-2 rounded-full hover:bg-white/30 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
       >
         ❮
       </button>
       <button
         onClick={nextSlide}
-        className="absolute top-1/2 right-2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+        className="absolute top-1/2 right-3 -translate-y-1/2 bg-white/20 text-white p-2 rounded-full hover:bg-white/30 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
       >
         ❯
       </button>
+
+      {/* Dots - compact */}
+      {images.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {images.map((_, i) => (
+            <div
+              key={i}
+              className={`w-1.5 h-1.5 rounded-full transition-all ${
+                i === current ? "bg-orange-400 w-6" : "bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -191,154 +209,154 @@ const Property = () => {
 
   return (
     <div
-      className={`px-2 py-4 md:px-20 min-h-screen text-white bg-white transition-all duration-500 min-w-0 ${
-        isSidebarHovered ? "md:ml-[256px] md:w-[calc(100%-256px)]" : "md:ml-[64px] md:w-[calc(100%-64px)]"
+      className={`min-h-screen text-white transition-all duration-500 min-w-0 ${
+        isSidebarHovered
+          ? "md:ml-[256px] md:w-[calc(100%-256px)]"
+          : "md:ml-[64px] md:w-[calc(100%-64px)]"
       }`}
-      style={{ boxSizing: "border-box" }}
+      style={{
+        background: `
+          radial-gradient(circle at center bottom, rgba(245,124,0,0.35), transparent 60%),
+          linear-gradient(180deg, rgb(7, 26, 47) 0%, rgb(13, 47, 82) 45%, rgb(18, 62, 107) 75%, rgb(11, 42, 74) 100%)
+        `,
+      }}
     >
-      {/* Filter Bar */}
-      <div
-        className={`top-0 z-50 bg-gradient-to-r from-blue-300/80 to-green-700/80 backdrop-blur-lg py-4 shadow-xl rounded-xl mb-6 border border-green-400 transition-transform duration-500 ${
-          showFilters ? "translate-y-0" : "-translate-y-full"
-        }`}
-      >
-        <h2 className="text-center text-2xl font-bold text-white mb-4">
-          All Properties
-        </h2>
-        <form className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 px-2 sm:px-4 text-white">
-          <div>
-            <label htmlFor="city" className="text-sm font-medium block mb-1">
-              City / Title
-            </label>
-            <input
-              type="text"
-              id="city"
-              value={filters.city}
-              onChange={handleFilterChange}
-              placeholder="Enter city or title"
-              className="w-full border border-green-400 rounded-xl px-3 py-2 text-sm bg-white text-black"
-            />
-          </div>
-          <div>
-            <label htmlFor="type" className="text-sm font-medium block mb-1">
-              Type
-            </label>
-            <select
-              id="type"
-              value={filters.type}
-              onChange={handleFilterChange}
-              className="w-full border border-green-400 rounded-xl px-3 py-2 text-sm bg-white text-black"
-            >
-              <option value="">All</option>
-              <option value="PG">PG</option>
-              <option value="Hostel">Hostel</option>
-              <option value="Rental">Rental</option>
-              <option value="1 BHK">1 BHK</option>
-              <option value="2 BHK">2 BHK</option>
-              <option value="3 BHK">3 BHK</option>
-              <option value="4 BHK">4 BHK</option>
-              <option value="1 RK">1 RK</option>
-              <option value="Studio Apartment">Studio Apartment</option>
-              <option value="Luxury Bungalows">Luxury Bungalows</option>
-              <option value="Villas">Villas</option>
-              <option value="Builder Floor">Builder Floor</option>
-              <option value="Flat">Flat</option>
-              <option value="Room">Room</option>
-            </select>
-          </div>
-        </form>
-      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* Header - Compact */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-10"
+        >
+          <h2 className="text-4xl font-bold tracking-wide bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent drop-shadow-lg">
+            My Properties
+          </h2>
+          <p className="text-gray-400 text-base mt-2">
+            Manage your real estate portfolio
+          </p>
+        </motion.div>
 
-      {/* Property Cards */}
-      {loading ? (
-        <div className="text-center my-10">
-          <div className="border-t-4 border-green-400 w-10 h-10 rounded-full animate-spin mx-auto"></div>
-        </div>
-      ) : filteredProperties.length === 0 ? (
-        <div className="text-center my-10">
-          <p className="text-gray-400">No properties match your filters.</p>
-        </div>
-      ) : (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 min-w-fit">
-          {filteredProperties.map((property) => (
+        {/* Property Cards */}
+        {loading ? (
+          <div className="flex items-center justify-center min-h-[50vh]">
             <motion.div
-              key={property._id}
-              whileHover={{ scale: 1.05, rotateY: 5 }}
-              transition={{ type: "spring", stiffness: 200 }}
-              className={`bg-gradient-to-b from-blue-100 to-green-100 shadow-xl rounded-2xl overflow-hidden flex flex-col border ${
-                !property.isActive ? "border-red-500" : "border-green-400"
-              } flex-shrink-0 flex-grow-0 relative`}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="relative"
             >
-              {/* Deactivated Overlay */}
-              {!property.isActive && (
-                <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center z-10 rounded-2xl">
-                  <div className="text-center text-white">
-                    <p className="text-2xl font-bold">Deactivated</p>
-                    <p className="text-sm mt-1">This property is deactivated on admin side</p>
-                  </div>
-                </div>
-              )}
-
-              <ImageSlider images={property.images} />
-              <div className="p-4 flex flex-col gap-2 text-sm text-black">
-                <h5 className="font-semibold text-xl text-black">
-                  {property.name}
-                </h5>
-                <p className="flex items-center text-gray-700">
-                  <FaMapMarkerAlt className="mr-2 text-green-600" />
-                  {property.address}, {property.city}
-                  {property.state && `, ${property.state} ${property.pinCode}`}
-                </p>
-                <p className="flex items-center text-green-700">
-                  <FaDoorOpen className="mr-2 animate-bounce" />
-                  {property.totalRooms} Rooms
-                  <FaBed className="ml-4 mr-2 animate-pulse" />
-                  {property.totalBeds} Beds
-                </p>
-                <p className="text-gray-600">Type: {property.type}</p>
-
-                {/* Action Buttons - Hidden if deactivated */}
-                {property.isActive && (
-                  <div className="mt-3 flex gap-2">
-                    <Link
-                      to={`/landlord/property/${property._id}`}
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-green-400 text-white px-3 py-2 rounded-lg text-sm text-center hover:opacity-90 flex items-center justify-center"
-                    >
-                      <FaEye className="mr-2 text-lg" />
-                      <span className="hidden sm:inline">View Details</span>
-                    </Link>
-                    <Link
-                      to={`/landlord/property/edit/${property._id}`}
-                      className="flex-1 bg-gradient-to-r from-green-500 to-blue-400 text-white px-4 py-2 rounded-lg text-sm text-center hover:opacity-90 flex items-center justify-center"
-                    >
-                      <FaEdit className="mr-2" />
-                      <span className="hidden sm:inline">Edit</span>
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(property._id)}
-                      disabled={deletingId === property._id}
-                      className={`flex-1 bg-red-600 text-white px-3 py-2 rounded-lg text-sm text-center hover:bg-red-700 flex items-center justify-center ${
-                        deletingId === property._id
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }`}
-                    >
-                      {deletingId === property._id ? (
-                        <span>Deleting...</span>
-                      ) : (
-                        <>
-                          <FaTrash className="mr-2" />
-                          <span className="hidden sm:inline">Delete</span>
-                        </>
-                      )}
-                    </button>
+              <div className="w-20 h-20 border-6 border-white/20 border-t-orange-400 rounded-full"></div>
+              <div className="absolute inset-0 w-20 h-20 border-6 border-white/20 border-t-indigo-400 rounded-full animate-spin [animation-delay:0.2s]"></div>
+            </motion.div>
+          </div>
+        ) : filteredProperties.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-24"
+          >
+            <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 inline-block border border-white/20">
+              <p className="text-2xl font-semibold text-gray-300 mb-4">
+                No properties found
+              </p>
+              <p className="text-gray-400">
+                {properties.length === 0
+                  ? "Add your first property to get started"
+                  : "Try different filters"}
+              </p>
+            </div>
+          </motion.div>
+        ) : (
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredProperties.map((property, index) => (
+              <motion.div
+                key={property._id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="bg-white/10 backdrop-blur-xl rounded-2xl overflow-hidden flex flex-col border border-white/20 shadow-xl hover:shadow-orange-500/30 transition-all duration-400 relative"
+              >
+                {/* Deactivated Overlay */}
+                {!property.isActive && (
+                  <div className="absolute inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-30 rounded-2xl">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-red-400">DEACTIVATED</p>
+                      <p className="text-sm text-gray-300 mt-2">
+                        Admin has deactivated this property
+                      </p>
+                    </div>
                   </div>
                 )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      )}
+
+                <ImageSlider images={property.images} />
+
+                <div className="p-6 flex flex-col gap-4 flex-1">
+                  <div className="flex items-start justify-between">
+                    <h5 className="text-xl font-bold text-white line-clamp-2">
+                      {property.name}
+                    </h5>
+                    <span className="bg-orange-600/80 text-white px-3 py-1 rounded-full text-xs font-medium">
+                      {property.type}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center text-gray-300 text-sm">
+                    <FaMapMarkerAlt className="mr-2 text-orange-400 flex-shrink-0" />
+                    <p className="truncate">
+                      {property.address}, {property.city}
+                    </p>
+                  </div>
+
+                  {/* Compact Stats */}
+                  <div className="grid grid-cols-2 gap-3 text-center">
+                    <div className="bg-white/10 backdrop-blur-md rounded-xl py-3 px-4 border border-white/20">
+                      <FaDoorOpen className="mx-auto text-lg text-indigo-300 mb-1" />
+                      <p className="text-xl font-bold text-white">{property.totalRooms}</p>
+                      <p className="text-xs text-gray-400">Rooms</p>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-md rounded-xl py-3 px-4 border border-white/20">
+                      <FaBed className="mx-auto text-lg text-indigo-300 mb-1" />
+                      <p className="text-xl font-bold text-white">{property.totalBeds}</p>
+                      <p className="text-xs text-gray-400">Beds</p>
+                    </div>
+                  </div>
+
+                  {/* Compact Action Buttons */}
+                  {property.isActive && (
+                    <div className="grid grid-cols-3 gap-3 mt-4">
+                      <Link
+                        to={`/landlord/property/${property._id}`}
+                        className="bg-gradient-to-r from-indigo-600/80 to-purple-600/80 backdrop-blur-md text-white py-3 rounded-xl text-center hover:from-indigo-500 hover:to-purple-500 transition font-medium shadow-lg flex items-center justify-center"
+                      >
+                        <FaEye className="text-base" />
+                      </Link>
+                      <Link
+                        to={`/landlord/property/edit/${property._id}`}
+                        className="bg-gradient-to-r from-orange-600/80 to-amber-600/80 backdrop-blur-md text-white py-3 rounded-xl text-center hover:from-orange-500 hover:to-amber-500 transition font-medium shadow-lg flex items-center justify-center"
+                      >
+                        <FaEdit className="text-base" />
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(property._id)}
+                        disabled={deletingId === property._id}
+                        className={`bg-gradient-to-r from-red-600/80 to-rose-600/80 backdrop-blur-md text-white py-3 rounded-xl text-center hover:from-red-500 hover:to-rose-500 transition font-medium shadow-lg flex items-center justify-center ${
+                          deletingId === property._id ? "opacity-60" : ""
+                        }`}
+                      >
+                        {deletingId === property._id ? (
+                          <span className="text-xs">...</span>
+                        ) : (
+                          <FaTrash className="text-base" />
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

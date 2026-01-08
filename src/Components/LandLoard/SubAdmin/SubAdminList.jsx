@@ -754,7 +754,7 @@ const SubAdminList = () => {
   }
 
   return (
-    <div className="p-6 min-h-[70vh] bg-gray-50">
+    <div className="p-6 min-h-[70vh] ">
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
         Team Members
       </h2>
@@ -779,11 +779,11 @@ const SubAdminList = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 layout
-                className="relative bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all duration-300 p-6"
+                className="mb-8 p-6 sm:p-8 bg-white/10 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20"
               >
                 <motion.button
                   onClick={() => openModal(subAdmin)}
-                  className="absolute top-4 right-4 z-10 p-2 bg-white rounded-full shadow-md border border-gray-200 hover:border-blue-400 transition-all duration-300"
+                  className="absolute top-4 right-4 z-10 p-2 rounded-full shadow-md border border-gray-200 hover:border-blue-400 transition-all duration-300"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -865,7 +865,7 @@ const SubAdminList = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[130vh] overflow-y-auto"
             >
               <motion.button
                 onClick={closeModal}
