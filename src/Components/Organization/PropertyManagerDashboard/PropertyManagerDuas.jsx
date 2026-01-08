@@ -53,7 +53,7 @@ const getToken = () => {
 };
 
 // API base URL
-const API_BASE_URL = "https://api.drazeapp.com";
+const API_BASE_URL = "https://api.gharzoreality.com";
 
 // Helper function to extract propertyId from URL
 const getPropertyIdFromUrl = () => {

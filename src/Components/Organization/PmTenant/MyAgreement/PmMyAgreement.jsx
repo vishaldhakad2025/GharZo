@@ -72,7 +72,7 @@ const RentAgreementForm = () => {
         }
 
         // 1. Fetch Tenant Profile (for tenantId)
-        const profileRes = await axios.get("https://api.drazeapp.com/api/tenant/profile", {
+        const profileRes = await axios.get("https://api.gharzoreality.com/api/tenant/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const tenant = profileRes.data?.tenant;
@@ -81,14 +81,14 @@ const RentAgreementForm = () => {
 
         // 2. Fetch Room Info using tenantId
         const roomRes = await axios.get(
-          `https://api.drazeapp.com/api/tenant/${tenantId}/my-rooms`,
+          `https://api.gharzoreality.com/api/tenant/${tenantId}/my-rooms`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const room = roomRes.data.rooms?.[0];
         if (!room) throw new Error("Room data not found");
 
         // 3. Fetch Accommodation Info
-        const accRes = await axios.get("https://api.drazeapp.com/api/tenant/accommodations", {
+        const accRes = await axios.get("https://api.gharzoreality.com/api/tenant/accommodations", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const accommodation = accRes.data.accommodations?.[0];

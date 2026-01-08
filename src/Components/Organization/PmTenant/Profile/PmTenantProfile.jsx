@@ -35,7 +35,7 @@ const PmTenantProfile = () => {
           return;
         }
 
-        const profileRes = await axios.get("https://api.drazeapp.com/api/tenant/profile", {
+        const profileRes = await axios.get("https://api.gharzoreality.com/api/tenant/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -86,7 +86,7 @@ const PmTenantProfile = () => {
         return;
       }
 
-      const res = await axios.put("https://api.drazeapp.com/api/tenant/profile", formData, {
+      const res = await axios.put("https://api.gharzoreality.com/api/tenant/profile", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

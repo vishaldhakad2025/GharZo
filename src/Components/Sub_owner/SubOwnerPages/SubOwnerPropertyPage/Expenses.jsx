@@ -60,7 +60,7 @@ const PropertyExpenses = ({ propertyId }) => {
         }
 
         const response = await fetch(
-          `https://api.drazeapp.com/api/subowner/expenses/property/${propertyId}`,
+          `https://api.gharzoreality.com/api/subowner/expenses/property/${propertyId}`,
           {
             method: "GET",
             headers: {
@@ -106,7 +106,7 @@ const PropertyExpenses = ({ propertyId }) => {
   // Handle image view click
   const handleViewImage = (billImage) => {
     if (billImage) {
-      setSelectedImage(`https://api.drazeapp.com${billImage}`);
+      setSelectedImage(`https://api.gharzoreality.com${billImage}`);
       setIsImageModalOpen(true);
     }
   };

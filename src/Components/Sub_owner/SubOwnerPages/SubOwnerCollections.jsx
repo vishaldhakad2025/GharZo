@@ -42,7 +42,7 @@ const ForecastSummary = () => {
 
         // Fetch forecast data with token in Authorization header
         const response = await axios.get(
-          "https://api.drazeapp.com/api/subowner/collections/forecast",
+          "https://api.gharzoreality.com/api/subowner/collections/forecast",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

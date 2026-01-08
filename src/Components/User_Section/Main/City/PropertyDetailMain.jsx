@@ -95,7 +95,7 @@ const PropertyDetails = () => {
       setLoading(true);
       try {
         const res = await fetch(
-          `https://api.drazeapp.com/api/public/property/${decodeURIComponent(
+          `https://api.gharzoreality.com/api/public/property/${decodeURIComponent(
             name
           )}`,
           { cache: "no-cache" }
@@ -138,7 +138,7 @@ const PropertyDetails = () => {
       setReelsLoading(true);
       try {
         const response = await axios.get(
-          `https://api.drazeapp.com/api/reels?propertyId=${property.id}`,
+          `https://api.gharzoreality.com/api/reels?propertyId=${property.id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -181,7 +181,7 @@ const PropertyDetails = () => {
     const createAxiosInstance = () => {
       const token = getToken();
       return axios.create({
-        baseURL: "https://api.drazeapp.com/api",
+        baseURL: "https://api.gharzoreality.com/api",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -198,7 +198,7 @@ const PropertyDetails = () => {
 
           // Fetch stats (public, no auth required)
           const statsResponse = await axios.get(
-            `https://api.drazeapp.com/api/public/ratings/property/${propertyId}/rating-stats`
+            `https://api.gharzoreality.com/api/public/ratings/property/${propertyId}/rating-stats`
           );
           if (statsResponse.data.success) {
             setStats(statsResponse.data.stats);
@@ -316,7 +316,7 @@ const PropertyDetails = () => {
 
             // Refetch stats
             const statsResponse = await axios.get(
-              `https://api.drazeapp.com/api/public/ratings/property/${propertyId}/rating-stats`
+              `https://api.gharzoreality.com/api/public/ratings/property/${propertyId}/rating-stats`
             );
             if (statsResponse.data.success) {
               setStats(statsResponse.data.stats);
@@ -447,7 +447,7 @@ const PropertyDetails = () => {
         if (response.data.success) {
           // Refetch stats
           const statsResponse = await axios.get(
-            `https://api.drazeapp.com/api/public/ratings/property/${propertyId}/rating-stats`
+            `https://api.gharzoreality.com/api/public/ratings/property/${propertyId}/rating-stats`
           );
           if (statsResponse.data.success) {
             setStats(statsResponse.data.stats);

@@ -36,7 +36,7 @@ const MySubscriptions = () => {
 
     try {
       console.log('Fetching total beds for ID:', effectiveLandlordId);
-      const response = await fetch('https://api.drazeapp.com/api/landlord/properties/beds/count', {
+      const response = await fetch('https://api.gharzoreality.com/api/landlord/properties/beds/count', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${authToken}`,
@@ -71,7 +71,7 @@ const MySubscriptions = () => {
     setError(null);
     try {
       console.log('Fetching subscriptions for ID:', effectiveLandlordId);
-      const response = await fetch(`https://api.drazeapp.com/api/landlord/subscriptions/my-subscriptions/${effectiveLandlordId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/landlord/subscriptions/my-subscriptions/${effectiveLandlordId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${authToken}`,

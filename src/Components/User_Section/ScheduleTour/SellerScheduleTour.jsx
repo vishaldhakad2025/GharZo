@@ -35,7 +35,7 @@ const SellerScheduleTourBox = () => {
       }
 
       try {
-        const response = await fetch(`https://api.drazeapp.com/api/seller/properties/${propertyId}`);
+        const response = await fetch(`https://api.gharzoreality.com/api/seller/properties/${propertyId}`);
         const data = await response.json();
         console.log("Property API Response:", data);
 
@@ -112,7 +112,7 @@ const SellerScheduleTourBox = () => {
     setDateTimeError("");
 
     try {
-      const url = "https://api.drazeapp.com/api/seller/visit";
+      const url = "https://api.gharzoreality.com/api/seller/visit";
 
       const payload = {
         propertyId,

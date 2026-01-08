@@ -91,7 +91,7 @@ const MyVisitsAndEnquiries = () => {
       if (!userId) return [];
 
       const res = await fetch(
-        "https://api.drazeapp.com/api/visits/user?populate[propertyId][populate]=*&populate[landlordId][populate]=*",
+        "https://api.gharzoreality.com/api/visits/user?populate[propertyId][populate]=*&populate[landlordId][populate]=*",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -114,7 +114,7 @@ const MyVisitsAndEnquiries = () => {
     const token = getToken();
     if (!token) return [];
     try {
-      const res = await fetch("https://api.drazeapp.com/api/seller/uservisit", {
+      const res = await fetch("https://api.gharzoreality.com/api/seller/uservisit", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();

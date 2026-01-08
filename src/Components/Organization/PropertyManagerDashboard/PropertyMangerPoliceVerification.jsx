@@ -35,9 +35,9 @@ import {
   FaThumbsDown, // Icon for reject
 } from 'react-icons/fa';
 
-const API_BASE_URL = 'https://api.drazeapp.com/api/verification';
-const LANDLORD_API_BASE_URL = 'https://api.drazeapp.com/api/landlord';
-const BASE_IMAGE_URL = 'https://api.drazeapp.com';
+const API_BASE_URL = 'https://api.gharzoreality.com/api/verification';
+const LANDLORD_API_BASE_URL = 'https://api.gharzoreality.com/api/landlord';
+const BASE_IMAGE_URL = 'https://api.gharzoreality.com';
 
 const PoliceVerification = () => {
   const navigate = useNavigate();

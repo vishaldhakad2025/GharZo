@@ -35,7 +35,7 @@ const PG = () => {
 
     const fetchData = async () => {
       try {
-        const res = await fetch("https://api.drazeapp.com/api/public/properties/PG", {
+        const res = await fetch("https://api.gharzoreality.com/api/public/properties/PG", {
           headers: {
             Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjI4MjBiMjNkMTBlNjgwODZiMWRjMSIsInJvbGUiOiJsYW5kbG9yZCIsIm1vYmlsZSI6IjcwNDk0MzM1MjAiLCJlbWFpbCI6InJhdGhvcmVzdW11MTk5OEBnbWFpbC5jb20iLCJpYXQiOjE3NTcwNTQyODIsImV4cCI6MTc1OTY0NjI4Mn0.oWTceC9jnmKZzK1FfAa9Sg3tWiXOxroaG4VrMVdET9g",
           },

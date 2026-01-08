@@ -27,7 +27,7 @@ const PropertyFeedback = () => {
         setLoading(true);
 
         const ratingsRes = await axios.get(
-          `https://api.drazeapp.com/api/property/${id}/ratings`,
+          `https://api.gharzoreality.com/api/property/${id}/ratings`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -38,7 +38,7 @@ const PropertyFeedback = () => {
         }
 
         const commentsRes = await axios.get(
-          `https://api.drazeapp.com/api/property/${id}/comments`,
+          `https://api.gharzoreality.com/api/property/${id}/comments`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 

@@ -13,9 +13,9 @@ import {
   FaCloudUploadAlt,
 } from 'react-icons/fa';
 
-const API_BASE_URL = 'https://api.drazeapp.com/api/verification';
-const TENANT_API_BASE_URL = 'https://api.drazeapp.com/api/tenant'; // Assuming tenant profile endpoint base
-const FILE_BASE_URL = 'https://api.drazeapp.com';
+const API_BASE_URL = 'https://api.gharzoreality.com/api/verification';
+const TENANT_API_BASE_URL = 'https://api.gharzoreality.com/api/tenant'; // Assuming tenant profile endpoint base
+const FILE_BASE_URL = 'https://api.gharzoreality.com';
 
 const PmTenantPoliceVerification = () => {
   const navigate = useNavigate();

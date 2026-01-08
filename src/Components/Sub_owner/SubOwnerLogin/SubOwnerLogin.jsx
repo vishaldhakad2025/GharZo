@@ -25,7 +25,7 @@ function SubOwnerLogin() {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://api.drazeapp.com/api/sub-owner/auth/login",
+        "https://api.gharzoreality.com/api/sub-owner/auth/login",
         {
           method: "POST",
           headers: {

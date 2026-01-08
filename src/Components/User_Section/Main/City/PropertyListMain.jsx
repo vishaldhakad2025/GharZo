@@ -32,7 +32,7 @@ const PropertyList = () => {
       setLoading(true);
       try {
         const res = await fetch(
-          "https://api.drazeapp.com/api/public/all-properties",
+          "https://api.gharzoreality.com/api/public/all-properties",
           {
             cache: "no-cache",
           }

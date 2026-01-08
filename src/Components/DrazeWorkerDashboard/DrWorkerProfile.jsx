@@ -46,7 +46,7 @@ function WorkerProfile() {
 
         // Fetch worker profile
         const profileRes = await fetch(
-          "https://api.drazeapp.com/api/worker/auth/profile",
+          "https://api.gharzoreality.com/api/worker/auth/profile",
           {
             method: "GET",
             headers: {
@@ -65,7 +65,7 @@ function WorkerProfile() {
 
         // Fetch assigned complaints
         const complaintsRes = await fetch(
-          "https://api.drazeapp.com/api/workers/assigned-complaints",
+          "https://api.gharzoreality.com/api/workers/assigned-complaints",
           {
             method: "GET",
             headers: {
@@ -154,7 +154,7 @@ function WorkerProfile() {
           >
             {profileImage ? (
               <img
-                src={`https://api.drazeapp.com${profileImage}`}
+                src={`https://api.gharzoreality.com${profileImage}`}
                 alt={name}
                 className="w-full h-full object-cover rounded-full"
               />

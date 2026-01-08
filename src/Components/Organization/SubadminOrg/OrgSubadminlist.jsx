@@ -80,7 +80,7 @@ function OrgSubadminlist() {
 
         setLoading(true);
         const response = await fetch(
-          "https://api.drazeapp.com/api/sub-owner/auth/sub-owners",
+          "https://api.gharzoreality.com/api/sub-owner/auth/sub-owners",
           {
             method: "GET",
             headers: {
@@ -140,7 +140,7 @@ function OrgSubadminlist() {
         }
 
         const response = await fetch(
-          "https://api.drazeapp.com/api/permissions",
+          "https://api.gharzoreality.com/api/permissions",
           {
             method: "GET",
             headers: {
@@ -181,7 +181,7 @@ function OrgSubadminlist() {
         }
 
         const response = await fetch(
-          "https://api.drazeapp.com/api/landlord/properties",
+          "https://api.gharzoreality.com/api/landlord/properties",
           {
             method: "GET",
             headers: {
@@ -317,7 +317,7 @@ function OrgSubadminlist() {
 
       setLoading(true);
       const response = await fetch(
-        `https://api.drazeapp.com/api/sub-owner/auth/delete/${id}`,
+        `https://api.gharzoreality.com/api/sub-owner/auth/delete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -421,7 +421,7 @@ function OrgSubadminlist() {
       }
 
       const response = await fetch(
-        `https://api.drazeapp.com/api/sub-owner/auth/${id}`,
+        `https://api.gharzoreality.com/api/sub-owner/auth/${id}`,
         {
           method: "PUT",
           headers: {

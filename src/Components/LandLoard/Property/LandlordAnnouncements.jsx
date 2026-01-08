@@ -49,7 +49,7 @@ const LandlordAnnouncements = () => {
       return;
     }
     try {
-      const res = await axios.get('https://api.drazeapp.com/api/landlord/properties', {
+      const res = await axios.get('https://api.gharzoreality.com/api/landlord/properties', {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       });
       setProperties(res.data.properties || []);
@@ -72,7 +72,7 @@ const LandlordAnnouncements = () => {
       return;
     }
     try {
-      const res = await fetch(`https://api.drazeapp.com/api/landlord/tenant/property/${propertyId}`, {
+      const res = await fetch(`https://api.gharzoreality.com/api/landlord/tenant/property/${propertyId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const raw = await res.text();
@@ -107,7 +107,7 @@ const LandlordAnnouncements = () => {
       return;
     }
     try {
-      const res = await axios.get('https://api.drazeapp.com/api/announcement/all', {
+      const res = await axios.get('https://api.gharzoreality.com/api/announcement/all', {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       });
       setAnnouncements(res.data.announcements || []);
@@ -129,7 +129,7 @@ const LandlordAnnouncements = () => {
     }
     try {
       const res = await axios.delete(
-        `https://api.drazeapp.com/api/announcement/delete/${announcementId}`,
+        `https://api.gharzoreality.com/api/announcement/delete/${announcementId}`,
         { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }
       );
       toast.success(
@@ -206,7 +206,7 @@ const LandlordAnnouncements = () => {
     };
     try {
       const res = await axios.post(
-        'https://api.drazeapp.com/api/announcement/create',
+        'https://api.gharzoreality.com/api/announcement/create',
         payload,
         { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }
       );
@@ -263,7 +263,7 @@ const LandlordAnnouncements = () => {
     };
     try {
       const res = await axios.put(
-        `https://api.drazeapp.com/api/announcement/edit/${editAnnouncementId}`,
+        `https://api.gharzoreality.com/api/announcement/edit/${editAnnouncementId}`,
         payload,
         { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }
       );

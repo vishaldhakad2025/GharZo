@@ -71,7 +71,7 @@ const TenantRentPayments = () => {
 
       try {
         const accRes = await axios.get(
-          "https://api.drazeapp.com/api/tenant/accommodations",
+          "https://api.gharzoreality.com/api/tenant/accommodations",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -95,7 +95,7 @@ const TenantRentPayments = () => {
 
       // NEW API CALL - Dynamic tenantId and landlordId
       const duesResponse = await axios.get(
-        `https://api.drazeapp.com/api/dues/tenant/${tenantId}/${fetchedLandlordId}`,
+        `https://api.gharzoreality.com/api/dues/tenant/${tenantId}/${fetchedLandlordId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -219,7 +219,7 @@ const TenantRentPayments = () => {
   //           console.log("=== END PAYMENT BODY ===");
 
   //           const postRes = await axios.post(
-  //             "https://api.drazeapp.com/api/payments/capturePayment",
+  //             "https://api.gharzoreality.com/api/payments/capturePayment",
   //             body,
   //             {
   //               headers: {
@@ -337,7 +337,7 @@ const handlePayNow = async (billId, amount) => {
             console.log("=== END PAYMENT BODY ===");
 
             const postRes = await axios.post(
-              "https://api.drazeapp.com/api/payments/capturePayment",
+              "https://api.gharzoreality.com/api/payments/capturePayment",
               body,
               {
                 headers: {
@@ -422,7 +422,7 @@ const handlePayNow = async (billId, amount) => {
       }
 
       const res = await axios.post(
-        `https://api.drazeapp.com/api/payment/${paymentId}/generate-receipt`,
+        `https://api.gharzoreality.com/api/payment/${paymentId}/generate-receipt`,
         {},
         {
           headers: {
@@ -450,7 +450,7 @@ const handlePayNow = async (billId, amount) => {
 
         setCurrentReceipt(receiptData);
         console.log("Current receipt set to:", receiptData);
-        setReceiptUrl(`https://api.drazeapp.com${res.data.receiptUrl}`);
+        setReceiptUrl(`https://api.gharzoreality.com${res.data.receiptUrl}`);
         setReceiptNumber(mergedData.receiptNo);
         setShowReceipt(true);
       } else {
@@ -480,13 +480,13 @@ const handlePayNow = async (billId, amount) => {
   //   try {
   //     const token = localStorage.getItem("tenanttoken");
   //     const res = await axios.post(
-  //       `https://api.drazeapp.com/api/payment/${paymentId}/generate-receipt`,
+  //       `https://api.gharzoreality.com/api/payment/${paymentId}/generate-receipt`,
   //       {},
   //       { headers: { Authorization: `Bearer ${token}` } }
   //     );
 
   //     if (res.data.success) {
-  //       const url = `https://api.drazeapp.com${res.data.receiptUrl}`;
+  //       const url = `https://api.gharzoreality.com${res.data.receiptUrl}`;
   //       const link = document.createElement("a");
   //       link.href = url;
   //       link.download = `Receipt-${res.data.receiptNumber}.pdf`;
@@ -507,7 +507,7 @@ const handlePayNow = async (billId, amount) => {
       }
 
       const res = await axios.post(
-        `https://api.drazeapp.com/api/payment/${paymentId}/generate-receipt`,
+        `https://api.gharzoreality.com/api/payment/${paymentId}/generate-receipt`,
         {},
         {
           headers: {
@@ -518,7 +518,7 @@ const handlePayNow = async (billId, amount) => {
       );
 
       if (res.data.success) {
-        const receiptUrl = `https://api.drazeapp.com${res.data.receiptUrl}`;
+        const receiptUrl = `https://api.gharzoreality.com${res.data.receiptUrl}`;
         const receiptNumber = res.data.receiptNumber;
 
         const link = document.createElement("a");

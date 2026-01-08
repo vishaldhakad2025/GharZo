@@ -68,7 +68,7 @@ const DuePackages = () => {
 
     try {
       const response = await axios.get(
-        "https://api.drazeapp.com/api/sub-owner/auth/profile",
+        "https://api.gharzoreality.com/api/sub-owner/auth/profile",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -133,7 +133,7 @@ const DuePackages = () => {
 
     try {
       const response = await axios.get(
-        "https://api.drazeapp.com/api/subowner/dues",
+        "https://api.gharzoreality.com/api/subowner/dues",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -183,7 +183,7 @@ const DuePackages = () => {
     try {
       // Step 1: Fetch all properties
       const propertiesResponse = await axios.get(
-        "https://api.drazeapp.com/api/sub-owner/properties",
+        "https://api.gharzoreality.com/api/sub-owner/properties",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -210,7 +210,7 @@ const DuePackages = () => {
       // Step 3: Fetch tenants for each property in parallel
       const tenantPromises = propertyIds.map((propId) =>
         axios.get(
-          `https://api.drazeapp.com/api/sub-owner/properties/${propId}/tenants`,
+          `https://api.gharzoreality.com/api/sub-owner/properties/${propId}/tenants`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -297,7 +297,7 @@ const DuePackages = () => {
     try {
       if (selectedCategory) {
         await axios.put(
-          `https://api.drazeapp.com/api/subowner/dues/${selectedCategory._id}`,
+          `https://api.gharzoreality.com/api/subowner/dues/${selectedCategory._id}`,
           {
             name: categoryName,
             type: categoryType,
@@ -320,7 +320,7 @@ const DuePackages = () => {
         });
       } else {
         await axios.post(
-          "https://api.drazeapp.com/api/subowner/dues/create",
+          "https://api.gharzoreality.com/api/subowner/dues/create",
           {
             subOwnerId,
             name: categoryName,
@@ -373,7 +373,7 @@ const DuePackages = () => {
 
     try {
       await axios.put(
-        `https://api.drazeapp.com/api/subowner/dues/${categoryId}`,
+        `https://api.gharzoreality.com/api/subowner/dues/${categoryId}`,
         { status: newStatus, subOwnerId },
         {
           headers: {
@@ -420,7 +420,7 @@ const DuePackages = () => {
 
     try {
       await axios.delete(
-        `https://api.drazeapp.com/api/subowner/dues/${categoryToDelete._id}`,
+        `https://api.gharzoreality.com/api/subowner/dues/${categoryToDelete._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -501,7 +501,7 @@ const DuePackages = () => {
 
     try {
       const response = await axios.post(
-        "https://api.drazeapp.com/api/subowner/dues/assign",
+        "https://api.gharzoreality.com/api/subowner/dues/assign",
         {
           tenantId: selectedTenant,
           dueId: selectedCategory._id,

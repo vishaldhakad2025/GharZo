@@ -21,7 +21,7 @@ const PropertyFeedback = () => {
 
       // Fetch ratings
       const ratingsResponse = await axios.get(
-        `https://api.drazeapp.com/api/subowner/ratings`,
+        `https://api.gharzoreality.com/api/subowner/ratings`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ const PropertyFeedback = () => {
 
       // Fetch comments
       const commentsResponse = await axios.get(
-        `https://api.drazeapp.com/api/subowner/comments/${propertyId}`,
+        `https://api.gharzoreality.com/api/subowner/comments/${propertyId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -110,7 +110,7 @@ const PropertyFeedback = () => {
   const handleDelete = async (itemId, type) => {
     try {
       await axios.delete(
-        `https://api.drazeapp.com/api/subowner/${type === 'rating' ? 'ratings' : 'comments'}/${itemId}`,
+        `https://api.gharzoreality.com/api/subowner/${type === 'rating' ? 'ratings' : 'comments'}/${itemId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

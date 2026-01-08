@@ -23,7 +23,7 @@ function PropertyOwnerLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://api.drazeapp.com/api/property-owner/login", {
+      const response = await fetch("https://api.gharzoreality.com/api/property-owner/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +95,7 @@ function PropertyOwnerLogin() {
         return;
       }
 
-      const response = await fetch("https://api.drazeapp.com/api/organization/my-website", {
+      const response = await fetch("https://api.gharzoreality.com/api/organization/my-website", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,

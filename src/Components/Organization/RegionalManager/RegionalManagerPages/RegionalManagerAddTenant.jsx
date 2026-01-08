@@ -103,7 +103,7 @@ const TenantForm = () => {
           return;
         }
         const response = await axios.get(
-          "https://api.drazeapp.com/api/sub-owner/properties",
+          "https://api.gharzoreality.com/api/sub-owner/properties",
           { headers: { Authorization: `Bearer ${token}` } }
         );
         console.log("Fetched properties:", response.data.properties[0].id);
@@ -160,7 +160,7 @@ const TenantForm = () => {
           }
           console.log("Fetching rooms for propertyId:", formData.propertyId); // Debug log
           const response = await axios.get(
-            `https://api.drazeapp.com/api/sub-owner/properties/${formData.propertyId}/available-rooms`,
+            `https://api.gharzoreality.com/api/sub-owner/properties/${formData.propertyId}/available-rooms`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           const roomsData = Array.isArray(response.data?.rooms)
@@ -232,7 +232,7 @@ const TenantForm = () => {
           }
           console.log("Fetching beds for roomId:", formData.roomId); // Debug log
           const response = await axios.get(
-            `https://api.drazeapp.com/api/sub-owner/properties/${formData.propertyId}/rooms/${formData.roomId}/available-beds`,
+            `https://api.gharzoreality.com/api/sub-owner/properties/${formData.propertyId}/rooms/${formData.roomId}/available-beds`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           const bedsData = Array.isArray(response.data?.beds)
@@ -532,8 +532,8 @@ const TenantForm = () => {
 
     try {
       const url = isEdit
-        ? `https://api.drazeapp.com/api/sub-owner/updateTenant/${editingTenant.id}`
-        : "https://api.drazeapp.com/api/sub-owner/addTenant";
+        ? `https://api.gharzoreality.com/api/sub-owner/updateTenant/${editingTenant.id}`
+        : "https://api.gharzoreality.com/api/sub-owner/addTenant";
       const response = await axios({
         method: isEdit ? "PUT" : "POST",
         url,

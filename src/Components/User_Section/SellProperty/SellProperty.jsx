@@ -27,7 +27,7 @@ function SellProperty() {
         setLoading(true);
         setError(null);
 
-        const res = await axios.get('https://api.drazeapp.com/api/seller/sellerproperties');
+        const res = await axios.get('https://api.gharzoreality.com/api/seller/sellerproperties');
 
         if (res.data.success) {
           // Clean and prepare properties data

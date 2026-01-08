@@ -15,7 +15,7 @@ export default function TenantDues() {
       try {
         setLoading(true);
         const response = await axios.get(
-          "https://api.drazeapp.com/api/tenant/${id}dues",
+          "https://api.gharzoreality.com/api/tenant/${id}dues",
           {
             headers: {
               Authorization: `Bearer ${token}`,

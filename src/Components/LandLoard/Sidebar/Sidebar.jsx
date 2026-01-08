@@ -21,9 +21,9 @@ import {
   FaDiagnoses,
 } from "react-icons/fa";
 import { Home, BadgeCheck } from "lucide-react";
-import logo from "../../../assets/logo/logo.png";
-import dd from "../../../assets/logo/dd.png";
 import { useAuth } from "../../User_Section/Context/AuthContext";
+import logo from "../../../assets/logo/logo.png"; // Full GHARZO logo (expanded)
+import dd from "../../../assets/logo/dd.png";     // Small "dd" icon (collapsed)
 
 const Sidebar = ({ propertyId, setSidebarWidth }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -54,11 +54,17 @@ const Sidebar = ({ propertyId, setSidebarWidth }) => {
   };
 
   useEffect(() => {
-    if (window.innerWidth < 768) {
-      setSidebarWidth(0);
-    } else {
-      setSidebarWidth(isHovered ? 224 : 80);
-    }
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarWidth(0);
+      } else {
+        setSidebarWidth(isHovered ? 260 : 80);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [isHovered, setSidebarWidth]);
 
   const handleNavLinkClick = () => {
@@ -68,21 +74,18 @@ const Sidebar = ({ propertyId, setSidebarWidth }) => {
   };
 
   const linkClass =
-    "flex items-center gap-3 py-2 px-3 rounded-md hover:bg-indigo-600 hover:text-white transition-all duration-300";
-  const activeClass = "bg-indigo-700 text-white shadow-lg";
+    "flex items-center gap-4 py-3 px-4 rounded-xl hover:bg-white/20 transition-all duration-300 backdrop-blur-sm";
+  const activeClass = "bg-white/25 text-white shadow-xl backdrop-blur-md border border-white/30";
 
-  const Colorful3DIcon = ({ icon: Icon, gradient, size = 20 }) => (
+  const Colorful3DIcon = ({ icon: Icon, gradient, size = 22 }) => (
     <motion.div
-      className={`relative p-2 rounded-full shadow-lg transform hover:scale-110 hover:rotate-6 transition-all duration-300 perspective-1000`}
-      style={{ transformStyle: "preserve-3d" }}
-      whileHover={{ y: -2 }}
+      className="relative p-2 rounded-full shadow-lg"
+      whileHover={{ scale: 1.15, rotate: 8 }}
+      transition={{ type: "spring", stiffness: 300 }}
     >
-      <div
-        className={`bg-gradient-to-br ${gradient} rounded-full p-1 shadow-md`}
-      >
-        <Icon size={size} className="text-white drop-shadow-lg" />
+      <div className={`bg-gradient-to-br ${gradient} rounded-full p-2`}>
+        <Icon size={size} className="text-white drop-shadow-md" />
       </div>
-      <div className="absolute inset-0 bg-white/20 rounded-full blur opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
     </motion.div>
   );
 
@@ -91,102 +94,100 @@ const Sidebar = ({ propertyId, setSidebarWidth }) => {
       to: "/",
       icon: Home,
       label: "Home",
-      exact: true,
-      gradient: "from-blue-400 to-indigo-500",
+      gradient: "from-blue-600 to-indigo-800",
     },
     {
       to: "/landlord",
       icon: FaTachometerAlt,
       label: "Dashboard",
-      exact: true,
-      gradient: "from-indigo-400 to-purple-500",
+      gradient: "from-indigo-600 to-blue-800",
     },
-      { 
-      to: "police-verification", 
-      icon: BadgeCheck, 
+    {
+      to: "police-verification",
+      icon: BadgeCheck,
       label: "Police Verification",
-      gradient: "from-purple-400 to-pink-500",
+      gradient: "from-blue-700 to-indigo-900",
     },
-    { 
-      to: "/landlord/property", 
-      icon: FaBuilding, 
+    {
+      to: "/landlord/property",
+      icon: FaBuilding,
       label: "Properties",
-      gradient: "from-purple-400 to-pink-500",
+      gradient: "from-indigo-700 to-blue-900",
     },
-    { 
-      to: "/landlord/add-property", 
-      icon: FaPlus, 
+    {
+      to: "/landlord/add-property",
+      icon: FaPlus,
       label: "Add Property",
-      gradient: "from-green-400 to-teal-500",
+      gradient: "from-blue-600 to-indigo-800",
     },
     {
       to: `/landlord/tenant-form`,
       icon: FaUserPlus,
       label: "Add Tenant",
-      gradient: "from-green-400 to-teal-500",
+      gradient: "from-indigo-600 to-blue-800",
     },
     {
       to: `/landlord/duespackages`,
       icon: FaBoxOpen,
       label: "Dues Packages",
-      gradient: "from-yellow-400 to-amber-500",
+      gradient: "from-blue-700 to-indigo-900",
     },
     {
       to: `/landlord/expenses`,
       icon: FaMoneyBillWave,
       label: "Expenses",
-      gradient: "from-emerald-400 to-green-500",
+      gradient: "from-indigo-700 to-blue-900",
     },
     {
       to: `/landlord/dues`,
       icon: FaFileInvoice,
       label: "Dues",
-      gradient: "from-yellow-400 to-amber-500",
+      gradient: "from-blue-600 to-indigo-800",
     },
     {
       to: `/landlord/switch-requests`,
       icon: FaExchangeAlt,
       label: "Switch Requests",
-      gradient: "from-purple-400 to-pink-500",
+      gradient: "from-indigo-600 to-blue-800",
     },
-    { 
-      to: "/landlord/landlord-profile", 
-      icon: FaUser, 
+    {
+      to: "/landlord/landlord-profile",
+      icon: FaUser,
       label: "Profile",
-      gradient: "from-pink-400 to-rose-500",
+      gradient: "from-blue-700 to-indigo-900",
     },
-    { 
-      to: "/landlord/landlord_reels", 
-      icon: FaVideo, 
+    {
+      to: "/landlord/landlord_reels",
+      icon: FaVideo,
       label: "Reels",
-      gradient: "from-indigo-400 to-purple-500",
+      gradient: "from-indigo-700 to-blue-900",
     },
     {
       to: "/landlord/landlord_subadmin",
       icon: FaUserCircle,
       label: "SubOwner",
-      gradient: "from-emerald-400 to-green-500",
+      gradient: "from-blue-600 to-indigo-800",
     },
     {
       to: "/landlord/announcement",
       icon: FaDiagnoses,
       label: "Announcements",
-      gradient: "from-blue-400 to-indigo-500",
+      gradient: "from-indigo-600 to-blue-800",
     },
   ];
 
   return (
     <>
-      {/* Mobile Hamburger Button */}
+      {/* Mobile Menu Button */}
       {!isMobileOpen && (
         <div className="md:hidden fixed top-4 left-4 z-[10000]">
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => setIsMobileOpen(true)}
-            className="p-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-md shadow-lg"
+            className="p-3 bg-gradient-to-r from-indigo-700 to-blue-900 text-white rounded-xl shadow-2xl"
           >
-            <FaBars size={22} />
+            <FaBars size={24} />
           </motion.button>
         </div>
       )}
@@ -196,112 +197,108 @@ const Sidebar = ({ propertyId, setSidebarWidth }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black bg-opacity-50 z-[9998]"
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/60 z-[9998] md:hidden"
           onClick={() => setIsMobileOpen(false)}
-        ></motion.div>
+        />
       )}
 
-      {/* Sidebar */}
-      <motion.div
+      {/* Sidebar - Dark Blue Glassmorphism Theme */}
+      <motion.aside
         initial={{ x: -300 }}
         animate={{ x: 0 }}
         onMouseEnter={() => window.innerWidth >= 768 && setIsHovered(true)}
         onMouseLeave={() => window.innerWidth >= 768 && setIsHovered(false)}
-        style={{ background: "linear-gradient(180deg, #ceb86fff, #625da7ff, #c8eb67ff)" }}
         className={`
-          sidebar fixed top-0 left-0 h-screen text-white shadow-2xl transition-all duration-500 ease-in-out z-[9999]
-          ${
-            isMobileOpen
-              ? "translate-x-0 w-64"
-              : "-translate-x-full w-0 md:translate-x-0"
-          }
-          ${isHovered ? "md:w-56" : "md:w-20"}
-          flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden
+          fixed top-0 left-0 h-screen z-[9999] flex flex-col
+          backdrop-blur-2xl bg-gradient-to-b from-blue-900/30 to-indigo-950/40
+          border-r border-white/20 shadow-2xl transition-all duration-500 ease-out
+          ${isMobileOpen ? "w-72 translate-x-0" : "w-0 -translate-x-full md:w-auto md:translate-x-0"}
+          ${isHovered ? "md:w-72" : "md:w-20"}
+          overflow-hidden
         `}
+        style={{
+          boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
+        }}
       >
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-2 p-4 ml-4 border-b border-indigo-500 bg-white/10 shadow-inner relative z-10"
-        >
-          <img
-            src={isHovered || isMobileOpen ? logo : dd}
-            alt="Logo"
+        {/* Logo Header */}
+        <div className="p-6 border-b border-white/20 backdrop-blur-xl bg-gradient-to-b from-blue-900/40 to-transparent">
+          <motion.div
+            className="flex items-center justify-center md:justify-start gap-3 cursor-pointer"
             onClick={() => navigate("/")}
-            className={`transition-all duration-500 object-contain cursor-pointer ${
-              isHovered || isMobileOpen ? "w-[100px]" : "w-8"
-            }`}
-          />
-          {(isHovered || isMobileOpen) && (
-            <motion.h2 
-              className="text-xl font-bold tracking-wide bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              
-            </motion.h2>
-          )}
-        </motion.div>
+            whileHover={{ scale: 1.05 }}
+          >
+            <img
+              src={isHovered || isMobileOpen ? logo : dd}
+              alt="Gharzo Logo"
+              className={`
+                object-contain transition-all duration-500
+                ${isHovered || isMobileOpen ? "h-12" : "h-10"}
+              `}
+            />
+            {(isHovered || isMobileOpen) && (
+              <motion.span
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-2xl font-bold text-white drop-shadow-lg"
+              >
+                GHARZO
+              </motion.span>
+            )}
+          </motion.div>
+        </div>
 
         {/* Navigation Links */}
-        <div className="flex-1 flex flex-col justify-between px-2 py-6 relative">
-          <ul className="space-y-2 pb-16">
+        <nav className="flex-1 px-4 py-8 overflow-y-auto">
+          <ul className="space-y-3">
             {links.map(({ to, icon: Icon, label, gradient }) => (
-              <li key={label} className="z-0">
+              <motion.li
+                key={label}
+                whileHover={{ x: 6 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <NavLink
                   to={to}
                   end={to === "/landlord"}
                   onClick={handleNavLinkClick}
                   className={({ isActive }) =>
-                    `${linkClass} ${
-                      isActive ? activeClass : ""
-                    } ${
-                      isHovered || isMobileOpen
-                        ? "gap-4 px-4 py-3 justify-start"
-                        : "justify-center py-3"
+                    `${linkClass} ${isActive ? activeClass : ""} ${
+                      isHovered || isMobileOpen ? "justify-start" : "justify-center"
                     }`
                   }
                 >
-                  <Colorful3DIcon
-                    icon={Icon}
-                    gradient={gradient}
-                  />
+                  <Colorful3DIcon icon={Icon} gradient={gradient} />
                   {(isHovered || isMobileOpen) && (
-                    <span className="text-sm sm:text-base font-medium">
+                    <span className="font-medium text-white drop-shadow">
                       {label}
                     </span>
                   )}
                 </NavLink>
-              </li>
+              </motion.li>
             ))}
           </ul>
+        </nav>
 
-          {/* Logout Button - Fixed at Bottom, No Red BG */}
-          <div className="sticky bottom-0 left-0 w-full bg-transparent z-10 py-2 px-2">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleLogout}
-              className={`
-                w-full flex items-center transition-all duration-300 rounded-lg
-                ${isHovered || isMobileOpen ? "gap-4 px-4 py-3 justify-start" : "justify-center py-3"}
-                hover:bg-white/20 backdrop-blur-sm border border-white/30
-              `}
-            >
-              <Colorful3DIcon
-                icon={FaSignOutAlt}
-                gradient="from-gray-400 to-gray-600"
-              />
-              {(isHovered || isMobileOpen) && (
-                <span className="text-sm sm:text-base font-medium">Logout</span>
-              )}
-            </motion.button>
-          </div>
+        {/* Logout Button */}
+        <div className="p-4 border-t border-white/20 backdrop-blur-xl bg-gradient-to-t from-blue-900/40 to-transparent">
+          <motion.button
+            whileHover={{ scale: 1.03, x: 6 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleLogout}
+            className={`
+              w-full flex items-center rounded-xl py-3 px-4
+              backdrop-blur-sm border border-white/30
+              hover:bg-white/20 transition-all duration-300
+              ${isHovered || isMobileOpen ? "justify-start gap-4" : "justify-center"}
+            `}
+          >
+            <Colorful3DIcon icon={FaSignOutAlt} gradient="from-red-600 to-rose-800" />
+            {(isHovered || isMobileOpen) && (
+              <span className="font-medium text-white">Logout</span>
+            )}
+          </motion.button>
         </div>
-      </motion.div>
+      </motion.aside>
     </>
   );
 };

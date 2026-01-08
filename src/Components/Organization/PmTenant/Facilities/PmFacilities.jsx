@@ -56,7 +56,7 @@ export default function RoomFacilities() {
       try {
         const token = localStorage.getItem("tenanttoken");
         const res = await axios.get(
-          "https://api.drazeapp.com/api/tenant/accommodations",
+          "https://api.gharzoreality.com/api/tenant/accommodations",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

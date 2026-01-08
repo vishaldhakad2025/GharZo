@@ -48,7 +48,7 @@ const TenantList = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://api.drazeapp.com/api/rm/properties/${propertyId}`,
+          `https://api.gharzoreality.com/api/rm/properties/${propertyId}`,
           {
             method: "GET",
             headers: {

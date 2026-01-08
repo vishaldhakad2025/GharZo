@@ -81,7 +81,7 @@ const AssignedRoomOverview = () => {
 
       try {
         setLoading(true);
-        const res = await fetch("https://api.drazeapp.com/api/regional-managers/assigned-properties", {
+        const res = await fetch("https://api.gharzoreality.com/api/regional-managers/assigned-properties", {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",

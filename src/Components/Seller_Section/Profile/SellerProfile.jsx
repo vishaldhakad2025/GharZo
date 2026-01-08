@@ -16,8 +16,8 @@ const SellerProfileManager = () => {
   const [imagePreview, setImagePreview] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const BASE_URL = 'https://api.drazeapp.com/api';
-  const DOMAIN = 'https://api.drazeapp.com'; // For static assets
+  const BASE_URL = 'https://api.gharzoreality.com/api';
+  const DOMAIN = 'https://api.gharzoreality.com'; // For static assets
   const token = localStorage.getItem('sellertoken');
 
   useEffect(() => {

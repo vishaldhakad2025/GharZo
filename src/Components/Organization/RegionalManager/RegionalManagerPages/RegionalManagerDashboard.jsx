@@ -72,7 +72,7 @@ const Dashboard = () => {
 
         // Fetch assigned properties
         const assignedPropsResponse = await axios.get(
-          "https://api.drazeapp.com/api/regional-managers/assigned-properties",
+          "https://api.gharzoreality.com/api/regional-managers/assigned-properties",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -80,7 +80,7 @@ const Dashboard = () => {
 
         // Fetch RM properties
         const rmPropsResponse = await axios.get(
-          "https://api.drazeapp.com/api/rm/properties",
+          "https://api.gharzoreality.com/api/rm/properties",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -120,7 +120,7 @@ const Dashboard = () => {
 
         // Fetch profile data
         const profileResponse = await axios.get(
-          "https://api.drazeapp.com/api/regional-managers/profile",
+          "https://api.gharzoreality.com/api/regional-managers/profile",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -133,7 +133,7 @@ const Dashboard = () => {
           // Fetch total managers using the provided API
           const rmId = profileData.id;
           const managersResponse = await axios.get(
-            `https://api.drazeapp.com/api/property-managers/${rmId}`,
+            `https://api.gharzoreality.com/api/property-managers/${rmId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -147,7 +147,7 @@ const Dashboard = () => {
 
           // Fetch expenses data
           const expensesResponse = await axios.get(
-            `https://api.drazeapp.com/api/rm-expenses/analytics/summary?rm=${rmId}&year=2025`,
+            `https://api.gharzoreality.com/api/rm-expenses/analytics/summary?rm=${rmId}&year=2025`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }

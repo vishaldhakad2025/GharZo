@@ -13,9 +13,9 @@ import {
   CheckCircle,
 } from 'lucide-react';
 
-const API_URL = 'https://api.drazeapp.com/api/tenant/pm/documents';
+const API_URL = 'https://api.gharzoreality.com/api/tenant/pm/documents';
 const UPLOAD_URL = (docId) =>
-  `https://api.drazeapp.com/api/tenant/pm/documents/${docId}/upload`;
+  `https://api.gharzoreality.com/api/tenant/pm/documents/${docId}/upload`;
 
 const DocumentsPage = () => {
   const [documents, setDocuments] = useState([]);
@@ -91,7 +91,7 @@ const DocumentsPage = () => {
   const getStatusColor = (s) =>
     s === 'submitted' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
 
-  const getTemplateUrl = (p) => (p ? `https://api.drazeapp.com${p}` : null);
+  const getTemplateUrl = (p) => (p ? `https://api.gharzoreality.com${p}` : null);
 
   const formatDate = (d) =>
     new Date(d).toLocaleString('en-US', {
@@ -415,7 +415,7 @@ const DocumentCard = ({
             {doc.filledFiles.map((f, i) => (
               <div key={i} className="text-xs">
                 <a
-                  href={`https://api.drazeapp.com${f.filePath}`}
+                  href={`https://api.gharzoreality.com${f.filePath}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline font-medium"

@@ -36,7 +36,7 @@ const EditpropertySeller = () => {
 
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/seller/edit-property/${id}`,
+          `https://api.gharzoreality.com/api/seller/edit-property/${id}`,
           {
             method: "GET",
             headers: {
@@ -121,7 +121,7 @@ const EditpropertySeller = () => {
       };
 
       const response = await fetch(
-        `https://api.drazeapp.com/api/seller/edit-property/${id}`,
+        `https://api.gharzoreality.com/api/seller/edit-property/${id}`,
         {
           method: "PUT",
           headers: {

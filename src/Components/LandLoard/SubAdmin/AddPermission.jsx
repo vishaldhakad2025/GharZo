@@ -25,7 +25,7 @@ const AddPermission = ({ onPermissionAdded }) => {
         }
 
         const response = await fetch(
-          "https://api.drazeapp.com/api/permissions",
+          "https://api.gharzoreality.com/api/permissions",
           {
             method: "GET",
             headers: {
@@ -66,7 +66,7 @@ const AddPermission = ({ onPermissionAdded }) => {
         throw new Error("No token found in localStorage");
       }
 
-      const response = await fetch("https://api.drazeapp.com/api/permissions", {
+      const response = await fetch("https://api.gharzoreality.com/api/permissions", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ const AddPermission = ({ onPermissionAdded }) => {
       }
 
       const response = await fetch(
-        `https://api.drazeapp.com/api/permissions/${editPermission.id}`,
+        `https://api.gharzoreality.com/api/permissions/${editPermission.id}`,
         {
           method: "PUT",
           headers: {
@@ -171,7 +171,7 @@ const AddPermission = ({ onPermissionAdded }) => {
       }
 
       const response = await fetch(
-        `https://api.drazeapp.com/api/permissions/${permissionToDelete}`,
+        `https://api.gharzoreality.com/api/permissions/${permissionToDelete}`,
         {
           method: "DELETE",
           headers: {

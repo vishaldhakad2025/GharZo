@@ -74,7 +74,7 @@ function PropertyManagerCreate() {
 
   const fetchSelfCreatedProperties = async () => {
     try {
-      const response = await fetch('https://api.drazeapp.com/api/rm/properties', {
+      const response = await fetch('https://api.gharzoreality.com/api/rm/properties', {
         method: 'GET',
         headers: headers
       });
@@ -108,7 +108,7 @@ function PropertyManagerCreate() {
     }
 
     try {
-      const response = await fetch('https://api.drazeapp.com/api/kyc/aadhaar/generate-otp', {
+      const response = await fetch('https://api.gharzoreality.com/api/kyc/aadhaar/generate-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ aadhaarNumber }),
@@ -167,7 +167,7 @@ function PropertyManagerCreate() {
     }
     if (!txnId) return;
     try {
-      const response = await fetch('https://api.drazeapp.com/api/kyc/aadhaar/submit-otp', {
+      const response = await fetch('https://api.gharzoreality.com/api/kyc/aadhaar/submit-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -215,7 +215,7 @@ function PropertyManagerCreate() {
     const loadData = async () => {
       setLoading(true);
       try {
-        const profileResponse = await fetch('https://api.drazeapp.com/api/regional-managers/profile', {
+        const profileResponse = await fetch('https://api.gharzoreality.com/api/regional-managers/profile', {
           method: 'GET',
           headers: headers
         });
@@ -368,7 +368,7 @@ function PropertyManagerCreate() {
     };
 
     try {
-      const response = await fetch('https://api.drazeapp.com/api/property-managers', {
+      const response = await fetch('https://api.gharzoreality.com/api/property-managers', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(payload)

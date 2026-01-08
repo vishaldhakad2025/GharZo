@@ -85,7 +85,7 @@ const OrgSidebar = ({ setSidebarWidth }) => {
           return;
         }
 
-        const response = await fetch('https://api.drazeapp.com/api/organization/my-website', {
+        const response = await fetch('https://api.gharzoreality.com/api/organization/my-website', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -99,7 +99,7 @@ const OrgSidebar = ({ setSidebarWidth }) => {
 
         const data = await response.json();
         if (data.success) {
-          const fullLogoUrl = data.data.logoUrl ? `https://api.drazeapp.com${data.data.logoUrl}` : '';
+          const fullLogoUrl = data.data.logoUrl ? `https://api.gharzoreality.com${data.data.logoUrl}` : '';
           setProfile({
   
             logoUrl: fullLogoUrl,

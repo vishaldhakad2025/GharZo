@@ -34,7 +34,7 @@ const Roomswitch = () => {
     const fetchAccommodations = async () => {
       try {
         setAccommodationsLoading(true);
-        const res = await fetch('https://api.drazeapp.com/api/tenant/accommodations', {
+        const res = await fetch('https://api.gharzoreality.com/api/tenant/accommodations', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -71,7 +71,7 @@ const Roomswitch = () => {
       try {
         setRoomsLoading(true);
         const res = await fetch(
-          `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/available`,
+          `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/available`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -110,7 +110,7 @@ const Roomswitch = () => {
       try {
         setBedsLoading(true);
         const res = await fetch(
-          `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.requestedRoomId}/available-beds`,
+          `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.requestedRoomId}/available-beds`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -144,7 +144,7 @@ const Roomswitch = () => {
     const fetchRequests = async () => {
       try {
         setRequestsLoading(true);
-        const res = await fetch('https://api.drazeapp.com/api/tenant/room-switch/pm/my-requests', {
+        const res = await fetch('https://api.gharzoreality.com/api/tenant/room-switch/pm/my-requests', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -270,7 +270,7 @@ const Roomswitch = () => {
       return;
     }
     try {
-      const res = await fetch('https://api.drazeapp.com/api/tenant/room-switch/create', {
+      const res = await fetch('https://api.gharzoreality.com/api/tenant/room-switch/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -282,7 +282,7 @@ const Roomswitch = () => {
       if (res.ok) {
         setResponse(data);
         // Refresh requests after successful submission using NEW API
-        const requestsRes = await fetch('https://api.drazeapp.com/api/tenant/room-switch/pm/my-requests', {
+        const requestsRes = await fetch('https://api.gharzoreality.com/api/tenant/room-switch/pm/my-requests', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

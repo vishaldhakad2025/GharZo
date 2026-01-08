@@ -37,7 +37,7 @@ const Announcements = () => {
 
     try {
       const res = await axios.get(
-        "https://api.drazeapp.com/api/pm-announcement",
+        "https://api.gharzoreality.com/api/pm-announcement",
         {
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,7 @@ const Announcements = () => {
 
     try {
       const res = await axios.delete(
-        `https://api.drazeapp.com/api/subowner/announcements/${announcement._id}`,
+        `https://api.gharzoreality.com/api/subowner/announcements/${announcement._id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -128,7 +128,7 @@ const Announcements = () => {
 
     try {
       const res = await axios.post(
-        "https://api.drazeapp.com/api/subowner/announcements/create",
+        "https://api.gharzoreality.com/api/subowner/announcements/create",
         formData,
         {
           headers: {
@@ -192,7 +192,7 @@ const Announcements = () => {
 
     try {
       const res = await axios.put(
-        `https://api.drazeapp.com/api/subowner/announcements/${editData._id}`,
+        `https://api.gharzoreality.com/api/subowner/announcements/${editData._id}`,
         {
           title: editData.title,
           message: editData.message,

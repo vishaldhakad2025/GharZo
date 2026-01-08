@@ -24,7 +24,7 @@ const Property = () => {
         }
 
         const response = await fetch(
-          "https://api.drazeapp.com/api/sub-owner/properties",
+          "https://api.gharzoreality.com/api/sub-owner/properties",
           {
             method: "GET",
             headers: {

@@ -42,7 +42,7 @@ function ReelsPage() {
           return;
         }
         const response = await fetch(
-          `https://api.drazeapp.com/api/reels?sort=${category}`,
+          `https://api.gharzoreality.com/api/reels?sort=${category}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -117,7 +117,7 @@ function ReelsPage() {
         }
         const statsPromises = reels.map((reel) =>
           Promise.all([
-            fetch(`https://api.drazeapp.com/api/reels/${reel.id}/likes`, {
+            fetch(`https://api.gharzoreality.com/api/reels/${reel.id}/likes`, {
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -125,7 +125,7 @@ function ReelsPage() {
             }).then((res) =>
               res.ok ? res.json() : { success: false, totalLikes: 0, likes: [] }
             ),
-            fetch(`https://api.drazeapp.com/api/reels/${reel.id}/comments`, {
+            fetch(`https://api.gharzoreality.com/api/reels/${reel.id}/comments`, {
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -238,7 +238,7 @@ function ReelsPage() {
         return;
       }
       const response = await fetch(
-        `https://api.drazeapp.com/api/reels/${id}/like`,
+        `https://api.gharzoreality.com/api/reels/${id}/like`,
         {
           method: "POST",
           headers: {
@@ -540,7 +540,7 @@ function ReelsPage() {
                         return;
                       }
                       const response = await fetch(
-                        `https://api.drazeapp.com/api/reels/${reel.id}/comment`,
+                        `https://api.gharzoreality.com/api/reels/${reel.id}/comment`,
                         {
                           method: "POST",
                           headers: {
@@ -610,7 +610,7 @@ function ReelsPage() {
 
             <div className="flex flex-col items-center space-y-4">
               <img
-                src={`https://api.drazeapp.com${showLandlordModal.profilePhoto}`}
+                src={`https://api.gharzoreality.com${showLandlordModal.profilePhoto}`}
                 alt={showLandlordModal.name}
                 className="w-24 h-24 rounded-full object-cover border-2 border-white/20"
               />

@@ -31,7 +31,7 @@ const SubscriptionPlans = () => {
     }
 
     // Fetch profile to get landlordId
-    fetch('https://api.drazeapp.com/api/landlord/profile', {
+    fetch('https://api.gharzoreality.com/api/landlord/profile', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${authToken}`,
@@ -61,8 +61,8 @@ const SubscriptionPlans = () => {
     setLoading(true);
     setError(null);
     const url = activeTab === 'beds' 
-      ? 'https://api.drazeapp.com/api/landlord/subscriptions/plans'
-      : 'https://api.drazeapp.com/api/reel/reel-subscription-plans/active';
+      ? 'https://api.gharzoreality.com/api/landlord/subscriptions/plans'
+      : 'https://api.gharzoreality.com/api/reel/reel-subscription-plans/active';
 
     fetch(url, {
       method: 'GET',
@@ -111,8 +111,8 @@ const SubscriptionPlans = () => {
   const handleSubscribe = async (plan) => {
     // For reels, adjust the capture endpoint if different
     const captureUrl = activeTab === 'beds'
-      ? "https://api.drazeapp.com/api/subscription/capture"
-      : "https://api.drazeapp.com/api/reels/subscription/capture";
+      ? "https://api.gharzoreality.com/api/subscription/capture"
+      : "https://api.gharzoreality.com/api/reels/subscription/capture";
 
     try {
       const res = await loadRazorpayScript();

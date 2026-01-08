@@ -164,7 +164,7 @@ const Dashboard = () => {
       if (!currentOrgId) {
         try {
           const profileRes = await axios.get(
-            "https://api.drazeapp.com/api/organization/profile",
+            "https://api.gharzoreality.com/api/organization/profile",
             { headers: { Authorization: `Bearer ${token}` } }
           );
           currentOrgId = profileRes.data.id;
@@ -204,7 +204,7 @@ const Dashboard = () => {
 
       try {
         const collectionsRes = await axios.get(
-          "https://api.drazeapp.com/api/landlord/analytics/collections",
+          "https://api.gharzoreality.com/api/landlord/analytics/collections",
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setTotalCollected(collectionsRes.data?.totalCollected || 0);
@@ -214,7 +214,7 @@ const Dashboard = () => {
 
       try {
         const regionalManagersRes = await axios.get(
-          `https://api.drazeapp.com/api/regional-managers/${currentOrgId}`,
+          `https://api.gharzoreality.com/api/regional-managers/${currentOrgId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const regionalManagers = regionalManagersRes.data?.data || [];
@@ -226,7 +226,7 @@ const Dashboard = () => {
       // Fixed: Total Expenses from correct API
       try {
         const expensesRes = await axios.get(
-          `https://api.drazeapp.com/api/org-expenses?organization=${currentOrgId}`,
+          `https://api.gharzoreality.com/api/org-expenses?organization=${currentOrgId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (expensesRes.data && Array.isArray(expensesRes.data.expenses)) {

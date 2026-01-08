@@ -23,7 +23,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const API_BASE = "https://api.drazeapp.com";
+const API_BASE = "https://api.gharzoreality.com";
 
 const Colorful3DIcon = ({ icon: Icon, gradient, size = 20 }) => (
   <motion.div

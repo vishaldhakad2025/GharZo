@@ -26,10 +26,10 @@ const SellerMyReelSubscription = () => {
       setError(null);
       try {
         const [subRes, reelsRes] = await Promise.all([
-          axios.get("https://api.drazeapp.com/api/reel-subscription/seller/me", {
+          axios.get("https://api.gharzoreality.com/api/reel-subscription/seller/me", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("https://api.drazeapp.com/api/seller/reels", {
+          axios.get("https://api.gharzoreality.com/api/seller/reels", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

@@ -64,7 +64,7 @@ const usePropertyRooms = (propertyId) => {
   const fetchRoomsOnly = async () => {
     const token = getToken();
     const res = await api.get(
-      `https://api.drazeapp.com/api/pm/properties/${propertyId}/rooms`,
+      `https://api.gharzoreality.com/api/pm/properties/${propertyId}/rooms`,
       { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
     );
     return res.data?.rooms || [];
@@ -75,7 +75,7 @@ const usePropertyRooms = (propertyId) => {
     try {
       const token = getToken();
       const res = await api.get(
-        `https://api.drazeapp.com/api/pm/rooms/${propertyId}/rooms/${roomId}/images`,
+        `https://api.gharzoreality.com/api/pm/rooms/${propertyId}/rooms/${roomId}/images`,
         { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
       );
       return res.data?.success ? res.data.images || [] : [];

@@ -38,7 +38,7 @@ const LandlordProfile = () => {
         console.log("Fetching profile with Token:", token);
         setLoading(true);
         const response = await axios.get(
-          "https://api.drazeapp.com/api/sub-owner/auth/profile",
+          "https://api.gharzoreality.com/api/sub-owner/auth/profile",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

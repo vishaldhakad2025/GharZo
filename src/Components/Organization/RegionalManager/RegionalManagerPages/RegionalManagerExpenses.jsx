@@ -78,7 +78,7 @@ const Expenses = () => {
         return;
       }
       try {
-        const response = await fetch("https://api.drazeapp.com/api/regional-managers/profile", {
+        const response = await fetch("https://api.gharzoreality.com/api/regional-managers/profile", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -124,7 +124,7 @@ const Expenses = () => {
     const fetchAllProperties = async () => {
       if (!token) return;
       try {
-        const response = await fetch("https://api.drazeapp.com/api/rm/properties", {
+        const response = await fetch("https://api.gharzoreality.com/api/rm/properties", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -162,7 +162,7 @@ const Expenses = () => {
 
     const fetchCategories = async () => {
       try {
-        const response = await fetch("https://api.drazeapp.com/api/rm/organization-categories", {
+        const response = await fetch("https://api.gharzoreality.com/api/rm/organization-categories", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -195,7 +195,7 @@ const Expenses = () => {
 
     const fetchExpenses = async () => {
       try {
-        let url = "https://api.drazeapp.com/api/rm/expenses";
+        let url = "https://api.gharzoreality.com/api/rm/expenses";
         const hasFilters =
           filters.category ||
           filters.startDate ||
@@ -212,7 +212,7 @@ const Expenses = () => {
             ...(filters.paidBy && { paidBy: filters.paidBy }),
             ...(filters.paidTo && { paidTo: filters.paidTo }),
           });
-          url = `https://api.drazeapp.com/api/rm/expenses?${queryParams}`;
+          url = `https://api.gharzoreality.com/api/rm/expenses?${queryParams}`;
         }
         const response = await fetch(url, {
           method: "GET",
@@ -237,7 +237,7 @@ const Expenses = () => {
     const fetchMonthlyExpenses = async () => {
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/rm/expenses/trend/monthly?year=${year}`,
+          `https://api.gharzoreality.com/api/rm/expenses/trend/monthly?year=${year}`,
           {
             method: "GET",
             headers: {
@@ -268,7 +268,7 @@ const Expenses = () => {
     const fetchYearlyExpenses = async () => {
       try {
         const response = await fetch(
-          "https://api.drazeapp.com/api/rm/expenses/trend/yearly",
+          "https://api.gharzoreality.com/api/rm/expenses/trend/yearly",
           {
             method: "GET",
             headers: {
@@ -309,7 +309,7 @@ const Expenses = () => {
     const fetchSummary = async () => {
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/rm/expenses/summary?rm=${rmId}`,
+          `https://api.gharzoreality.com/api/rm/expenses/summary?rm=${rmId}`,
           {
             method: "GET",
             headers: {
@@ -341,7 +341,7 @@ const Expenses = () => {
     }
     const fetchCategorySummary = async () => {
       try {
-        let url = `https://api.drazeapp.com/api/rm-expenses/analytics/summary?rm=${rmId}&year=${categorySummaryYear}`;
+        let url = `https://api.gharzoreality.com/api/rm-expenses/analytics/summary?rm=${rmId}&year=${categorySummaryYear}`;
         if (categorySummaryMonth !== "All") {
           url += `&month=${categorySummaryMonth}`;
         }
@@ -373,7 +373,7 @@ const Expenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/rm/organization-categories/${categoryId}`,
+        `https://api.gharzoreality.com/api/rm/organization-categories/${categoryId}`,
         {
           method: "GET",
           headers: {
@@ -408,7 +408,7 @@ const Expenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/rm/expenses/${expenseId}`,
+        `https://api.gharzoreality.com/api/rm/expenses/${expenseId}`,
         {
           method: "GET",
           headers: {
@@ -441,7 +441,7 @@ const Expenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/rm/organization-categories/${editCategoryId}`,
+        `https://api.gharzoreality.com/api/rm/organization-categories/${editCategoryId}`,
         {
           method: "PUT",
           headers: {
@@ -494,7 +494,7 @@ const Expenses = () => {
     }
     try {
       const response = await fetch(
-        "https://api.drazeapp.com/api/rm/organization-categories",
+        "https://api.gharzoreality.com/api/rm/organization-categories",
         {
           method: "POST",
           headers: {
@@ -538,7 +538,7 @@ const Expenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/rm/organization-categories/${categoryId}`,
+        `https://api.gharzoreality.com/api/rm/organization-categories/${categoryId}`,
         {
           method: "DELETE",
           headers: {
@@ -607,7 +607,7 @@ const Expenses = () => {
       formData.append("rm", rmId);
       formData.append("organization", organizationId);
       const response = await fetch(
-        "https://api.drazeapp.com/api/rm/expenses",
+        "https://api.gharzoreality.com/api/rm/expenses",
         {
           method: "POST",
           headers: {
@@ -686,7 +686,7 @@ const Expenses = () => {
       formData.append("rm", rmId);
       formData.append("organization", organizationId);
       const response = await fetch(
-        `https://api.drazeapp.com/api/rm/expenses/${editExpenseId}`,
+        `https://api.gharzoreality.com/api/rm/expenses/${editExpenseId}`,
         {
           method: "PUT",
           headers: {
@@ -738,7 +738,7 @@ const Expenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/rm/expenses/${expenseId}`,
+        `https://api.gharzoreality.com/api/rm/expenses/${expenseId}`,
         {
           method: "DELETE",
           headers: {

@@ -64,7 +64,7 @@ const RentAgreementForm = () => {
         }
 
         // Fetch Tenant Profile
-        const profileRes = await axios.get("https://api.drazeapp.com/api/tenant/profile", {
+        const profileRes = await axios.get("https://api.gharzoreality.com/api/tenant/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const tenant = profileRes.data?.tenant;
@@ -72,7 +72,7 @@ const RentAgreementForm = () => {
         const tenantId = tenant.tenantId;
 
         // Fetch Accommodation Info
-        const accRes = await axios.get("https://api.drazeapp.com/api/tenant/accommodations", {
+        const accRes = await axios.get("https://api.gharzoreality.com/api/tenant/accommodations", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const accommodation = accRes.data.accommodations?.[0];
@@ -82,10 +82,10 @@ const RentAgreementForm = () => {
         if (accommodation.landlordId) {
           try {
             const sigRes = await axios.get(
-              `https://api.drazeapp.com/api/landlord/signatureqwerty/${accommodation.landlordId}`
+              `https://api.gharzoreality.com/api/landlord/signatureqwerty/${accommodation.landlordId}`
             );
             const sigUrl = sigRes.data?.signatureUrl
-              ? `https://api.drazeapp.com${sigRes.data.signatureUrl}`
+              ? `https://api.gharzoreality.com${sigRes.data.signatureUrl}`
               : "";
             setLandlordSignature(sigUrl);
           } catch (err) {
@@ -97,11 +97,11 @@ const RentAgreementForm = () => {
         // Fetch Tenant Signature
         try {
           const tenantSigRes = await axios.get(
-            `https://api.drazeapp.com/api/landlord/tenant/signature/${tenantId}`,
+            `https://api.gharzoreality.com/api/landlord/tenant/signature/${tenantId}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           if (tenantSigRes.data.success && tenantSigRes.data.signatureUrl) {
-            setTenantSignature(`https://api.drazeapp.com${tenantSigRes.data.signatureUrl}`);
+            setTenantSignature(`https://api.gharzoreality.com${tenantSigRes.data.signatureUrl}`);
           } else {
             setTenantSignature("");
           }

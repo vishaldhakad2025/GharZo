@@ -17,7 +17,7 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-const API_BASE = "https://api.drazeapp.com";
+const API_BASE = "https://api.gharzoreality.com";
 
 function OrganizationProfile() {
   const { role, loading, logout } = useAuth();

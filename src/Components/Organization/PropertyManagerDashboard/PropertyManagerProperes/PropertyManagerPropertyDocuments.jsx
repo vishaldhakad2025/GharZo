@@ -56,7 +56,7 @@ export default function PropertyManagerPropertyDocuments() {
       setFetchingProps(true);
       setError('');
       try {
-        const res = await fetch('https://api.drazeapp.com/api/pm/properties', {
+        const res = await fetch('https://api.gharzoreality.com/api/pm/properties', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -112,7 +112,7 @@ const fetchAllDocs = async () => {
   setDocsError('');
 
   try {
-    const res = await fetch('https://api.drazeapp.com/api/pm/documents/all', {
+    const res = await fetch('https://api.gharzoreality.com/api/pm/documents/all', {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -211,7 +211,7 @@ const fetchAllDocs = async () => {
     if (!sendToAll) fd.append('tenantIds', selectedTenantIds.join(','));
 
     try {
-      const res = await fetch('https://api.drazeapp.com/api/pm/documents', {
+      const res = await fetch('https://api.gharzoreality.com/api/pm/documents', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
@@ -246,7 +246,7 @@ const fetchAllDocs = async () => {
     setReviewError('');
     try {
       const res = await fetch(
-        `https://api.drazeapp.com/api/pm/documents/${selectedDoc._id}/review`,
+        `https://api.gharzoreality.com/api/pm/documents/${selectedDoc._id}/review`,
         {
           method: 'POST',
           headers: {
@@ -286,7 +286,7 @@ const fetchAllDocs = async () => {
     setReviewError('');
     try {
       const res = await fetch(
-        `https://api.drazeapp.com/api/pm/documents/${selectedDoc._id}/review/${tenantId}`,
+        `https://api.gharzoreality.com/api/pm/documents/${selectedDoc._id}/review/${tenantId}`,
         {
           method: 'POST',
           headers: {
@@ -796,7 +796,7 @@ const fetchAllDocs = async () => {
                           <p className="text-sm text-gray-500">{formatDate(f.uploadedAt)}</p>
                         </div>
                         <a
-                          href={`https://api.drazeapp.com${f.filePath}`}
+                          href={`https://api.gharzoreality.com${f.filePath}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-sm font-medium"
@@ -841,7 +841,7 @@ const fetchAllDocs = async () => {
                                 </div>
                               </div>
                               <a
-                                href={`https://api.drazeapp.com${f.filePath}`}
+                                href={`https://api.gharzoreality.com${f.filePath}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-sm font-medium"

@@ -88,7 +88,7 @@ const AddWorkerForm = () => {
 
       // Fetch properties
       const propRes = await fetch(
-        "https://api.drazeapp.com/api/pm/properties",
+        "https://api.gharzoreality.com/api/pm/properties",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -102,7 +102,7 @@ const AddWorkerForm = () => {
 
       // Fetch workers to get assigned properties
       const workerRes = await fetch(
-        "https://api.drazeapp.com/api/pm/workers",
+        "https://api.gharzoreality.com/api/pm/workers",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -146,7 +146,7 @@ const AddWorkerForm = () => {
       return;
     }
     try {
-      const res = await fetch("https://api.drazeapp.com/api/kyc/aadhaar/generate-otp", {
+      const res = await fetch("https://api.gharzoreality.com/api/kyc/aadhaar/generate-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ aadhaarNumber: cleanAadhaar }),
@@ -183,7 +183,7 @@ const AddWorkerForm = () => {
     }
     if (!txnId) return;
     try {
-      const res = await fetch("https://api.drazeapp.com/api/kyc/aadhaar/submit-otp", {
+      const res = await fetch("https://api.gharzoreality.com/api/kyc/aadhaar/submit-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ txnId, otp }),
@@ -347,7 +347,7 @@ const AddWorkerForm = () => {
         formDataToSend.append("propertyIds[]", id);
       });
 
-      const res = await fetch("https://api.drazeapp.com/api/pm/workers", {
+      const res = await fetch("https://api.gharzoreality.com/api/pm/workers", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

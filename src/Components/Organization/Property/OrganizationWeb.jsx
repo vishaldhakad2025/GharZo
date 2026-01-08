@@ -14,7 +14,7 @@ const OrganizationWeb = () => {
         if (!token) {
           throw new Error("No authentication token found");
         }
-        const res = await fetch("https://api.drazeapp.com/api/organization/my-website", {
+        const res = await fetch("https://api.gharzoreality.com/api/organization/my-website", {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
@@ -74,7 +74,7 @@ const handleVisitWebsite = (orgSubdomain) => {
 
   const themeColor = org.website?.themeColor || "#ff6600";
   const logoUrl = org.logoUrl
-    ? `https://api.drazeapp.com${org.logoUrl}` // API base prepend
+    ? `https://api.gharzoreality.com${org.logoUrl}` // API base prepend
     : "https://via.placeholder.com/150?text=Logo";
 
   return (

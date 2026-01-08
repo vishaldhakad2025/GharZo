@@ -20,7 +20,7 @@ function Profilepropmng() {
       }
 
       try {
-        const response = await fetch("https://api.drazeapp.com/api/property-managers/profile", {
+        const response = await fetch("https://api.gharzoreality.com/api/property-managers/profile", {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -48,7 +48,7 @@ function Profilepropmng() {
     if (!token) return;
 
     try {
-      const response = await fetch("https://api.drazeapp.com/api/property-managers/logout", {
+      const response = await fetch("https://api.gharzoreality.com/api/property-managers/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

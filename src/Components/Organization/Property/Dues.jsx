@@ -50,7 +50,7 @@ const Dues = () => {
   
       try {
         const response = await axios.get(
-          `https://api.drazeapp.com/api/dues/alldues/${landlordId}`,
+          `https://api.gharzoreality.com/api/dues/alldues/${landlordId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -131,7 +131,7 @@ const Dues = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://api.drazeapp.com/api/organization/profile",
+        "https://api.gharzoreality.com/api/organization/profile",
         {
           method: "GET",
           headers: {
@@ -173,7 +173,7 @@ const Dues = () => {
 
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/dues/getdue/${landlordId}`,
+          `https://api.gharzoreality.com/api/dues/getdue/${landlordId}`,
           {
             method: "GET",
             headers: {

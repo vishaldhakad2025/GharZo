@@ -89,13 +89,13 @@ const Dashboard = () => {
           collRes,
           duesRes,
         ] = await Promise.all([
-          fetch("https://api.drazeapp.com/api/pm/properties", { headers }).catch(() => null),
-          fetch("https://api.drazeapp.com/api/pm/complaints/all", { headers }).catch(() => null),
-          fetch("https://api.drazeapp.com/api/pm/workers", { headers }).catch(() => null),
-          fetch("https://api.drazeapp.com/api/pm/tenants/count", { headers }).catch(() => null),
-          fetch("https://api.drazeapp.com/api/pm/expenses/analytics/trend/yearly", { headers }).catch(() => null),
-          fetch("https://api.drazeapp.com/api/pm/collections/summary", { headers }).catch(() => null),
-          fetch("https://api.drazeapp.com/api/pm/dues", { headers }).catch(() => null),
+          fetch("https://api.gharzoreality.com/api/pm/properties", { headers }).catch(() => null),
+          fetch("https://api.gharzoreality.com/api/pm/complaints/all", { headers }).catch(() => null),
+          fetch("https://api.gharzoreality.com/api/pm/workers", { headers }).catch(() => null),
+          fetch("https://api.gharzoreality.com/api/pm/tenants/count", { headers }).catch(() => null),
+          fetch("https://api.gharzoreality.com/api/pm/expenses/analytics/trend/yearly", { headers }).catch(() => null),
+          fetch("https://api.gharzoreality.com/api/pm/collections/summary", { headers }).catch(() => null),
+          fetch("https://api.gharzoreality.com/api/pm/dues", { headers }).catch(() => null),
         ]);
 
         // Properties

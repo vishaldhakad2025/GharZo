@@ -122,7 +122,7 @@ const AddRegionalManager = () => {
         throw new Error("No token found in localStorage");
       }
 
-      const response = await fetch("https://api.drazeapp.com/api/organization/profile", {
+      const response = await fetch("https://api.gharzoreality.com/api/organization/profile", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -200,7 +200,7 @@ const AddRegionalManager = () => {
       }
 
       const response = await fetch(
-        "https://api.drazeapp.com/api/landlord/properties",
+        "https://api.gharzoreality.com/api/landlord/properties",
         {
           method: "GET",
           headers: {
@@ -382,7 +382,7 @@ const AddRegionalManager = () => {
         throw new Error("No token found in localStorage");
       }
 
-      const response = await fetch("https://api.drazeapp.com/api/regional-managers", {
+      const response = await fetch("https://api.gharzoreality.com/api/regional-managers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

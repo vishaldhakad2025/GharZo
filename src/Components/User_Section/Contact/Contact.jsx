@@ -123,7 +123,7 @@ function Contact() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://api.drazeapp.com/api/contact", {
+      const response = await fetch("https://api.gharzoreality.com/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

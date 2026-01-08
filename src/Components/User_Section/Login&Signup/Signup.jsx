@@ -327,7 +327,7 @@ export default Signup;
 
 //     try {
 //       const res = await axios.post(
-//         "https://api.drazeapp.com/api/auth/user/register",
+//         "https://api.gharzoreality.com/api/auth/user/register",
 //         form,
 //         {
 //           headers: { "Content-Type": "application/json" },

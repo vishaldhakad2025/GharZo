@@ -123,7 +123,7 @@ const TenantForm = () => {
       }
       try {
         const response = await axios.get(
-          "https://api.drazeapp.com/api/landlord/profile",
+          "https://api.gharzoreality.com/api/landlord/profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -151,7 +151,7 @@ const TenantForm = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "https://api.drazeapp.com/api/landlord/properties",
+          "https://api.gharzoreality.com/api/landlord/properties",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -175,7 +175,7 @@ const TenantForm = () => {
       }
       try {
         const response = await axios.get(
-          `https://api.drazeapp.com/api/dues/alldues/${landlordId}`,
+          `https://api.gharzoreality.com/api/dues/alldues/${landlordId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -215,7 +215,7 @@ const TenantForm = () => {
       if (!token) return;
       try {
         const response = await axios.get(
-          `https://api.drazeapp.com/api/dues/tenant/${editingTenant.id}`,
+          `https://api.gharzoreality.com/api/dues/tenant/${editingTenant.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -319,7 +319,7 @@ const TenantForm = () => {
       if (!token) return;
       try {
         const res = await axios.get(
-          `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}/available-beds`,
+          `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}/available-beds`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -339,7 +339,7 @@ const TenantForm = () => {
       if (!token) return;
       try {
         const res = await axios.get(
-          `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/available`,
+          `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/available`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -360,7 +360,7 @@ const TenantForm = () => {
     }
     try {
       const res = await axios.post(
-        "https://api.drazeapp.com/api/kyc/aadhaar/generate-otp",
+        "https://api.gharzoreality.com/api/kyc/aadhaar/generate-otp",
         { aadhaarNumber },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -386,7 +386,7 @@ const TenantForm = () => {
     if (!txnId) return;
     try {
       const res = await axios.post(
-        "https://api.drazeapp.com/api/kyc/aadhaar/submit-otp",
+        "https://api.gharzoreality.com/api/kyc/aadhaar/submit-otp",
         { txnId, otp },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -644,7 +644,7 @@ const TenantForm = () => {
     try {
       if (selectedCategory) {
         await axios.put(
-          `https://api.drazeapp.com/api/dues/edit/${selectedCategory._id}`,
+          `https://api.gharzoreality.com/api/dues/edit/${selectedCategory._id}`,
           {
             name: categoryName,
             type: categoryType,
@@ -660,7 +660,7 @@ const TenantForm = () => {
         toast.success("Category updated successfully!");
       } else {
         await axios.post(
-          "https://api.drazeapp.com/api/dues/create",
+          "https://api.gharzoreality.com/api/dues/create",
           {
             name: categoryName,
             type: categoryType,
@@ -677,7 +677,7 @@ const TenantForm = () => {
         toast.success("Category added successfully!");
       }
       const response = await axios.get(
-        `https://api.drazeapp.com/api/dues/alldues/${landlordId}`,
+        `https://api.gharzoreality.com/api/dues/alldues/${landlordId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -724,7 +724,7 @@ const TenantForm = () => {
     const newStatus = category.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
     try {
       await axios.put(
-        `https://api.drazeapp.com/api/dues/edit/${categoryId}`,
+        `https://api.gharzoreality.com/api/dues/edit/${categoryId}`,
         {
           status: newStatus,
         },
@@ -737,7 +737,7 @@ const TenantForm = () => {
       );
       toast.success("Category status updated successfully!");
       const response = await axios.get(
-        `https://api.drazeapp.com/api/dues/alldues/${landlordId}`,
+        `https://api.gharzoreality.com/api/dues/alldues/${landlordId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -778,7 +778,7 @@ const TenantForm = () => {
       }
       try {
         await axios.delete(
-          `https://api.drazeapp.com/api/dues/delete/${categoryId}`,
+          `https://api.gharzoreality.com/api/dues/delete/${categoryId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -788,7 +788,7 @@ const TenantForm = () => {
         );
         toast.success("Due category deleted successfully!");
         const response = await axios.get(
-          `https://api.drazeapp.com/api/dues/alldues/${landlordId}`,
+          `https://api.gharzoreality.com/api/dues/alldues/${landlordId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -1045,7 +1045,7 @@ const TenantForm = () => {
       try {
         console.log(`Assigning due ${dueId} for tenant ${tenantId} with amount ${data.amount} and dueDate ${data.dueDate}`);
         const response = await axios.post(
-          "https://api.drazeapp.com/api/dues/assign",
+          "https://api.gharzoreality.com/api/dues/assign",
           {
             tenantId,
             landlordId,
@@ -1145,7 +1145,7 @@ const TenantForm = () => {
       console.log("Submitting tenant data:", JSON.stringify(payload, null, 2));
       const response = await axios({
         method: isEdit ? "PUT" : "POST",
-        url: `https://api.drazeapp.com/api/landlord/tenant${isEdit ? `/${editingTenant.id}` : ""}`,
+        url: `https://api.gharzoreality.com/api/landlord/tenant${isEdit ? `/${editingTenant.id}` : ""}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -1178,7 +1178,7 @@ const TenantForm = () => {
       if (formData.propertyId && formData.roomId && formData.bedId) {
         try {
           await axios.put(
-            `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}/beds/${formData.bedId}/status`,
+            `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}/beds/${formData.bedId}/status`,
             {
               status: "Reserved",
               notes: "Bed reserved for tenant assignment",
@@ -1191,14 +1191,14 @@ const TenantForm = () => {
             }
           );
           const res = await axios.get(
-            `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}/available-beds`,
+            `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}/available-beds`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
           );
           setAvailableBeds(res.data?.beds || []);
           const allBedsRes = await axios.get(
-            `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}`,
+            `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -1207,7 +1207,7 @@ const TenantForm = () => {
           const allReserved = allBeds.length > 0 && allBeds.every(bed => bed.status === "Reserved");
           if (allReserved) {
             await axios.put(
-              `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}/status`,
+              `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.roomId}/status`,
               {
                 status: "Reserved",
                 notes: "All beds reserved, room reserved automatically",

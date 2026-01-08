@@ -47,7 +47,7 @@ function PropertyOwnerProfile() {
           return;
         }
 
-        const response = await fetch("https://api.drazeapp.com/api/property-owner/profile", {
+        const response = await fetch("https://api.gharzoreality.com/api/property-owner/profile", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

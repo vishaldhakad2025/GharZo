@@ -55,7 +55,7 @@ const Complaints = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/complaints?page=${page}&limit=${pagination.limit}`,
+          `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/complaints?page=${page}&limit=${pagination.limit}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -114,7 +114,7 @@ const Complaints = () => {
 
     try {
       const response = await axios.patch(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/complaints/${complaintId}/status`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/complaints/${complaintId}/status`,
         { status: "Resolved", notes: landlordResponse },
         {
           headers: {

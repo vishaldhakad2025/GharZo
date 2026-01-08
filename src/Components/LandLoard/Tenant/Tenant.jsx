@@ -16,7 +16,7 @@ const Tenant = () => {
         if (!token) throw new Error("No token found. Please login again.");
 
         const res = await fetch(
-          `https://api.drazeapp.com/api/landlord/tenant/property/${id}`,
+          `https://api.gharzoreality.com/api/landlord/tenant/property/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

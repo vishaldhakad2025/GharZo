@@ -19,7 +19,7 @@ const OrganizationTenantList = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://api.drazeapp.com/api/landlord/tenant",
+        "https://api.gharzoreality.com/api/landlord/tenant",
         {
           headers: {
             Authorization: `Bearer ${token}`,

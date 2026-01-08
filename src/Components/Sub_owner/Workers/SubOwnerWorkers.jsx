@@ -171,10 +171,10 @@ const WorkerModal = ({ worker, onClose, onSave, onDelete, isViewMode = false }) 
 
         // fetch both
         const [propRes, workerRes] = await Promise.all([
-          axios.get("https://api.drazeapp.com/api/sub-owner/properties", {
+          axios.get("https://api.gharzoreality.com/api/sub-owner/properties", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("https://api.drazeapp.com/api/sub-owner/workers", {
+          axios.get("https://api.gharzoreality.com/api/sub-owner/workers", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -264,7 +264,7 @@ const WorkerModal = ({ worker, onClose, onSave, onDelete, isViewMode = false }) 
 
       // Make PUT request. Let axios set Content-Type
       const urlWorkerId = worker.id || worker._id;
-      const res = await axios.put(`https://api.drazeapp.com/api/sub-owner/workers/${urlWorkerId}`, data, {
+      const res = await axios.put(`https://api.gharzoreality.com/api/sub-owner/workers/${urlWorkerId}`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -506,7 +506,7 @@ const WorkerDashboard = () => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("Authentication missing");
 
-      const res = await axios.get("https://api.drazeapp.com/api/sub-owner/workers", {
+      const res = await axios.get("https://api.gharzoreality.com/api/sub-owner/workers", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -560,7 +560,7 @@ const WorkerDashboard = () => {
       const workerId = worker.id || worker._id;
       if (!workerId) throw new Error("Invalid worker id");
 
-      await axios.delete(`https://api.drazeapp.com/api/sub-owner/workers/${workerId}`, {
+      await axios.delete(`https://api.gharzoreality.com/api/sub-owner/workers/${workerId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

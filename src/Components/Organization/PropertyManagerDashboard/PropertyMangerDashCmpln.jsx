@@ -39,12 +39,12 @@ function PropertyMangerDashCmpln() {
         }
 
         const complaintsRes = await axios.get(
-          "https://api.drazeapp.com/api/pm/complaints/all",
+          "https://api.gharzoreality.com/api/pm/complaints/all",
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
         const workersRes = await axios.get(
-          "https://api.drazeapp.com/api/pm/workers",
+          "https://api.gharzoreality.com/api/pm/workers",
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -118,7 +118,7 @@ function PropertyMangerDashCmpln() {
         return;
       }
 
-      const url = `https://api.drazeapp.com/api/pm/complaints/update/${complaint.tenantId}/${complaintId}`;
+      const url = `https://api.gharzoreality.com/api/pm/complaints/update/${complaint.tenantId}/${complaintId}`;
 
       const response = await axios.patch(
         url,
@@ -163,7 +163,7 @@ function PropertyMangerDashCmpln() {
       const complaint = allComplaints.find((c) => c.complaintId === complaintId);
       if (!complaint) throw new Error("Complaint not found");
 
-      const url = `https://api.drazeapp.com/api/pm/complaints/properties/${complaint.propertyId}/complaints/${complaintId}/assign-worker`;
+      const url = `https://api.gharzoreality.com/api/pm/complaints/properties/${complaint.propertyId}/complaints/${complaintId}/assign-worker`;
 
       const response = await axios.patch(
         url,
@@ -218,7 +218,7 @@ function PropertyMangerDashCmpln() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.patch(
-        `https://api.drazeapp.com/api/pm/complaints/properties/${propertyId}/complaints/${complaintId}/feedback`,
+        `https://api.gharzoreality.com/api/pm/complaints/properties/${propertyId}/complaints/${complaintId}/feedback`,
         { rating, feedback },
         {
           headers: {

@@ -29,7 +29,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AssignedRoomOverview from "./AssignedRoomOverview"; // New import for rooms component
 import AssignedRoomTenant from "./AssignedRoomTenant"; // New import for tenants component
 
-const API_BASE = "https://api.drazeapp.com";
+const API_BASE = "https://api.gharzoreality.com";
 
 const tabList = [
   "Details",

@@ -875,7 +875,7 @@ const Hostel = () => {
 
     const fetchHostels = async () => {
       try {
-        const res = await axios.get("https://api.drazeapp.com/api/public/properties/Hostel");
+        const res = await axios.get("https://api.gharzoreality.com/api/public/properties/Hostel");
         console.log("API Response:", res.data); // Debug log
         const raw = res.data;
 

@@ -48,7 +48,7 @@ const AssignedRoomTenant = () => {
 
       try {
         setLoading(true);
-        const response = await fetch("https://api.drazeapp.com/api/regional-managers/assigned-properties", {
+        const response = await fetch("https://api.gharzoreality.com/api/regional-managers/assigned-properties", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

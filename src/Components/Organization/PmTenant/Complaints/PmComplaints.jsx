@@ -46,7 +46,7 @@ export default function TenantComplaints() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch("https://api.drazeapp.com/api/tenant/accommodations", {
+        const res = await fetch("https://api.gharzoreality.com/api/tenant/accommodations", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -81,7 +81,7 @@ export default function TenantComplaints() {
         setLoading(true);
         setError(null);
         const res = await fetch(
-          `https://api.drazeapp.com/api/landlord/tenant/${tenantId}/complaints`,
+          `https://api.gharzoreality.com/api/landlord/tenant/${tenantId}/complaints`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export default function TenantComplaints() {
 
     const fetchNotifications = async () => {
       try {
-        const res = await fetch("https://api.drazeapp.com/api/tenant/notifications", {
+        const res = await fetch("https://api.gharzoreality.com/api/tenant/notifications", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -186,7 +186,7 @@ export default function TenantComplaints() {
         category: form.category,
       };
 
-      const res = await fetch("https://api.drazeapp.com/api/landlord/tenant/complaint", {
+      const res = await fetch("https://api.gharzoreality.com/api/landlord/tenant/complaint", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

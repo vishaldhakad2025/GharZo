@@ -130,7 +130,7 @@ const WorkerModal = ({ worker, onClose, onEdit, onDelete }) => {
           return;
         }
         const res = await axios.get(
-          `https://api.drazeapp.com/api/pm/workers/${worker.id}`,
+          `https://api.gharzoreality.com/api/pm/workers/${worker.id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -161,7 +161,7 @@ const WorkerModal = ({ worker, onClose, onEdit, onDelete }) => {
 
         // Fetch properties
         const propRes = await axios.get(
-          "https://api.drazeapp.com/api/pm/properties",
+          "https://api.gharzoreality.com/api/pm/properties",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -528,7 +528,7 @@ const WorkerDashboard = () => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No token found");
         const response = await axios.get(
-          "https://api.drazeapp.com/api/pm/workers",
+          "https://api.gharzoreality.com/api/pm/workers",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -578,7 +578,7 @@ const WorkerDashboard = () => {
       });
 
       const response = await axios.put(
-        `https://api.drazeapp.com/api/pm/workers/${workerId}`,
+        `https://api.gharzoreality.com/api/pm/workers/${workerId}`,
         formDataToSend,
         {
           headers: {
@@ -607,7 +607,7 @@ const WorkerDashboard = () => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token found");
       const response = await axios.delete(
-        `https://api.drazeapp.com/api/pm/workers/${workerData.id}`,
+        `https://api.gharzoreality.com/api/pm/workers/${workerData.id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
           data: {

@@ -48,7 +48,7 @@ function SubOwnerProfile() {
 
       setLoading(true);
       const response = await fetch(
-        "https://api.drazeapp.com/api/sub-owner/auth/profile",
+        "https://api.gharzoreality.com/api/sub-owner/auth/profile",
         {
           method: "GET",
           headers: {
@@ -115,7 +115,7 @@ function SubOwnerProfile() {
       }
 
       const response = await fetch(
-        "https://api.drazeapp.com/api/sub-owner/auth/profile",
+        "https://api.gharzoreality.com/api/sub-owner/auth/profile",
         {
           method: "PUT",
           headers: {
@@ -153,7 +153,7 @@ function SubOwnerProfile() {
 
       setLoading(true);
       const response = await axios.put(
-        "https://api.drazeapp.com/api/sub-owner/auth/change-password",
+        "https://api.gharzoreality.com/api/sub-owner/auth/change-password",
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword,
@@ -262,9 +262,9 @@ function SubOwnerProfile() {
                     ? previewImage
                     : subOwnerData.profilePhoto &&
                       subOwnerData.profilePhoto.startsWith("http")
-                    ? `https://api.drazeapp.com${subOwnerData.profilePhoto}`
+                    ? `https://api.gharzoreality.com${subOwnerData.profilePhoto}`
                     : subOwnerData.profilePhoto
-                    ? `https://api.drazeapp.com${subOwnerData.profilePhoto}`
+                    ? `https://api.gharzoreality.com${subOwnerData.profilePhoto}`
                     : user
                 }
                 alt="Profile"

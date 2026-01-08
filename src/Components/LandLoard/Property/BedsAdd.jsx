@@ -159,7 +159,7 @@ const BedsAdd = () => {
   const roomId = searchParams.get("roomId");
   const viewMode = searchParams.get("view") === "true";
   const API_BASE = `${baseurl}api/landlord/properties/${propertyId}/rooms`;
-  const [beds, setBeds] = useState([]); // All beds in property (filtered by roomId if provided)
+  const [beds, setBeds] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showAddBedForm, setShowAddBedForm] = useState(false);
@@ -179,9 +179,11 @@ const BedsAdd = () => {
     isConfirmDialog: false,
   });
   const [imageModal, setImageModal] = useState({ open: false, type: '', images: [], currentIndex: 0, roomId: '', bedId: '' });
-  const [globalTotalBeds, setGlobalTotalBeds] = useState(0);
-  const [totalLimit, setTotalLimit] = useState(0);
-  const [landlordId, setLandlordId] = useState(null);
+
+  // Subscription related states removed
+  // const [globalTotalBeds, setGlobalTotalBeds] = useState(0);
+  // const [totalLimit, setTotalLimit] = useState(0);
+  // const [landlordId, setLandlordId] = useState(null);
 
   const getToken = () => localStorage.getItem("token");
   const debounce = (func, delay) => {
@@ -199,53 +201,12 @@ const BedsAdd = () => {
     setImageModal({ open: false, type: '', images: [], currentIndex: 0, roomId: '', bedId: '' });
   }, []);
 
-  // Fetch global beds count and subscriptions
-  const fetchGlobalBedsCount = useCallback(async () => {
-    try {
-      const token = getToken();
-      if (!token) return;
-      const res = await axios.get(`${baseurl}api/landlord/properties/beds/count`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.data.success) {
-        setGlobalTotalBeds(res.data.totalBeds || 0);
-        setLandlordId(res.data.landlordId);
-      }
-    } catch (err) {
-      console.error("Error fetching global beds count:", err);
-    }
-  }, []);
+  // Subscription related fetches removed
+  // const fetchGlobalBedsCount = useCallback(async () => { ... });
+  // const fetchMySubscriptions = useCallback(async () => { ... });
+  // useEffect(() => { fetchGlobalBedsCount(); }, [fetchGlobalBedsCount]);
+  // useEffect(() => { if (landlordId) fetchMySubscriptions(); }, [landlordId, fetchMySubscriptions]);
 
-  const fetchMySubscriptions = useCallback(async () => {
-    if (!landlordId) return;
-    try {
-      const token = getToken();
-      if (!token) return;
-      const res = await axios.get(`${baseurl}api/landlord/subscriptions/my-subscriptions/${landlordId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.data.success) {
-        const activeSubsWithPlan = res.data.data.filter(sub => sub.status === 'active' && sub.planId && sub.planId.maxBeds);
-        const calculatedLimit = activeSubsWithPlan.reduce((acc, sub) => acc + sub.planId.maxBeds, 0);
-        setTotalLimit(calculatedLimit || 0);
-      }
-    } catch (err) {
-      console.error("Error fetching subscriptions:", err);
-      setTotalLimit(0);
-    }
-  }, [landlordId]);
-
-  useEffect(() => {
-    fetchGlobalBedsCount();
-  }, [fetchGlobalBedsCount]);
-
-  useEffect(() => {
-    if (landlordId) {
-      fetchMySubscriptions();
-    }
-  }, [landlordId, fetchMySubscriptions]);
-
-  // Fetch beds for property (filter by roomId if provided)
   const fetchBeds = useCallback(async () => {
     try {
       setLoading(true);
@@ -258,7 +219,6 @@ const BedsAdd = () => {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
       let fetchedBeds = res.data.beds || [];
-      // Fetch images for each bed
       fetchedBeds = await Promise.all(
         fetchedBeds.map(async (bed) => {
           const bedImagesRes = await axios.get(
@@ -275,7 +235,7 @@ const BedsAdd = () => {
     } finally {
       setLoading(false);
     }
-  }, [propertyId, roomId]);
+  }, [propertyId, roomId, API_BASE]);
 
   const debouncedFetchBeds = useCallback(debounce(fetchBeds, 300), [fetchBeds]);
 
@@ -283,7 +243,6 @@ const BedsAdd = () => {
     if (propertyId) debouncedFetchBeds();
   }, [propertyId, debouncedFetchBeds]);
 
-  // Delete bed image
   const deleteBedImage = async (targetRoomId, bedId, imageUrl) => {
     try {
       const token = getToken();
@@ -296,7 +255,6 @@ const BedsAdd = () => {
         }
       );
       if (res.data.success) {
-        // Update local state
         setBeds((prev) => prev.map((b) => b.bedId === bedId ? { ...b, images: b.images.filter((img) => img !== imageUrl) } : b));
         setDialog({
           isOpen: true,
@@ -321,7 +279,6 @@ const BedsAdd = () => {
     }
   };
 
-  // Bed form handlers
   const handleBedChange = (index, field, value) => {
     const updatedBeds = [...newBeds];
     updatedBeds[index] = { ...updatedBeds[index], [field]: value };
@@ -346,18 +303,11 @@ const BedsAdd = () => {
     setNewBeds(newBeds.filter((_, i) => i !== index));
   };
 
-  // Submit new beds
   const handleBedSubmit = async (e) => {
     e.preventDefault();
-    if (globalTotalBeds + newBeds.length > totalLimit) {
-      setDialog({
-        isOpen: true,
-        title: "Subscription Limit Reached",
-        message: `You can only add up to ${totalLimit} beds total. Current: ${globalTotalBeds}.`,
-        isConfirmDialog: false,
-      });
-      return;
-    }
+
+    // Subscription limit check removed
+
     try {
       setLoading(true);
       setError(null);
@@ -394,7 +344,7 @@ const BedsAdd = () => {
       }
       setNewBeds([{ name: "", price: "", status: "Available", images: [] }]);
       await fetchBeds();
-      await fetchGlobalBedsCount();
+      // fetchGlobalBedsCount removed
       setShowAddBedForm(false);
       setDialog({
         isOpen: true,
@@ -416,7 +366,6 @@ const BedsAdd = () => {
     }
   };
 
-  // Edit bed handlers
   const handleEditBed = (bed) => {
     setEditBedModal({ open: true, bed: { ...bed } });
     setEditBedNewImages([]);
@@ -469,7 +418,7 @@ const BedsAdd = () => {
           isConfirmDialog: false,
         });
         await fetchBeds();
-        await fetchGlobalBedsCount();
+        // await fetchGlobalBedsCount(); removed
       } else {
         throw new Error(res.data.message || "Failed to update bed.");
       }
@@ -504,7 +453,7 @@ const BedsAdd = () => {
               isConfirmDialog: false,
             });
             await fetchBeds();
-            await fetchGlobalBedsCount();
+            // await fetchGlobalBedsCount(); removed
           } else {
             throw new Error(res.data.message || "Failed to delete bed.");
           }
@@ -527,41 +476,15 @@ const BedsAdd = () => {
     });
   };
 
-  // Reset add form
   const resetBedForm = () => {
     setShowAddBedForm(false);
     setSelectedRoomIdForAdd(roomId || null);
     setNewBeds([{ name: "", price: "", status: "Available", images: [] }]);
   };
 
-  // Add beds button handler (check limits)
-  const handleAddBeds = async () => {
-    try {
-      await fetchGlobalBedsCount();
-      await fetchMySubscriptions();
-      if (globalTotalBeds >= totalLimit) {
-        setDialog({
-          isOpen: true,
-          title: "Subscription Limit Reached",
-          message: `You have reached your limit of ${totalLimit} active beds. Please upgrade your subscription.`,
-          onConfirm: () => navigate("/landlord/subscription-plans"),
-          confirmText: "Upgrade Plan",
-          cancelText: "Cancel",
-          isConfirmDialog: true,
-        });
-        return;
-      }
-      setShowAddBedForm(true);
-    } catch (err) {
-      console.error("Error checking limits:", err);
-      setDialog({
-        isOpen: true,
-        title: "Error",
-        message: "Could not check limits. Proceeding anyway.",
-        isConfirmDialog: false,
-      });
-      setShowAddBedForm(true);
-    }
+  // Subscription check removed from Add Beds button
+  const handleAddBeds = () => {
+    setShowAddBedForm(true);
   };
 
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;
@@ -573,25 +496,9 @@ const BedsAdd = () => {
         Beds {roomId ? "(Filtered by Room)" : "(All Rooms)"}
       </motion.h2>
 
-      {/* Subscription Warning */}
-      {globalTotalBeds > totalLimit && (
-        <motion.div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 rounded" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="flex">
-            <div className="flex-shrink-0"><FaExclamationTriangle className="h-5 w-5" /></div>
-            <div className="ml-3">
-              <p className="text-sm">
-                Total Beds: {globalTotalBeds} | Subscribed Limit: {totalLimit}<br />
-                Upgrade to utilize all beds!
-              </p>
-              <button onClick={() => navigate("/landlord/subscription-plans")} className="mt-2 inline-flex px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700">
-                Upgrade Plan
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      )}
+      {/* Subscription warning banner removed */}
+      {/* {globalTotalBeds > totalLimit && ( ... )} */}
 
-      {/* Buttons */}
       {!viewMode && (
         <div className="text-center mb-6">
           <motion.button className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 mr-4" onClick={handleAddBeds} whileTap={{ scale: 0.95 }}>
@@ -603,7 +510,6 @@ const BedsAdd = () => {
         </div>
       )}
 
-      {/* Beds List */}
       {beds.length === 0 ? (
         <p className="text-center text-gray-500">No beds found{roomId ? " in this room." : "."}</p>
       ) : (
@@ -632,7 +538,6 @@ const BedsAdd = () => {
         </div>
       )}
 
-      {/* Add Bed Form Modal */}
       {showAddBedForm && !viewMode && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <motion.div className="bg-gray-50 p-6 rounded-2xl shadow-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}>
@@ -706,7 +611,6 @@ const BedsAdd = () => {
         </div>
       )}
 
-      {/* Edit Bed Modal */}
       {editBedModal.open && !viewMode && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <motion.div className="bg-white p-6 rounded-xl shadow-lg max-w-md w-full" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
@@ -752,7 +656,6 @@ const BedsAdd = () => {
         </div>
       )}
 
-      {/* Image Modal */}
       <ImageModal
         isOpen={imageModal.open}
         onClose={handleCloseImageModal}
@@ -763,7 +666,6 @@ const BedsAdd = () => {
         bedId={imageModal.bedId}
       />
 
-      {/* Custom Dialog */}
       <CustomDialog
         isOpen={dialog.isOpen}
         onClose={() => setDialog({ ...dialog, isOpen: false })}

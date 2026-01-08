@@ -25,7 +25,7 @@ const Announcements = () => {
   const [tenantsLoading, setTenantsLoading] = useState(false);
   const [tenantsError, setTenantsError] = useState(null);
 
-  const API_BASE_URL = "https://api.drazeapp.com";
+  const API_BASE_URL = "https://api.gharzoreality.com";
 
   const getAuthToken = () => {
     const token = localStorage.getItem("token");

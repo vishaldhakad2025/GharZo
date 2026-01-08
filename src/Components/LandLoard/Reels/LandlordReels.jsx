@@ -54,7 +54,7 @@ function ReelsPage() {
       const token = localStorage.getItem("token");
       if (!token) return;
       const response = await fetch(
-        "https://api.drazeapp.com/api/landlord/reel-subscriptions",
+        "https://api.gharzoreality.com/api/landlord/reel-subscriptions",
         {
           method: "GET",
           headers: {
@@ -83,7 +83,7 @@ function ReelsPage() {
         const token = localStorage.getItem("token");
         if (!token) return;
         const response = await fetch(
-          "https://api.drazeapp.com/api/landlord/profile",
+          "https://api.gharzoreality.com/api/landlord/profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -109,7 +109,7 @@ function ReelsPage() {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No authentication token found");
         const response = await fetch(
-          "https://api.drazeapp.com/api/landlord/properties",
+          "https://api.gharzoreality.com/api/landlord/properties",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -142,7 +142,7 @@ function ReelsPage() {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No authentication token found");
       const response = await fetch(
-        `https://api.drazeapp.com/api/reels/landlord/all?page=${page}&limit=10`,
+        `https://api.gharzoreality.com/api/reels/landlord/all?page=${page}&limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -160,7 +160,7 @@ function ReelsPage() {
         description: item.description || "",
         username: item.landlordId?.name || "Anonymous",
         avatar: item.landlordId?.profilePhoto
-          ? `https://api.drazeapp.com${item.landlordId.profilePhoto}`
+          ? `https://api.gharzoreality.com${item.landlordId.profilePhoto}`
           : `https://i.pravatar.cc/100?img=${((append ? reels.length : 0) + i + 12) % 70}`,
         likes: item.likesCount || 0,
         comments: item.commentsCount || 0,
@@ -287,7 +287,7 @@ function ReelsPage() {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No authentication token found");
       const response = await fetch(
-        `https://api.drazeapp.com/api/reels/${id}/like`,
+        `https://api.gharzoreality.com/api/reels/${id}/like`,
         {
           method: "POST",
           headers: {
@@ -362,7 +362,7 @@ function ReelsPage() {
       if (!token) throw new Error("No authentication token found");
 
       const response = await fetch(
-        "https://api.drazeapp.com/api/reels/upload",
+        "https://api.gharzoreality.com/api/reels/upload",
         {
           method: "POST",
           headers: {
@@ -391,7 +391,7 @@ function ReelsPage() {
         username: currentLandlord?.name || "you",
         avatar:
           currentLandlord?.profilePhoto
-            ? `https://api.drazeapp.com${currentLandlord.profilePhoto}`
+            ? `https://api.gharzoreality.com${currentLandlord.profilePhoto}`
             : `https://i.pravatar.cc/100?u=${currentLandlord?._id || "you"}`,
         likes: data.reel.likesCount || 0,
         comments: data.reel.commentsCount || 0,
@@ -426,7 +426,7 @@ function ReelsPage() {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No authentication token found");
 
-        const response = await fetch(`https://api.drazeapp.com/api/reels/${id}`, {
+        const response = await fetch(`https://api.gharzoreality.com/api/reels/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -781,7 +781,7 @@ function ReelsPage() {
                               if (!token)
                                 throw new Error("No authentication token found");
                               const response = await fetch(
-                                `https://api.drazeapp.com/api/reels/${reel.id}/comment`,
+                                `https://api.gharzoreality.com/api/reels/${reel.id}/comment`,
                                 {
                                   method: "POST",
                                   headers: {
@@ -1091,7 +1091,7 @@ function CommentsSheet({ open, onClose, reel, onAdd }) {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No authentication token found");
         const response = await fetch(
-          `https://api.drazeapp.com/api/reels/${reel.id}/comments`,
+          `https://api.gharzoreality.com/api/reels/${reel.id}/comments`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -1142,7 +1142,7 @@ function CommentsSheet({ open, onClose, reel, onAdd }) {
           {comments.map((c, i) => (
             <Comment
               key={i}
-              userimage={`https://api.drazeapp.com/${c.userId?.profilePhoto || "user"}`}
+              userimage={`https://api.gharzoreality.com/${c.userId?.profilePhoto || "user"}`}
               username={c.userId?.name || "user"}
               text={c.text}
             />
@@ -1188,7 +1188,7 @@ function LikesSheet({ open, onClose, reel }) {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No authentication token found");
         const response = await fetch(
-          `https://api.drazeapp.com/api/reels/${reel.id}/likes`,
+          `https://api.gharzoreality.com/api/reels/${reel.id}/likes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

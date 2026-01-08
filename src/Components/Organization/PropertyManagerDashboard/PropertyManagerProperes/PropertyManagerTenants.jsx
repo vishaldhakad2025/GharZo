@@ -51,7 +51,7 @@ const PropertyManagerTenants = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://api.drazeapp.com/api/pm/tenants",
+        "https://api.gharzoreality.com/api/pm/tenants",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -168,7 +168,7 @@ const viewDetails = (propertyId, tenantId) => {
       console.log("DELETE TENANT PAYLOAD:", payload);
 
       const response = await axios.post(
-        "https://api.drazeapp.com/api/pm/tenants/remove",
+        "https://api.gharzoreality.com/api/pm/tenants/remove",
         payload,
         {
           headers: {

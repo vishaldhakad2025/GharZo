@@ -48,7 +48,7 @@ function PropertyManagerPropertyduesin() {
       }
       try {
         const response = await axios.get(
-          "https://api.drazeapp.com/api/property-managers/profile",
+          "https://api.gharzoreality.com/api/property-managers/profile",
           {
             headers: {
               "Content-Type": "application/json",
@@ -110,7 +110,7 @@ function PropertyManagerPropertyduesin() {
 
       try {
         const response = await axios.get(
-          `https://api.drazeapp.com/api/pm/dues/assigned/${propertyManagerId}`,
+          `https://api.gharzoreality.com/api/pm/dues/assigned/${propertyManagerId}`,
           {
             headers: {
               "Content-Type": "application/json",

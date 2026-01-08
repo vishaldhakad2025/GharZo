@@ -89,7 +89,7 @@
 //           const token = localStorage.getItem("landlordToken") || FIXED_TOKEN;
 //           console.log("Fetching rooms for propertyId:", propertyId);
 //           const response = await axios.get(
-//             `https://api.drazeapp.com/api/landlord/properties/${propertyId}/rooms/available`,
+//             `https://api.gharzoreality.com/api/landlord/properties/${propertyId}/rooms/available`,
 //             {
 //               headers: { Authorization: `Bearer ${token}` },
 //             }
@@ -328,7 +328,7 @@
 //     try {
 //       const response = await axios({
 //         method: isEdit ? "PUT" : "POST",
-//         url: `https://api.drazeapp.com/api/landlord/tenant/property/${propertyId}${
+//         url: `https://api.gharzoreality.com/api/landlord/tenant/property/${propertyId}${
 //           isEdit ? `/${editingTenant.id}` : ""
 //         }`, // Updated API endpoint
 //         headers: {
@@ -1048,7 +1048,7 @@ const TenantForm = () => {
       try {
         const token = localStorage.getItem("landlordToken") || FIXED_TOKEN;
         const response = await axios.get(
-          "https://api.drazeapp.com/api/landlord/properties",
+          "https://api.gharzoreality.com/api/landlord/properties",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -1073,7 +1073,7 @@ const TenantForm = () => {
           const token = localStorage.getItem("landlordToken") || FIXED_TOKEN;
           console.log("Fetching rooms for propertyId:", formData.propertyId);
           const response = await axios.get(
-            `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/available`,
+            `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/available`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -1314,7 +1314,7 @@ const TenantForm = () => {
     try {
       const response = await axios({
         method: isEdit ? "PUT" : "POST",
-        url: `https://api.drazeapp.com/api/landlord/tenant${
+        url: `https://api.gharzoreality.com/api/landlord/tenant${
           isEdit ? `/${editingTenant.id}` : ""
         }`,
         headers: {

@@ -64,7 +64,7 @@ const AddSubAdmin = () => {
         throw new Error("No token found in localStorage");
       }
 
-      const response = await fetch("https://api.drazeapp.com/api/permissions", {
+      const response = await fetch("https://api.gharzoreality.com/api/permissions", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +100,7 @@ const AddSubAdmin = () => {
       }
 
       const response = await fetch(
-        "https://api.drazeapp.com/api/landlord/properties",
+        "https://api.gharzoreality.com/api/landlord/properties",
         {
           method: "GET",
           headers: {
@@ -332,7 +332,7 @@ const AddSubAdmin = () => {
       return;
     }
     try {
-      const response = await fetch("https://api.drazeapp.com/api/kyc/aadhaar/generate-otp", {
+      const response = await fetch("https://api.gharzoreality.com/api/kyc/aadhaar/generate-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ aadhaarNumber: aadhaar }),
@@ -359,7 +359,7 @@ const AddSubAdmin = () => {
     }
     if (!txnId) return;
     try {
-      const response = await fetch("https://api.drazeapp.com/api/kyc/aadhaar/submit-otp", {
+      const response = await fetch("https://api.gharzoreality.com/api/kyc/aadhaar/submit-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ txnId, otp }),
@@ -481,7 +481,7 @@ const AddSubAdmin = () => {
       }
 
       const response = await fetch(
-        "https://api.drazeapp.com/api/sub-owner/auth/create",
+        "https://api.gharzoreality.com/api/sub-owner/auth/create",
         {
           method: "POST",
           body: submitData,
@@ -796,7 +796,7 @@ const AddSubAdmin = () => {
                 {propertiesList.length === 0 ? (
                   <span className="text-gray-500 text-sm">
                     Loading properties... (Fetched from
-                    https://api.drazeapp.com/api/landlord/properties)
+                    https://api.gharzoreality.com/api/landlord/properties)
                   </span>
                 ) : (
                   propertiesList.map((property) => (

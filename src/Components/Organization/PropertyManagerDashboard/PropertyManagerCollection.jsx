@@ -48,8 +48,8 @@ function PropertyManagerCollection() {
       setError(null);
       try {
         const [summaryRes, forecastRes] = await Promise.all([
-          fetchApi("https://api.drazeapp.com/api/pm/collections/summary"),
-          fetchApi("https://api.drazeapp.com/api/pm/collections/forecast"),
+          fetchApi("https://api.gharzoreality.com/api/pm/collections/summary"),
+          fetchApi("https://api.gharzoreality.com/api/pm/collections/forecast"),
         ]);
 
         setSummary(summaryRes.summary || {});
@@ -61,7 +61,7 @@ function PropertyManagerCollection() {
           const propertyIds = [...new Set(breakdown.map((b) => b.propertyId))];
           const results = await Promise.allSettled(
             propertyIds.map((id) =>
-              fetchApi(`https://api.drazeapp.com/api/pm/collections/report/${id}`)
+              fetchApi(`https://api.gharzoreality.com/api/pm/collections/report/${id}`)
                 .then((data) => ({ id, report: data.report }))
                 .catch(() => ({ id, report: null }))
             )

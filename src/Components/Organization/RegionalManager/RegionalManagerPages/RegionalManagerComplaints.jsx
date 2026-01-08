@@ -47,7 +47,7 @@ const ComplaintsSummary = () => {
 
         // Fetch summary
         const summaryResponse = await axios.get(
-          "https://api.drazeapp.com/api/sub-owner/properties/complaints/summary",
+          "https://api.gharzoreality.com/api/sub-owner/properties/complaints/summary",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -62,7 +62,7 @@ const ComplaintsSummary = () => {
 
         // Fetch workers
         const workersResponse = await axios.get(
-          "https://api.drazeapp.com/api/sub-owner/workers",
+          "https://api.gharzoreality.com/api/sub-owner/workers",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -87,7 +87,7 @@ const ComplaintsSummary = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/complaints`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/complaints`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -110,7 +110,7 @@ const ComplaintsSummary = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.patch(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/complaints/${complaintId}/status`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/complaints/${complaintId}/status`,
         { status },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -148,7 +148,7 @@ const ComplaintsSummary = () => {
         notes,
       });
       const response = await axios.patch(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/complaints/${complaintId}/assign`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/complaints/${complaintId}/assign`,
         { workerId, estimatedResolutionTime: new Date(estimatedTime).toISOString(), notes },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -172,7 +172,7 @@ const ComplaintsSummary = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.patch(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/complaints/${complaintId}/feedback`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/complaints/${complaintId}/feedback`,
         { rating, feedback },
         {
           headers: { Authorization: `Bearer ${token}` },

@@ -38,7 +38,7 @@ const TenantLayout = () => {
           return;
         }
 
-        const res = await axios.get("https://api.drazeapp.com/api/tenant/profile", {
+        const res = await axios.get("https://api.gharzoreality.com/api/tenant/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -73,7 +73,7 @@ const TenantLayout = () => {
         const token = localStorage.getItem("tenanttoken");
         if (!token) return;
 
-        const res = await axios.get("https://api.drazeapp.com/api/tenant/notifications", {
+        const res = await axios.get("https://api.gharzoreality.com/api/tenant/notifications", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

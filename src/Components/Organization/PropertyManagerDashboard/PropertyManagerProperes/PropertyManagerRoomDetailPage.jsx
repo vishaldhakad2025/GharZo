@@ -7,7 +7,7 @@ import LazyImage from "../../../Common/LazyImage";
 /* Axios instance */
 /* --------------------------------------------------------------- */
 const api = axios.create({
-  baseURL: "https://api.drazeapp.com/api/pm",
+  baseURL: "https://api.gharzoreality.com/api/pm",
 });
 
 /* --------------------------------------------------------------- */

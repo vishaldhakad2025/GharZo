@@ -19,7 +19,7 @@ const OrganizationTenantDetails = () => {
     const fetchTenantDetails = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`https://api.drazeapp.com/api/landlord/tenant/${tenantId}`, {
+        const response = await axios.get(`https://api.gharzoreality.com/api/landlord/tenant/${tenantId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("orgToken")}`,
             "Content-Type": "application/json",
@@ -38,7 +38,7 @@ const OrganizationTenantDetails = () => {
               if (acc.propertyId && acc.roomId && acc.bedId) {
                 try {
                   const bedRes = await axios.get(
-                    `https://api.drazeapp.com/api/landlord/properties/${acc.propertyId}/rooms/${acc.roomId}/beds/${acc.bedId}`,
+                    `https://api.gharzoreality.com/api/landlord/properties/${acc.propertyId}/rooms/${acc.roomId}/beds/${acc.bedId}`,
                     {
                       headers: {
                         Authorization: `Bearer ${token}`,
@@ -111,7 +111,7 @@ const OrganizationTenantDetails = () => {
       e.preventDefault();
       try {
         await axios.post(
-          `https://api.drazeapp.com/api/landlord/tenant/remove`,
+          `https://api.gharzoreality.com/api/landlord/tenant/remove`,
           { tenantId, ...formData },
           {
             headers: {
@@ -239,7 +239,7 @@ const OrganizationTenantDetails = () => {
       e.preventDefault();
       try {
         await axios.put(
-          `https://api.drazeapp.com/api/landlord/tenant/${tenantId}`,
+          `https://api.gharzoreality.com/api/landlord/tenant/${tenantId}`,
           formData,
           {
             headers: {

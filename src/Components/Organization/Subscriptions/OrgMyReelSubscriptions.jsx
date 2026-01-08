@@ -22,7 +22,7 @@ const OrgMyReelSubscriptions = () => {
 
     try {
       console.log('Fetching reel subscriptions...');
-      const response = await fetch('https://api.drazeapp.com/api/landlord/reel-subscriptions', {
+      const response = await fetch('https://api.gharzoreality.com/api/landlord/reel-subscriptions', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${authToken}`,
@@ -60,7 +60,7 @@ const OrgMyReelSubscriptions = () => {
 
     try {
       console.log('Fetching total reels...');
-      const response = await fetch('https://api.drazeapp.com/api/reels/landlord/all', {
+      const response = await fetch('https://api.gharzoreality.com/api/reels/landlord/all', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${authToken}`,

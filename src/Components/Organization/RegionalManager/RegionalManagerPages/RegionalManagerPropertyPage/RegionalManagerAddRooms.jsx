@@ -307,7 +307,7 @@ const RegionalManagerAddRooms = () => {
           throw new Error("No authentication token found. Please log in.");
         }
         const response = await axios.get(
-          `https://api.drazeapp.com/api/rm/properties/${propertyId}`,
+          `https://api.gharzoreality.com/api/rm/properties/${propertyId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -441,7 +441,7 @@ const RegionalManagerAddRooms = () => {
       if (!token) {
         throw new Error("No authentication token found. Please log in.");
       }
-      const API_BASE = `https://api.drazeapp.com/api/rm/${propertyId}/rooms`;
+      const API_BASE = `https://api.gharzoreality.com/api/rm/${propertyId}/rooms`;
       const res = await axios.post(API_BASE, requestBody, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -464,7 +464,7 @@ const RegionalManagerAddRooms = () => {
           const roomFormData = new FormData();
           roomFiles.forEach((file) => roomFormData.append("images", file));
           await axios.post(
-            `https://api.drazeapp.com/api/rm/rooms/${propertyId}/${roomId}/images`,
+            `https://api.gharzoreality.com/api/rm/rooms/${propertyId}/${roomId}/images`,
             roomFormData,
             {
               headers: {
@@ -485,7 +485,7 @@ const RegionalManagerAddRooms = () => {
           bedFiles.forEach((file) => bedFormData.append("images", file));
           const bedId = createdBeds[i].bedId;
           await axios.post(
-            `https://api.drazeapp.com/api/rm/bed-images/${propertyId}/${roomId}/${bedId}/upload`,
+            `https://api.gharzoreality.com/api/rm/bed-images/${propertyId}/${roomId}/${bedId}/upload`,
             bedFormData,
             {
               headers: {
@@ -500,7 +500,7 @@ const RegionalManagerAddRooms = () => {
       setShowFullResponse(true);
       // Refetch property to update UI
       const updatedRes = await axios.get(
-        `https://api.drazeapp.com/api/rm/properties/${propertyId}`,
+        `https://api.gharzoreality.com/api/rm/properties/${propertyId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

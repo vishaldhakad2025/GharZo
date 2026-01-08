@@ -47,7 +47,7 @@ const getSubdomain = () => {
       try {
         // Step 2: Fetch org info from main API with token
         const orgRes = await fetch(
-          `https://api.drazeapp.com/api/organization/${subdomain}`,
+          `https://api.gharzoreality.com/api/organization/${subdomain}`,
           {
             headers: {
               'Authorization': `Bearer ${token}`, // Adjust header format if needed (e.g., 'X-Auth-Token')

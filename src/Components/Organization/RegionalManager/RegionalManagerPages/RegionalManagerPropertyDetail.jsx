@@ -27,7 +27,7 @@ import RegionalManagerPropertyReviews from "./RegionalManagerPropertyPage/Region
 import RegionalManagerAnnouncement from "./RegionalManagerPropertyPage/RegionalManagerAnnouncement";
 import RegionalManagerComplaints from "./RegionalManagerPropertyPage/RegionalManagerComplaints";
 
-const API_BASE = "https://api.drazeapp.com";
+const API_BASE = "https://api.gharzoreality.com";
 
 const tabList = [
   "Details",

@@ -103,7 +103,7 @@ const PropertyManagerAddTenant = () => {
   };
   const [formData, setFormData] = useState(initialFormData);
 
-  const API_BASE_URL = "https://api.drazeapp.com/api";
+  const API_BASE_URL = "https://api.gharzoreality.com/api";
   const isValidObjectId = (id) => /^[0-9a-fA-F]{24}$/.test(id);
 
   const deduplicateCategories = (categories) => {
@@ -124,7 +124,7 @@ const PropertyManagerAddTenant = () => {
     }
     try {
       const res = await axios.post(
-        "https://api.drazeapp.com/api/kyc/aadhaar/generate-otp",
+        "https://api.gharzoreality.com/api/kyc/aadhaar/generate-otp",
         { aadhaarNumber: formData.aadhaar },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -151,7 +151,7 @@ const PropertyManagerAddTenant = () => {
     if (!txnId) return;
     try {
       const res = await axios.post(
-        "https://api.drazeapp.com/api/kyc/aadhaar/submit-otp",
+        "https://api.gharzoreality.com/api/kyc/aadhaar/submit-otp",
         { txnId, otp },
         { headers: { "Content-Type": "application/json" } }
       );

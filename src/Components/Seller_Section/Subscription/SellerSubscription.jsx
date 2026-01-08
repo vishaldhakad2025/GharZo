@@ -30,7 +30,7 @@
 
 //       try {
 //         // Fetch Seller Profile
-//         const profileRes = await axios.get("https://api.drazeapp.com/api/seller/profile", {
+//         const profileRes = await axios.get("https://api.gharzoreality.com/api/seller/profile", {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 
@@ -46,7 +46,7 @@
 //         }
 
 //         // Fetch Property Plans
-//         const propertyPlansRes = await axios.get("https://api.drazeapp.com/api/seller/subscription/plans", {
+//         const propertyPlansRes = await axios.get("https://api.gharzoreality.com/api/seller/subscription/plans", {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 
@@ -71,7 +71,7 @@
 //         }
 
 //         // Fetch Reel Plans
-//         const reelPlansRes = await axios.get("https://api.drazeapp.com/api/reel-subscription/seller/available-plans", {
+//         const reelPlansRes = await axios.get("https://api.gharzoreality.com/api/reel-subscription/seller/available-plans", {
 //           headers: { Authorization: `Bearer ${token}` },
 //         });
 
@@ -180,8 +180,8 @@
 
 //           const captureUrl =
 //             plan.type === "reel"
-//               ? "https://api.drazeapp.com/api/reel-payment/seller/capture"
-//               : "https://api.drazeapp.com/api/seller/payment/capture";
+//               ? "https://api.gharzoreality.com/api/reel-payment/seller/capture"
+//               : "https://api.gharzoreality.com/api/seller/payment/capture";
 
 //           if (plan.type === "reel") body.sellerId = sellerId;
 
@@ -393,7 +393,7 @@ const SellerSubscription = () => {
 
       try {
         // Fetch Profile (includes trial status)
-        const profileRes = await axios.get("https://api.drazeapp.com/api/seller/profile", {
+        const profileRes = await axios.get("https://api.gharzoreality.com/api/seller/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -414,7 +414,7 @@ const SellerSubscription = () => {
 
         // Fetch Property Plans
         const propertyPlansRes = await axios.get(
-          "https://api.drazeapp.com/api/seller/subscription/plans",
+          "https://api.gharzoreality.com/api/seller/subscription/plans",
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -439,7 +439,7 @@ const SellerSubscription = () => {
 
         // Fetch Reel Plans
         const reelPlansRes = await axios.get(
-          "https://api.drazeapp.com/api/reel-subscription/seller/available-plans",
+          "https://api.gharzoreality.com/api/reel-subscription/seller/available-plans",
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -541,8 +541,8 @@ const SellerSubscription = () => {
 
           const url =
             plan.type === "reel"
-              ? "https://api.drazeapp.com/api/reel-payment/seller/capture"
-              : "https://api.drazeapp.com/api/seller/payment/capture";
+              ? "https://api.gharzoreality.com/api/reel-payment/seller/capture"
+              : "https://api.gharzoreality.com/api/seller/payment/capture";
 
           const res = await axios.post(url, body, {
             headers: { Authorization: `Bearer ${token}` },

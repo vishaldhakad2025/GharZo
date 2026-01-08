@@ -108,7 +108,7 @@ const RoomOverview = () => {
         console.log("Token:", token);
 
         const response = await axios.get(
-          `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}`,
+          `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -146,7 +146,7 @@ const RoomOverview = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/rooms/${roomId}/beds`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/rooms/${roomId}/beds`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -179,7 +179,7 @@ const RoomOverview = () => {
         price: Number(newBedData.price),
       };
       await axios.post(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoom.roomId}/beds`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoom.roomId}/beds`,
         payload,
         {
           headers: {
@@ -203,7 +203,7 @@ const RoomOverview = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoom.roomId}/beds/${selectedBed.bedId}`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoom.roomId}/beds/${selectedBed.bedId}`,
         bedForm,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -224,7 +224,7 @@ const RoomOverview = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoom.roomId}/beds/${selectedBed.bedId}`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoom.roomId}/beds/${selectedBed.bedId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -378,7 +378,7 @@ const RoomOverview = () => {
       console.log("Token:", token);
 
       await axios.delete(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoomForDelete.roomId}`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoomForDelete.roomId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -511,7 +511,7 @@ const RoomOverview = () => {
       };
 
       await axios.put(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoom.roomId}`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoom.roomId}`,
         roomPayload,
         {
           headers: {

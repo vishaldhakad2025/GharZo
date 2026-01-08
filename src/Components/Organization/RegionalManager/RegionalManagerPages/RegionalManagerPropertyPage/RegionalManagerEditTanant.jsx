@@ -56,7 +56,7 @@ const EditTenant = () => {
 
     try {
       const response = await axios.put(
-        `https://api.drazeapp.com/api/sub-owner/updateTenant/${tenant.tenantId}`,
+        `https://api.gharzoreality.com/api/sub-owner/updateTenant/${tenant.tenantId}`,
         payload,
         {
           headers: {

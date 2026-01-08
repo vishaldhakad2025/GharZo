@@ -43,7 +43,7 @@ const CreateBill = ({ onClose, onBillCreated, tenantId, propertyId }) => {
         }
 
         const response = await axios.get(
-          `https://api.drazeapp.com/api/landlord/tenant/property/${propertyId}`,
+          `https://api.gharzoreality.com/api/landlord/tenant/property/${propertyId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -162,7 +162,7 @@ const CreateBill = ({ onClose, onBillCreated, tenantId, propertyId }) => {
       }
 
       const response = await axios.post(
-        "https://api.drazeapp.com/api/landlord/tenant/general-bill",
+        "https://api.gharzoreality.com/api/landlord/tenant/general-bill",
         {
           tenantId: formData.tenantId,
           propertyId: formData.propertyId,

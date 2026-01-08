@@ -25,7 +25,7 @@ const Collections = () => {
         }
 
         const response = await fetch(
-          "https://api.drazeapp.com/api/landlord/analytics/collections/forecast",
+          "https://api.gharzoreality.com/api/landlord/analytics/collections/forecast",
           {
             method: "GET",
             headers: {

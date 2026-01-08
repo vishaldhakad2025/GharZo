@@ -23,7 +23,7 @@ const PGHostelSection = () => {
     const fetchProperties = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("https://api.drazeapp.com/api/public/all-properties");
+        const res = await axios.get("https://api.gharzoreality.com/api/public/all-properties");
         const pgHostels = (res.data.properties || [])
           .filter(
             (p) =>

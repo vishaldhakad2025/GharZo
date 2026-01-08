@@ -5,7 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const API_BASE = "https://api.drazeapp.com";
+const API_BASE = "https://api.gharzoreality.com";
 
 const Property = () => {
   const [properties, setProperties] = useState([]);

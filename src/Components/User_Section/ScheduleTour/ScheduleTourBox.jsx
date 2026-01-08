@@ -41,7 +41,7 @@ const ScheduleTourBox = () => {
 
   //     try {
   //       setFetchingProperty(true);
-  //       const response = await fetch(`https://api.drazeapp.com/api/public/property/${id}?_=${Date.now()}`);
+  //       const response = await fetch(`https://api.gharzoreality.com/api/public/property/${id}?_=${Date.now()}`);
   //       const data = await response.json();
 
   //       if (data.success && data.property && data.property.landlord) {
@@ -84,7 +84,7 @@ const ScheduleTourBox = () => {
       try {
         setFetchingProperty(true);
         const response = await fetch(
-          `https://api.drazeapp.com/api/public/property/${id}?_=${Date.now()}`
+          `https://api.gharzoreality.com/api/public/property/${id}?_=${Date.now()}`
         );
         const data = await response.json();
 
@@ -176,7 +176,7 @@ const ScheduleTourBox = () => {
     setDateTimeError(""); // Clear date error
     setSuccess(false);
     try {
-      const response = await fetch("https://api.drazeapp.com/api/visits", {
+      const response = await fetch("https://api.gharzoreality.com/api/visits", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

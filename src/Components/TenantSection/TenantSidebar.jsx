@@ -76,7 +76,7 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
         return;
       }
 
-      const response = await fetch("https://api.drazeapp.com/api/tenant/logout", {
+      const response = await fetch("https://api.gharzoreality.com/api/tenant/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

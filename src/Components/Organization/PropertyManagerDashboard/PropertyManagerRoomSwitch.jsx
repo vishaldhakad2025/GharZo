@@ -26,10 +26,10 @@ function PropertyManagerRoomSwitch() {
     setError(null);
     try {
       const [reqRes, sumRes] = await Promise.all([
-        fetch('https://api.drazeapp.com/api/pm/room-switch', {
+        fetch('https://api.gharzoreality.com/api/pm/room-switch', {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch('https://api.drazeapp.com/api/pm/room-switch/summary', {
+        fetch('https://api.gharzoreality.com/api/pm/room-switch/summary', {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -90,7 +90,7 @@ function PropertyManagerRoomSwitch() {
     let body = null;
 
     if (action === 'approve') {
-      endpoint = `https://api.drazeapp.com/api/pm/room-switch/${requestId}/approve`;
+      endpoint = `https://api.gharzoreality.com/api/pm/room-switch/${requestId}/approve`;
     } else if (action === 'reject') {
       const reason = prompt('Please enter the reason for rejecting this request:');
       if (!reason || reason.trim() === '') {
@@ -98,7 +98,7 @@ function PropertyManagerRoomSwitch() {
         setActionLoading((prev) => ({ ...prev, [requestId]: false }));
         return;
       }
-      endpoint = `https://api.drazeapp.com/api/pm/room-switch/${requestId}/reject`;
+      endpoint = `https://api.gharzoreality.com/api/pm/room-switch/${requestId}/reject`;
       body = { reason: reason.trim() };
     }
 

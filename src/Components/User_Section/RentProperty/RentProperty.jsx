@@ -30,7 +30,7 @@ const RentProperty = () => {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get("https://api.drazeapp.com/api/public/all-properties");
+        const res = await axios.get("https://api.gharzoreality.com/api/public/all-properties");
         console.log("API Response:", res.data); // Debug log
         const raw = res.data;
 

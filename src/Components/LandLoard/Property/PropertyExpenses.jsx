@@ -54,7 +54,7 @@ const PropertyExpenses = () => {
         return;
       }
       try {
-        const response = await fetch('https://api.drazeapp.com/api/landlord/profile', {
+        const response = await fetch('https://api.gharzoreality.com/api/landlord/profile', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const PropertyExpenses = () => {
       if (!token || !propertyId) return;
       try {
         const res = await fetch(
-          `https://api.drazeapp.com/api/landlord/properties/${propertyId}`,
+          `https://api.gharzoreality.com/api/landlord/properties/${propertyId}`,
           {
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -112,7 +112,7 @@ const PropertyExpenses = () => {
       if (!token || !landlordId) return;
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/expense-categories?landlord=${landlordId}`,
+          `https://api.gharzoreality.com/api/expense-categories?landlord=${landlordId}`,
           {
             method: 'GET',
             headers: {
@@ -155,7 +155,7 @@ const PropertyExpenses = () => {
       }
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/expenses/property/${propertyId}`,
+          `https://api.gharzoreality.com/api/expenses/property/${propertyId}`,
           {
             method: 'GET',
             headers: {
@@ -216,7 +216,7 @@ const PropertyExpenses = () => {
       if (editExpenseData.billImage) {
         formData.append('billImage', editExpenseData.billImage);
       }
-      const response = await fetch(`https://api.drazeapp.com/api/expenses/${editExpenseId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/expenses/${editExpenseId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -265,7 +265,7 @@ const PropertyExpenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/expenses/${expenseId}`,
+        `https://api.gharzoreality.com/api/expenses/${expenseId}`,
         {
           method: 'DELETE',
           headers: {

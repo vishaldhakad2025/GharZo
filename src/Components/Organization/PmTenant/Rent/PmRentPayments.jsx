@@ -65,7 +65,7 @@ const TenantRentPayments = () => {
       }
 
       const res = await axios.get(
-        "https://api.drazeapp.com/api/tenant/accommodations",
+        "https://api.gharzoreality.com/api/tenant/accommodations",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -91,7 +91,7 @@ const TenantRentPayments = () => {
       setPropertyId(pId);
 
       const duesResponse = await axios.get(
-        `https://api.drazeapp.com/api/pm/dues/tenant-dues/${tenantId}`,
+        `https://api.gharzoreality.com/api/pm/dues/tenant-dues/${tenantId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -211,7 +211,7 @@ const TenantRentPayments = () => {
             console.log("=== END PAYMENT BODY ===");
 
             const postRes = await axios.post(
-              "https://api.drazeapp.com/api/payments/capturePayment",
+              "https://api.gharzoreality.com/api/payments/capturePayment",
               body,
               {
                 headers: {
@@ -293,7 +293,7 @@ const TenantRentPayments = () => {
       console.log("Fetching receipt for paymentId:", paymentId);
 
       const res = await axios.post(
-        `https://api.drazeapp.com/api/payment/${paymentId}/generate-receipt`,
+        `https://api.gharzoreality.com/api/payment/${paymentId}/generate-receipt`,
         {},
         {
           headers: {
@@ -322,7 +322,7 @@ const TenantRentPayments = () => {
         };
 
         setCurrentReceipt(mergedData);
-        setReceiptUrl(`https://api.drazeapp.com${res.data.receiptUrl}`);
+        setReceiptUrl(`https://api.gharzoreality.com${res.data.receiptUrl}`);
         setReceiptNumber(mergedData.receiptNo);
         setShowReceipt(true);
       } else {
@@ -360,7 +360,7 @@ const TenantRentPayments = () => {
       }
 
       const res = await axios.post(
-        `https://api.drazeapp.com/api/payment/${paymentId}/generate-receipt`,
+        `https://api.gharzoreality.com/api/payment/${paymentId}/generate-receipt`,
         {},
         {
           headers: {
@@ -371,7 +371,7 @@ const TenantRentPayments = () => {
       );
 
       if (res.data.success) {
-        const receiptUrl = `https://api.drazeapp.com${res.data.receiptUrl}`;
+        const receiptUrl = `https://api.gharzoreality.com${res.data.receiptUrl}`;
         const receiptNumber = res.data.receiptNumber;
 
         const link = document.createElement("a");

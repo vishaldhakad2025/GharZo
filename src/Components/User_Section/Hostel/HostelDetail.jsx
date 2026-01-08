@@ -112,7 +112,7 @@ const facilityKeyMapping = {
   },
 };
 
-const HOST_API_BASE = "https://api.drazeapp.com";
+const HOST_API_BASE = "https://api.gharzoreality.com";
 
 function HostelDetail() {
   const { id } = useParams();
@@ -259,7 +259,7 @@ function HostelDetail() {
         try {
           const timestamp = new Date().getTime();
           const response = await axios.get(
-            `https://api.drazeapp.com/api/public/properties/${id}/rooms/${roomId}/images?_=${timestamp}`,
+            `https://api.gharzoreality.com/api/public/properties/${id}/rooms/${roomId}/images?_=${timestamp}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -297,7 +297,7 @@ function HostelDetail() {
         try {
           const timestamp = new Date().getTime();
           const response = await axios.get(
-            `https://api.drazeapp.com/api/public/properties/${id}/rooms/${roomId}/beds/${bedId}/images?_=${timestamp}`,
+            `https://api.gharzoreality.com/api/public/properties/${id}/rooms/${roomId}/beds/${bedId}/images?_=${timestamp}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -1022,7 +1022,7 @@ function RatingAndComments({ propertyId }) {
   const createAxiosInstance = () => {
     const token = getToken();
     return axios.create({
-      baseURL: "https://api.drazeapp.com/api",
+      baseURL: "https://api.gharzoreality.com/api",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -1039,7 +1039,7 @@ function RatingAndComments({ propertyId }) {
       // Fetch stats (public, no auth required)
       const timestamp = new Date().getTime();
       const statsResponse = await axios.get(
-        `https://api.drazeapp.com/api/public/ratings/property/${propertyId}/rating-stats?_=${timestamp}`
+        `https://api.gharzoreality.com/api/public/ratings/property/${propertyId}/rating-stats?_=${timestamp}`
       );
       if (statsResponse.data.success) {
         setStats(statsResponse.data.stats);
@@ -1198,7 +1198,7 @@ function RatingAndComments({ propertyId }) {
       // Refetch stats
       const timestamp = new Date().getTime();
       const statsResponse = await axios.get(
-        `https://api.drazeapp.com/api/public/ratings/property/${propertyId}/rating-stats?_=${timestamp}`
+        `https://api.gharzoreality.com/api/public/ratings/property/${propertyId}/rating-stats?_=${timestamp}`
       );
       if (statsResponse.data.success) {
         setStats(statsResponse.data.stats);
@@ -1244,7 +1244,7 @@ function RatingAndComments({ propertyId }) {
         // Refetch stats
         const timestamp = new Date().getTime();
         const statsResponse = await axios.get(
-          `https://api.drazeapp.com/api/public/ratings/property/${propertyId}/rating-stats?_=${timestamp}`
+          `https://api.gharzoreality.com/api/public/ratings/property/${propertyId}/rating-stats?_=${timestamp}`
         );
         if (statsResponse.data.success) {
           setStats(statsResponse.data.stats);

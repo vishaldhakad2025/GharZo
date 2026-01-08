@@ -56,7 +56,7 @@ const enrichAccommodations = async (tenant, token) => {
     if (acc.roomId) {
       try {
         const r = await axios.get(
-          `https://api.drazeapp.com/api/pm/properties/${acc.propertyId}/rooms/${acc.roomId}`,
+          `https://api.gharzoreality.com/api/pm/properties/${acc.propertyId}/rooms/${acc.roomId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         roomName = r.data.room?.name ?? roomName;
@@ -66,7 +66,7 @@ const enrichAccommodations = async (tenant, token) => {
     if (acc.bedId) {
       try {
         const b = await axios.get(
-          `https://api.drazeapp.com/api/pm/properties/${acc.propertyId}/rooms/${acc.roomId}/beds/${acc.bedId}`,
+          `https://api.gharzoreality.com/api/pm/properties/${acc.propertyId}/rooms/${acc.roomId}/beds/${acc.bedId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         bedName = b.data.bed?.name ?? bedName;
@@ -103,7 +103,7 @@ const PropertyManagerTenantDetails = () => {
         if (!token) throw new Error("Please login again");
 
         const res = await axios.get(
-          `https://api.drazeapp.com/api/pm/tenants/${propertyId}/tenants`,
+          `https://api.gharzoreality.com/api/pm/tenants/${propertyId}/tenants`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 console.log("Fetched Tenants:", res.data.tenants);
@@ -155,7 +155,7 @@ console.log("Fetched Tenants:", res.data.tenants);
       e.preventDefault();
       try {
         await axios.put(
-          `https://api.drazeapp.com/api/pm/tenants/${tenantId}`,
+          `https://api.gharzoreality.com/api/pm/tenants/${tenantId}`,
           form,
           { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
         );
@@ -234,7 +234,7 @@ console.log("Fetched Tenants:", res.data.tenants);
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await axios.delete(`https://api.drazeapp.com/api/pm/tenants/remove`, {
+        await axios.delete(`https://api.gharzoreality.com/api/pm/tenants/remove`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           data: { tenantId, ...form },
         });

@@ -44,7 +44,7 @@ const AssignedComplaints = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          "https://api.drazeapp.com/api/workers/assigned-complaints",
+          "https://api.gharzoreality.com/api/workers/assigned-complaints",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -135,7 +135,7 @@ const AssignedComplaints = () => {
     setVerifyingOtp(true);
     try {
       const res = await axios.post(
-        "https://api.drazeapp.com/api/workers/verify-otp",
+        "https://api.gharzoreality.com/api/workers/verify-otp",
         {
           complaintId: selectedComplaintId, // ← CORRECT: COMP-xxx
           otp: otp,

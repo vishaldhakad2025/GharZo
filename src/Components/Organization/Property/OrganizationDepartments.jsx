@@ -34,7 +34,7 @@ export default function OrganizationDepartments() {
     }
 
     try {
-      const response = await fetch("https://api.drazeapp.com/api/organization/allpermission", {
+      const response = await fetch("https://api.gharzoreality.com/api/organization/allpermission", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ export default function OrganizationDepartments() {
     }
 
     try {
-      const response = await fetch("https://api.drazeapp.com/api/organization/alldepartment", {
+      const response = await fetch("https://api.gharzoreality.com/api/organization/alldepartment", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -164,7 +164,7 @@ export default function OrganizationDepartments() {
       }
 
       const response = await fetch(
-        "https://api.drazeapp.com/api/organization/create-permission",
+        "https://api.gharzoreality.com/api/organization/create-permission",
         {
           method: "POST",
           headers: {
@@ -253,7 +253,7 @@ export default function OrganizationDepartments() {
         return;
       }
       const response = await fetch(
-        "https://api.drazeapp.com/api/organization/create-department",
+        "https://api.gharzoreality.com/api/organization/create-department",
         {
           method: editingDepartmentId ? "PUT" : "POST",
           headers: {

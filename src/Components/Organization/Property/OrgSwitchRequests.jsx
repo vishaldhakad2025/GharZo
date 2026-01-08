@@ -24,7 +24,7 @@ const OrgSwitchRequests = () => {
           return;
         }
         setLoading(true);
-        const res = await fetch('https://api.drazeapp.com/api/room-switch/all-requests', {
+        const res = await fetch('https://api.gharzoreality.com/api/room-switch/all-requests', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -70,7 +70,7 @@ const OrgSwitchRequests = () => {
   const updateRoomAndBedStatus = async (token, propertyId, roomId, bedId) => {
     try {
       await fetch(
-        `https://api.drazeapp.com/api/landlord/properties/${propertyId}/rooms/${roomId}/status`,
+        `https://api.gharzoreality.com/api/landlord/properties/${propertyId}/rooms/${roomId}/status`,
         {
           method: 'PUT',
           headers: {
@@ -81,7 +81,7 @@ const OrgSwitchRequests = () => {
         }
       );
       await fetch(
-        `https://api.drazeapp.com/api/landlord/properties/${propertyId}/rooms/${roomId}/beds/${bedId}/status`,
+        `https://api.gharzoreality.com/api/landlord/properties/${propertyId}/rooms/${roomId}/beds/${bedId}/status`,
         {
           method: 'PUT',
           headers: {
@@ -117,7 +117,7 @@ const OrgSwitchRequests = () => {
         }
         body = { reason };
       }
-      const endpoint = `https://api.drazeapp.com/api/room-switch/${action}/${requestId}`;
+      const endpoint = `https://api.gharzoreality.com/api/room-switch/${action}/${requestId}`;
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -131,7 +131,7 @@ const OrgSwitchRequests = () => {
         if (action === 'approve') {
           await updateRoomAndBedStatus(token, propertyId, currentRoomId, currentBedId);
         }
-        const refreshRes = await fetch('https://api.drazeapp.com/api/room-switch/all-requests', {
+        const refreshRes = await fetch('https://api.gharzoreality.com/api/room-switch/all-requests', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -129,7 +129,7 @@ function PropertyManagerPropertyRoomForm() {
       try {
         const token = getToken();
         await axios.delete(
-          `https://api.drazeapp.com/api/pm/rooms/${propertyId}/rooms/${roomId}/images`,
+          `https://api.gharzoreality.com/api/pm/rooms/${propertyId}/rooms/${roomId}/images`,
           {
             headers: { Authorization: `Bearer ${token}` },
             data: { imageUrl: item.url }
@@ -175,7 +175,7 @@ function PropertyManagerPropertyRoomForm() {
         if (Object.keys(selected).length) facilities[cat] = selected;
       });
       const roomRes = await axios.post(
-        `https://api.drazeapp.com/api/pm/properties/${propertyId}/rooms`,
+        `https://api.gharzoreality.com/api/pm/properties/${propertyId}/rooms`,
         [{
           name: roomData.name,
           type: roomData.type,
@@ -192,7 +192,7 @@ function PropertyManagerPropertyRoomForm() {
         const formData = new FormData();
         roomData.images.forEach(file => formData.append("images", file));
         const uploadRes = await axios.post(
-          `https://api.drazeapp.com/api/pm/rooms/${propertyId}/rooms/${createdRoomId}/images`,
+          `https://api.gharzoreality.com/api/pm/rooms/${propertyId}/rooms/${createdRoomId}/images`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );

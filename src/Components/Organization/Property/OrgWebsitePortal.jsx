@@ -89,7 +89,7 @@ const HeroSection = ({ orgData, editMode, onUpdate }) => {
   }, [orgData.website?.about]);
 
   const themeColor = orgData.website?.themeColor || '#3b82f6';
-  const bannerImage = orgData.website?.bannerImage ? `https://api.drazeapp.com${orgData.website.bannerImage}` : burnar;
+  const bannerImage = orgData.website?.bannerImage ? `https://api.gharzoreality.com${orgData.website.bannerImage}` : burnar;
 
   const handleSave = () => {
     onUpdate({ ...orgData, website: { ...orgData.website, about: localDescription } });
@@ -176,7 +176,7 @@ const PropertiesSection = ({ orgData, editMode, onUpdate, organizationId }) => {
       }
       try {
         setLoading(true);
-        const res = await fetch(`https://api.drazeapp.com/api/organization/properties/${organizationId}`);
+        const res = await fetch(`https://api.gharzoreality.com/api/organization/properties/${organizationId}`);
         if (res.ok) {
           const json = await res.json();
           if (json.success) {
@@ -210,7 +210,7 @@ const PropertiesSection = ({ orgData, editMode, onUpdate, organizationId }) => {
 
   const handleViewDetails = async (id) => {
     try {
-      const res = await fetch(`https://api.drazeapp.com/api/public/property/${id}`);
+      const res = await fetch(`https://api.gharzoreality.com/api/public/property/${id}`);
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -687,7 +687,7 @@ console.log("Org ID (subdomain):", orgId);
 
       try {
         setLoading(true);
-        const response = await fetch(`https://api.drazeapp.com/api/organization/myweb/${orgId}`);
+        const response = await fetch(`https://api.gharzoreality.com/api/organization/myweb/${orgId}`);
 
         if (response.ok) {
           const resData = await response.json();
@@ -696,7 +696,7 @@ console.log("Org ID (subdomain):", orgId);
             const updatedOrgData = {
               organizationId: apiData.id || orgId, // Use actual ID from API
               organizationName: apiData.organizationName || 'Default Org',
-              logo: apiData.logoUrl ? `https://api.drazeapp.com${apiData.logoUrl}` : logo,
+              logo: apiData.logoUrl ? `https://api.gharzoreality.com${apiData.logoUrl}` : logo,
               website: apiData.website || { 
                 about: '', 
                 socialLinks: { facebook: '', instagram: '', linkedin: '' },

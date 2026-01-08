@@ -36,7 +36,7 @@ const Roomswitch = () => {
       try {
         setAccommodationsLoading(true);
         const res = await fetch(
-          "https://api.drazeapp.com/api/tenant/accommodations",
+          "https://api.gharzoreality.com/api/tenant/accommodations",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -91,7 +91,7 @@ const Roomswitch = () => {
       try {
         setRoomsLoading(true);
         const res = await fetch(
-          `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/available`,
+          `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/available`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -133,7 +133,7 @@ const Roomswitch = () => {
       try {
         setBedsLoading(true);
         const res = await fetch(
-          `https://api.drazeapp.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.requestedRoomId}/available-beds`,
+          `https://api.gharzoreality.com/api/landlord/properties/${formData.propertyId}/rooms/${formData.requestedRoomId}/available-beds`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -170,7 +170,7 @@ const Roomswitch = () => {
       try {
         setRequestsLoading(true);
         const res = await fetch(
-          "https://api.drazeapp.com/api/room-switch/my-requests",
+          "https://api.gharzoreality.com/api/room-switch/my-requests",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -244,7 +244,7 @@ const Roomswitch = () => {
 
     try {
       const res = await fetch(
-        "https://api.drazeapp.com/api/room-switch/request",
+        "https://api.gharzoreality.com/api/room-switch/request",
         {
           method: "POST",
           headers: {
@@ -258,7 +258,7 @@ const Roomswitch = () => {
       if (res.ok) {
         setResponse(data);
         const requestsRes = await fetch(
-          "https://api.drazeapp.com/api/room-switch/my-requests",
+          "https://api.gharzoreality.com/api/room-switch/my-requests",
           {
             headers: {
               Authorization: `Bearer ${token}`,

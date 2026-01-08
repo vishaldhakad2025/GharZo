@@ -304,7 +304,7 @@ const PropertyManagerList = () => {
           return;
         }
 
-        const res = await axios.get("https://api.drazeapp.com/api/regional-managers/profile", {
+        const res = await axios.get("https://api.gharzoreality.com/api/regional-managers/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -343,7 +343,7 @@ const PropertyManagerList = () => {
           toast.error("No authentication token found");
           return;
         }
-        const res = await axios.get("https://api.drazeapp.com/api/regional-managers/profile", {
+        const res = await axios.get("https://api.gharzoreality.com/api/regional-managers/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setRegionalManagerId(res.data.data.id);
@@ -365,7 +365,7 @@ const PropertyManagerList = () => {
         toast.error("No authentication token found");
         return;
       }
-      const res = await axios.get(`https://api.drazeapp.com/api/property-managers/${regionalManagerId}`, {
+      const res = await axios.get(`https://api.gharzoreality.com/api/property-managers/${regionalManagerId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const mapped = res.data.data.map((d) => ({
@@ -438,7 +438,7 @@ const PropertyManagerList = () => {
     setLoadingProperties(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://api.drazeapp.com/api/rm/properties", {
+      const res = await axios.get("https://api.gharzoreality.com/api/rm/properties", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -502,7 +502,7 @@ const PropertyManagerList = () => {
     try {
       setDeletingId(deleteManagerId);
       const token = localStorage.getItem("token");
-      await axios.delete(`https://api.drazeapp.com/api/property-managers/${deleteManagerId}`, {
+      await axios.delete(`https://api.gharzoreality.com/api/property-managers/${deleteManagerId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setManagers((prev) => prev.filter((m) => m.id !== deleteManagerId));
@@ -531,7 +531,7 @@ const PropertyManagerList = () => {
   const onView = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`https://api.drazeapp.com/api/property-managers/detail/${id}`, {
+      const res = await axios.get(`https://api.gharzoreality.com/api/property-managers/detail/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setViewManager(res.data.data);
@@ -559,7 +559,7 @@ const PropertyManagerList = () => {
         properties: formData.properties || [],
         ...(formData.password && { password: formData.password }),
       };
-      const res = await axios.put(`https://api.drazeapp.com/api/property-managers/${editingManager.id}`, body, {
+      const res = await axios.put(`https://api.gharzoreality.com/api/property-managers/${editingManager.id}`, body, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("Update Response:", res.data);

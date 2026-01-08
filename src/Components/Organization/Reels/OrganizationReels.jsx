@@ -54,7 +54,7 @@ function OrganizationReels() {
         const orgToken = localStorage.getItem("orgToken");
         if (!orgToken) return;
         const response = await fetch(
-          "https://api.drazeapp.com/api/organization/profile",
+          "https://api.gharzoreality.com/api/organization/profile",
           {
             headers: {
               Authorization: `Bearer ${orgToken}`,
@@ -79,7 +79,7 @@ function OrganizationReels() {
         const orgToken = localStorage.getItem("orgToken");
         if (!orgToken) throw new Error("No authentication orgToken found");
         const response = await fetch(
-          "https://api.drazeapp.com/api/landlord/properties",
+          "https://api.gharzoreality.com/api/landlord/properties",
           {
             headers: {
               Authorization: `Bearer ${orgToken}`,
@@ -107,7 +107,7 @@ function OrganizationReels() {
       const orgToken = localStorage.getItem("orgToken");
       if (!orgToken) throw new Error("No authentication orgToken found");
       const response = await fetch(
-        `https://api.drazeapp.com/api/reels/landlord/all?page=${page}&limit=10`,
+        `https://api.gharzoreality.com/api/reels/landlord/all?page=${page}&limit=10`,
         {
           headers: {
             Authorization: `Bearer ${orgToken}`,
@@ -125,7 +125,7 @@ function OrganizationReels() {
         description: item.description || "",
         username: currentOrg?.name || item.organizationId?.name || "Anonymous",
         avatar: currentOrg?.profilePhoto
-          ? `https://api.drazeapp.com${currentOrg.profilePhoto}`
+          ? `https://api.gharzoreality.com${currentOrg.profilePhoto}`
           : `https://i.pravatar.cc/100?img=${((append ? reels.length : 0) + i + 12) % 70}`,
         likes: item.likesCount || 0,
         comments: item.commentsCount || 0,
@@ -242,7 +242,7 @@ function OrganizationReels() {
       const orgToken = localStorage.getItem("orgToken");
       if (!orgToken) throw new Error("No authentication orgToken found");
       const response = await fetch(
-        `https://api.drazeapp.com/api/reels/${id}/like`,
+        `https://api.gharzoreality.com/api/reels/${id}/like`,
         {
           method: "POST",
           headers: {
@@ -311,7 +311,7 @@ function OrganizationReels() {
       if (!orgToken) throw new Error("No authentication orgToken found");
 
       const response = await fetch(
-        "https://api.drazeapp.com/api/reels/upload",
+        "https://api.gharzoreality.com/api/reels/upload",
         {
           method: "POST",
           headers: {
@@ -339,7 +339,7 @@ function OrganizationReels() {
         description: data.reel.description,
         username: currentOrg?.name || "you",
         avatar: currentOrg?.profilePhoto
-          ? `https://api.drazeapp.com${currentOrg.profilePhoto}`
+          ? `https://api.gharzoreality.com${currentOrg.profilePhoto}`
           : `https://i.pravatar.cc/100?u=${currentOrg?._id || "you"}`,
         likes: data.reel.likesCount || 0,
         comments: data.reel.commentsCount || 0,
@@ -372,7 +372,7 @@ function OrganizationReels() {
       const orgToken = localStorage.getItem("orgToken");
       if (!orgToken) throw new Error("No authentication orgToken found");
 
-      const response = await fetch(`https://api.drazeapp.com/api/reels/${id}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/reels/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -741,7 +741,7 @@ function OrganizationReels() {
                               if (!orgToken)
                                 throw new Error("No authentication orgToken found");
                               const response = await fetch(
-                                `https://api.drazeapp.com/api/reels/${reel.id}/comment`,
+                                `https://api.gharzoreality.com/api/reels/${reel.id}/comment`,
                                 {
                                   method: "POST",
                                   headers: {
@@ -963,7 +963,7 @@ function CommentsSheet({ open, onClose, reel, onAdd }) {
         const orgToken = localStorage.getItem("orgToken");
         if (!orgToken) throw new Error("No authentication orgToken found");
         const response = await fetch(
-          `https://api.drazeapp.com/api/reels/${reel.id}/comments`,
+          `https://api.gharzoreality.com/api/reels/${reel.id}/comments`,
           {
             headers: {
               Authorization: `Bearer ${orgToken}`,
@@ -1013,7 +1013,7 @@ function CommentsSheet({ open, onClose, reel, onAdd }) {
           {comments.map((c, i) => (
             <Comment
               key={i}
-              userimage={c.userId?.profilePhoto ? `https://api.drazeapp.com${c.userId.profilePhoto}` : `https://i.pravatar.cc/40?u=${c.userId?.name || 'user'}`}
+              userimage={c.userId?.profilePhoto ? `https://api.gharzoreality.com${c.userId.profilePhoto}` : `https://i.pravatar.cc/40?u=${c.userId?.name || 'user'}`}
               username={c.userId?.name || "user"}
               text={c.text}
             />
@@ -1059,7 +1059,7 @@ function LikesSheet({ open, onClose, reel }) {
         const orgToken = localStorage.getItem("orgToken");
         if (!orgToken) throw new Error("No authentication orgToken found");
         const response = await fetch(
-          `https://api.drazeapp.com/api/reels/${reel.id}/likes`,
+          `https://api.gharzoreality.com/api/reels/${reel.id}/likes`,
           {
             headers: {
               Authorization: `Bearer ${orgToken}`,

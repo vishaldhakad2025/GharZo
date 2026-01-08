@@ -13,10 +13,10 @@ import {
   FaThumbsDown,
 } from 'react-icons/fa';
 
-const API_BASE_URL = 'https://api.drazeapp.com/api/verification';
-const LANDLORD_API_BASE_URL = 'https://api.drazeapp.com/api/landlord';
-const ORG_API_BASE_URL = 'https://api.drazeapp.com/api/organization';
-const BASE_IMAGE_URL = 'https://api.drazeapp.com';
+const API_BASE_URL = 'https://api.gharzoreality.com/api/verification';
+const LANDLORD_API_BASE_URL = 'https://api.gharzoreality.com/api/landlord';
+const ORG_API_BASE_URL = 'https://api.gharzoreality.com/api/organization';
+const BASE_IMAGE_URL = 'https://api.gharzoreality.com';
 
 const OrgPoliceVerification = () => {
   const navigate = useNavigate();
@@ -475,7 +475,7 @@ const OrgPoliceVerification = () => {
                     <div className="font-semibold">{doc.name}</div>
 
                     <img
-                      src={`https://api.drazeapp.com${doc.fileUrl}`}
+                      src={`https://api.gharzoreality.com${doc.fileUrl}`}
                       alt="Document"
                       className="h-40 w-full object-cover rounded-lg mt-2 shadow"
                     />

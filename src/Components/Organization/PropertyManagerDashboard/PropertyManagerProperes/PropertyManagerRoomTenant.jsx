@@ -60,7 +60,7 @@ const PropMngrTents = ({ propertyId: propIdFromProps }) => {
 
       try {
         setLoading(true);
-        const response = await fetch("https://api.drazeapp.com/api/pm/tenants", {
+        const response = await fetch("https://api.gharzoreality.com/api/pm/tenants", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ const handleDeleteConfirmed = async (tenantId) => {
     console.log("- Payload:", payload);
 
     // USE POST instead of DELETE → avoids CORS preflight issues
-    const response = await fetch("https://api.drazeapp.com/api/pm/tenants/remove", {
+    const response = await fetch("https://api.gharzoreality.com/api/pm/tenants/remove", {
       method: "POST", // ← CHANGED TO POST
       headers: {
         Authorization: `Bearer ${token}`,

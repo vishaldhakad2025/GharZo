@@ -55,7 +55,7 @@ const PropertyManagerPropertyExpenses = () => {
         return;
       }
       try {
-        const response = await fetch('https://api.drazeapp.com/api/property-managers/profile', {
+        const response = await fetch('https://api.gharzoreality.com/api/property-managers/profile', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const PropertyManagerPropertyExpenses = () => {
       if (!token || !propertyId) return;
       try {
         const res = await fetch(
-          `https://api.drazeapp.com/api/pm/properties/${propertyId}`,
+          `https://api.gharzoreality.com/api/pm/properties/${propertyId}`,
           {
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -113,7 +113,7 @@ const PropertyManagerPropertyExpenses = () => {
       if (!token || !pmId) return;
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/pm/categories`,
+          `https://api.gharzoreality.com/api/pm/categories`,
           {
             method: 'GET',
             headers: {
@@ -156,7 +156,7 @@ const PropertyManagerPropertyExpenses = () => {
       }
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/pm/expenses/property/${propertyId}`,
+          `https://api.gharzoreality.com/api/pm/expenses/property/${propertyId}`,
           {
             method: 'GET',
             headers: {
@@ -220,8 +220,8 @@ const PropertyManagerPropertyExpenses = () => {
       }
 
       const url = isEditMode 
-        ? `https://api.drazeapp.com/api/pm/expenses/${editExpenseId}`
-        : `https://api.drazeapp.com/api/pm/expenses/property/${propertyId}`;
+        ? `https://api.gharzoreality.com/api/pm/expenses/${editExpenseId}`
+        : `https://api.gharzoreality.com/api/pm/expenses/property/${propertyId}`;
       
       const method = isEditMode ? 'PUT' : 'POST';
 
@@ -267,7 +267,7 @@ const PropertyManagerPropertyExpenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/pm/expenses/${expenseId}`,
+        `https://api.gharzoreality.com/api/pm/expenses/${expenseId}`,
         {
           method: 'DELETE',
           headers: {

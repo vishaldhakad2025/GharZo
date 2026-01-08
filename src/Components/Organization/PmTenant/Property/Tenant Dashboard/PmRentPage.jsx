@@ -19,7 +19,7 @@ export default function RentPage() {
     const fetchDue = async () => {
       try {
         const res = await axios.get(
-          "https://api.drazeapp.com/api/tenant/accommodations",
+          "https://api.gharzoreality.com/api/tenant/accommodations",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ export default function RentPage() {
     try {
       setLoading(true);
       const res = await axios.post(
-        "https://api.drazeapp.com/api/tenant/rent/pay", 
+        "https://api.gharzoreality.com/api/tenant/rent/pay", 
         {
           amount,
         },

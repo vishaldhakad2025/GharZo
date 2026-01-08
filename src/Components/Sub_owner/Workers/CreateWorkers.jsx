@@ -81,7 +81,7 @@ const AddWorkerForm = () => {
         return;
       }
       const propRes = await fetch(
-        "https://api.drazeapp.com/api/sub-owner/properties",
+        "https://api.gharzoreality.com/api/sub-owner/properties",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -92,7 +92,7 @@ const AddWorkerForm = () => {
         return;
       }
       const workerRes = await fetch(
-        "https://api.drazeapp.com/api/sub-owner/workers",
+        "https://api.gharzoreality.com/api/sub-owner/workers",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -280,7 +280,7 @@ const AddWorkerForm = () => {
 
     try {
       const res = await fetch(
-        "https://api.drazeapp.com/api/sub-owner/workers",
+        "https://api.gharzoreality.com/api/sub-owner/workers",
         {
           method: "POST",
           headers: {

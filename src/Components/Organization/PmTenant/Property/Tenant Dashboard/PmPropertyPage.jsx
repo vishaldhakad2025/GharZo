@@ -25,7 +25,7 @@ export default function PropertyPage() {
 
       try {
         const accRes = await axios.get(
-          "https://api.drazeapp.com/api/tenant/accommodations",
+          "https://api.gharzoreality.com/api/tenant/accommodations",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -42,7 +42,7 @@ export default function PropertyPage() {
 
           if (tenantId) {
             const roomsRes = await axios.get(
-              `https://api.drazeapp.com/api/tenant/${tenantId}/my-rooms`,
+              `https://api.gharzoreality.com/api/tenant/${tenantId}/my-rooms`,
               { headers: { Authorization: `Bearer ${token}` } }
             );
 

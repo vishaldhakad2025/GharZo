@@ -41,7 +41,7 @@ const Dues = () => {
       }
       try {
         const response = await axios.get(
-          "https://api.drazeapp.com/api/sub-owner/auth/profile",
+          "https://api.gharzoreality.com/api/sub-owner/auth/profile",
           {
             headers: {
               "Content-Type": "application/json",
@@ -108,7 +108,7 @@ const Dues = () => {
 
       try {
         const response = await axios.get(
-          "https://api.drazeapp.com/api/subowner/dues/summary",
+          "https://api.gharzoreality.com/api/subowner/dues/summary",
           {
             headers: {
               "Content-Type": "application/json",

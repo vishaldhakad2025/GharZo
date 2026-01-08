@@ -35,7 +35,7 @@ const PropMngrComplaints = () => {
 
         // NEW API: Fetch ALL complaints (no status filter)
         const response = await axios.get(
-          `https://api.drazeapp.com/api/pm/complaints/all?page=${page}&limit=${pagination.limit}`,
+          `https://api.gharzoreality.com/api/pm/complaints/all?page=${page}&limit=${pagination.limit}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -62,7 +62,7 @@ const PropMngrComplaints = () => {
 
         // Fetch Workers
         const workersResponse = await axios.get(
-          "https://api.drazeapp.com/api/pm/workers",
+          "https://api.gharzoreality.com/api/pm/workers",
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setWorkers(workersResponse.data.workers || []);
@@ -82,7 +82,7 @@ const PropMngrComplaints = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.patch(
-        `https://api.drazeapp.com/api/pm/complaints/update/${tenantId}/${complaintId}`,
+        `https://api.gharzoreality.com/api/pm/complaints/update/${tenantId}/${complaintId}`,
         { status, landlordResponse },
         { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
       );
@@ -119,7 +119,7 @@ const PropMngrComplaints = () => {
 
     try {
       const response = await axios.patch(
-        `https://api.drazeapp.com/api/pm/complaints/properties/${propertyId}/complaints/${complaintId}/assign-worker`,
+        `https://api.gharzoreality.com/api/pm/complaints/properties/${propertyId}/complaints/${complaintId}/assign-worker`,
         {
           workerId,
           estimatedResolutionTime: new Date(estimatedTime).toISOString(),
@@ -149,7 +149,7 @@ const PropMngrComplaints = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.patch(
-        `https://api.drazeapp.com/api/pm/complaints/properties/${propertyId}/complaints/${complaintId}/feedback`,
+        `https://api.gharzoreality.com/api/pm/complaints/properties/${propertyId}/complaints/${complaintId}/feedback`,
         { rating, feedback },
         { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
       );

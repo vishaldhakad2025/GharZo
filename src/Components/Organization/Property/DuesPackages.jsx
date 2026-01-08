@@ -52,7 +52,7 @@ const DuePackages = () => {
 
     try {
       const response = await axios.get(
-        `https://api.drazeapp.com/api/dues/alldues/${landlordId}`,
+        `https://api.gharzoreality.com/api/dues/alldues/${landlordId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -119,7 +119,7 @@ const DuePackages = () => {
 
       try {
         const response = await axios.get(
-          "https://api.drazeapp.com/api/landlord/tenant",
+          "https://api.gharzoreality.com/api/landlord/tenant",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -192,7 +192,7 @@ const DuePackages = () => {
 
       try {
         const response = await axios.get(
-          "https://api.drazeapp.com/api/organization/profile",
+          "https://api.gharzoreality.com/api/organization/profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -300,7 +300,7 @@ const DuePackages = () => {
     try {
       if (selectedCategory) {
         const response = await axios.put(
-          `https://api.drazeapp.com/api/dues/edit/${selectedCategory._id}`,
+          `https://api.gharzoreality.com/api/dues/edit/${selectedCategory._id}`,
           {
             name: categoryName,
             type: categoryType,
@@ -320,7 +320,7 @@ const DuePackages = () => {
         });
       } else {
         const response = await axios.post(
-          "https://api.drazeapp.com/api/dues/create",
+          "https://api.gharzoreality.com/api/dues/create",
           {
             name: categoryName,
             type: categoryType,
@@ -373,7 +373,7 @@ const DuePackages = () => {
 
     try {
       const response = await axios.put(
-        `https://api.drazeapp.com/api/dues/edit/${categoryId}`,
+        `https://api.gharzoreality.com/api/dues/edit/${categoryId}`,
         {
           status: newStatus,
         },
@@ -425,7 +425,7 @@ const DuePackages = () => {
 
       try {
         const response = await axios.delete(
-          `https://api.drazeapp.com/api/dues/delete/${categoryId}`,
+          `https://api.gharzoreality.com/api/dues/delete/${categoryId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -524,7 +524,7 @@ const DuePackages = () => {
     try {
       console.log("Sending dues assignment with landlordId:", landlordId);
       const response = await axios.post(
-        "https://api.drazeapp.com/api/dues/assign",
+        "https://api.gharzoreality.com/api/dues/assign",
         {
           tenantId: selectedTenant,
           landlordId: landlordId,

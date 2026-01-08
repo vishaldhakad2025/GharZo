@@ -39,7 +39,7 @@ const Tenant = () => {
         return;
       }
       const response = await axios.get(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/tenants`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/tenants`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -115,7 +115,7 @@ const Tenant = () => {
               <div className="relative h-48 bg-gradient-to-br from-blue-100 to-indigo-200">
                 {tenant.photo ? (
                   <img
-                    src={`https://api.drazeapp.com${tenant.photo}`}
+                    src={`https://api.gharzoreality.com${tenant.photo}`}
                     alt={tenant.name}
                     className="w-full h-full object-cover"
                   />
@@ -181,7 +181,7 @@ const Tenant = () => {
               <div className="text-center mb-6">
                 {selectedTenant.photo ? (
                   <img
-                    src={`https://api.drazeapp.com${selectedTenant.photo}`}
+                    src={`https://api.gharzoreality.com${selectedTenant.photo}`}
                     alt={selectedTenant.name}
                     className="w-32 h-32 object-cover rounded-full mx-auto mb-4 shadow-lg"
                   />

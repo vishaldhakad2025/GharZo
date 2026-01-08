@@ -30,7 +30,7 @@ const OrgSubscriptionPlans = () => {
     }
 
     // Fetch profile to get landlordId
-   const profileData= fetch('https://api.drazeapp.com/api/organization/profile', {
+   const profileData= fetch('https://api.gharzoreality.com/api/organization/profile', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${authToken}`,
@@ -60,7 +60,7 @@ const OrgSubscriptionPlans = () => {
     setPlans([]);
     setLoading(true);
     setError(null);
-    const url = 'https://api.drazeapp.com/api/reel/reel-subscription-plans/active';
+    const url = 'https://api.gharzoreality.com/api/reel/reel-subscription-plans/active';
 
     fetch(url, {
       method: 'GET',
@@ -105,7 +105,7 @@ const OrgSubscriptionPlans = () => {
   };
 
   const handleSubscribe = async (plan) => {
-    const captureUrl = "https://api.drazeapp.com/api/reels/subscription/capture";
+    const captureUrl = "https://api.gharzoreality.com/api/reels/subscription/capture";
 
     try {
       const res = await loadRazorpayScript();

@@ -52,7 +52,7 @@ const PGDetails = () => {
     try {
       const timestamp = new Date().getTime();
       const res = await axios.get(
-        `https://api.drazeapp.com/api/public/property/${id}?_=${timestamp}`,
+        `https://api.gharzoreality.com/api/public/property/${id}?_=${timestamp}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -89,7 +89,7 @@ const PGDetails = () => {
         try {
           const timestamp = new Date().getTime();
           const response = await axios.get(
-            `https://api.drazeapp.com/api/public/properties/${id}/rooms/${roomId}/images?_=${timestamp}`,
+            `https://api.gharzoreality.com/api/public/properties/${id}/rooms/${roomId}/images?_=${timestamp}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -127,7 +127,7 @@ const PGDetails = () => {
         try {
           const timestamp = new Date().getTime();
           const response = await axios.get(
-            `https://api.drazeapp.com/api/public/properties/${id}/rooms/${roomId}/beds/${bedId}/images?_=${timestamp}`,
+            `https://api.gharzoreality.com/api/public/properties/${id}/rooms/${roomId}/beds/${bedId}/images?_=${timestamp}`,
             {
               headers: {
                 "Content-Type": "application/json",

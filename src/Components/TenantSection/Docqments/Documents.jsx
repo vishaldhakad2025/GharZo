@@ -60,7 +60,7 @@ export default function DocumentManager() {
           .filter((doc) => !filterVisible || doc.isVisibleToTenants)
           .map((doc) => ({
             id: doc._id,
-            url: doc.filePath ? `https://api.drazeapp.com${doc.filePath}` : doc.fileUrl,
+            url: doc.filePath ? `https://api.gharzoreality.com${doc.filePath}` : doc.fileUrl,
             name: doc.documentType,
             uploadedAt: doc.uploadedAt,
             source,
@@ -78,12 +78,12 @@ export default function DocumentManager() {
     };
 
     fetchDocuments(
-      "https://api.drazeapp.com/api/tenant-documents/tenant/{tenantId}",
+      "https://api.gharzoreality.com/api/tenant-documents/tenant/{tenantId}",
       setTenantDocs,
       "tenant"
     );
     fetchDocuments(
-      "https://api.drazeapp.com/api/documents/tenant/{tenantId}/documents",
+      "https://api.gharzoreality.com/api/documents/tenant/{tenantId}/documents",
       setLandlordDocs,
       "landlord",
       true
@@ -123,7 +123,7 @@ export default function DocumentManager() {
       formData.append("document", selectedFile);
       formData.append("documentType", docName.trim());
 formData.append("isVisibleToLandlord", true);
-      const response = await fetch("https://api.drazeapp.com/api/tenant-documents/upload", {
+      const response = await fetch("https://api.gharzoreality.com/api/tenant-documents/upload", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -140,7 +140,7 @@ formData.append("isVisibleToLandlord", true);
 
       const newDoc = {
         id: result.document?._id,
-        url: result.document?.filePath ? `https://api.drazeapp.com${result.document.filePath}` : await getBase64(selectedFile),
+        url: result.document?.filePath ? `https://api.gharzoreality.com${result.document.filePath}` : await getBase64(selectedFile),
         name: result.document?.documentType,
         uploadedAt: result.document?.uploadedAt,
         source: "tenant",
@@ -170,7 +170,7 @@ formData.append("isVisibleToLandlord", true);
   const handleDelete = async (id) => {
     try {
       const { token } = getAuthDetails();
-      const response = await fetch(`https://api.drazeapp.com/api/tenant-documents/${id}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/tenant-documents/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

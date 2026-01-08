@@ -67,7 +67,7 @@ const OrganizationExpenses = () => {
         return;
       }
       try {
-        const response = await fetch('https://api.drazeapp.com/api/organization/profile', {
+        const response = await fetch('https://api.gharzoreality.com/api/organization/profile', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const OrganizationExpenses = () => {
     const fetchProperties = async () => {
       if (!orgToken) return;
       try {
-        const response = await fetch('https://api.drazeapp.com/api/organization/properties', {
+        const response = await fetch('https://api.gharzoreality.com/api/organization/properties', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${orgToken}`,
@@ -126,7 +126,7 @@ const OrganizationExpenses = () => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/org-categories`,
+          `https://api.gharzoreality.com/api/org-categories`,
           {
             method: 'GET',
             headers: {
@@ -155,7 +155,7 @@ const OrganizationExpenses = () => {
 
     const fetchExpenses = async () => {
       try {
-        let url = `https://api.drazeapp.com/api/org-expenses?organization=${organizationId}`;
+        let url = `https://api.gharzoreality.com/api/org-expenses?organization=${organizationId}`;
         const hasFilters =
           filters.category ||
           filters.startDate ||
@@ -173,7 +173,7 @@ const OrganizationExpenses = () => {
             ...(filters.paidBy && { paidBy: filters.paidBy }),
             ...(filters.paidTo && { paidTo: filters.paidTo }),
           });
-          url = `https://api.drazeapp.com/api/org-expenses?${queryParams}`;
+          url = `https://api.gharzoreality.com/api/org-expenses?${queryParams}`;
         }
         const response = await fetch(url, {
           method: 'GET',
@@ -198,7 +198,7 @@ const OrganizationExpenses = () => {
     const fetchMonthlyExpenses = async () => {
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/org-expenses/analytics/monthly?organization=${organizationId}&year=${year}`,
+          `https://api.gharzoreality.com/api/org-expenses/analytics/monthly?organization=${organizationId}&year=${year}`,
           {
             method: 'GET',
             headers: {
@@ -223,7 +223,7 @@ const OrganizationExpenses = () => {
     const fetchYearlyExpenses = async () => {
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/org-expenses/analytics/yearly?organization=${organizationId}`,
+          `https://api.gharzoreality.com/api/org-expenses/analytics/yearly?organization=${organizationId}`,
           {
             method: 'GET',
             headers: {
@@ -259,7 +259,7 @@ const OrganizationExpenses = () => {
     }
     const fetchCategorySummary = async () => {
       try {
-        const url = `https://api.drazeapp.com/api/org-expenses/analytics/summary?organization=${organizationId}&year=${categorySummaryYear}&month=${categorySummaryMonth}`;
+        const url = `https://api.gharzoreality.com/api/org-expenses/analytics/summary?organization=${organizationId}&year=${categorySummaryYear}&month=${categorySummaryMonth}`;
         const response = await fetch(url, {
           method: 'GET',
           headers: {
@@ -288,7 +288,7 @@ const OrganizationExpenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/org-categories/${categoryId}`,
+        `https://api.gharzoreality.com/api/org-categories/${categoryId}`,
         {
           method: 'GET',
           headers: {
@@ -319,7 +319,7 @@ const OrganizationExpenses = () => {
       return null;
     }
     try {
-      const response = await fetch(`https://api.drazeapp.com/api/org-expenses/${expenseId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/org-expenses/${expenseId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -348,7 +348,7 @@ const OrganizationExpenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/org-categories/${editCategoryId}`,
+        `https://api.gharzoreality.com/api/org-categories/${editCategoryId}`,
         {
           method: 'PUT',
           headers: {
@@ -398,7 +398,7 @@ const OrganizationExpenses = () => {
       return;
     }
     try {
-      const response = await fetch('https://api.drazeapp.com/api/org-categories', {
+      const response = await fetch('https://api.gharzoreality.com/api/org-categories', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -433,7 +433,7 @@ const OrganizationExpenses = () => {
     }
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/org-categories/${categoryId}`,
+        `https://api.gharzoreality.com/api/org-categories/${categoryId}`,
         {
           method: 'DELETE',
           headers: {
@@ -488,7 +488,7 @@ const OrganizationExpenses = () => {
       if (expenseData.billImage) {
         formData.append('billImage', expenseData.billImage);
       }
-      const response = await fetch('https://api.drazeapp.com/api/org-expenses', {
+      const response = await fetch('https://api.gharzoreality.com/api/org-expenses', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${orgToken}`,
@@ -553,7 +553,7 @@ const OrganizationExpenses = () => {
       if (expenseData.billImage) {
         formData.append('billImage', expenseData.billImage);
       }
-      const response = await fetch(`https://api.drazeapp.com/api/org-expenses/${editExpenseId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/org-expenses/${editExpenseId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${orgToken}`,
@@ -599,7 +599,7 @@ const OrganizationExpenses = () => {
       return;
     }
     try {
-      const response = await fetch(`https://api.drazeapp.com/api/org-expenses/${expenseId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/org-expenses/${expenseId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

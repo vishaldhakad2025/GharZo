@@ -5,7 +5,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 const api = axios.create({
-  baseURL: "https://api.drazeapp.com/api/pm",
+  baseURL: "https://api.gharzoreality.com/api/pm",
 });
 
 const getToken = () => {

@@ -26,7 +26,7 @@ const SellerMySubscriptions = () => {
       setError(null);
       try {
         // Fetch subscription
-        const subRes = await axios.get("https://api.drazeapp.com/api/seller/subscription/my-subscription", {
+        const subRes = await axios.get("https://api.gharzoreality.com/api/seller/subscription/my-subscription", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (subRes.data.success) {
@@ -36,7 +36,7 @@ const SellerMySubscriptions = () => {
         }
 
         // Fetch properties
-        const propRes = await axios.get("https://api.drazeapp.com/api/seller/getproperties", {
+        const propRes = await axios.get("https://api.gharzoreality.com/api/seller/getproperties", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (propRes.data.success) {

@@ -43,7 +43,7 @@ const TenantDashboard = () => {
 
         // Fetch profile for name
         const profileRes = await axios.get(
-          "https://api.drazeapp.com/api/tenant/profile",
+          "https://api.gharzoreality.com/api/tenant/profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -54,7 +54,7 @@ const TenantDashboard = () => {
 
         // Fetch accommodations for property
         const accRes = await axios.get(
-          "https://api.drazeapp.com/api/tenant/accommodations",
+          "https://api.gharzoreality.com/api/tenant/accommodations",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ const TenantDashboard = () => {
           if (accommodation) {
             const lId = accommodation.landlordId;
             const duesRes = await axios.get(
-              `https://api.drazeapp.com/api/dues/tenant/${tenantId}/${lId}`,
+              `https://api.gharzoreality.com/api/dues/tenant/${tenantId}/${lId}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -103,7 +103,7 @@ const TenantDashboard = () => {
 
           // Fetch complaints
           const complaintsRes = await axios.get(
-            `https://api.drazeapp.com/api/landlord/tenant/${tenantId}/complaints`,
+            `https://api.gharzoreality.com/api/landlord/tenant/${tenantId}/complaints`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -122,7 +122,7 @@ const TenantDashboard = () => {
           let landlordAnns = [];
           try {
             const landlordAnnRes = await axios.get(
-              `https://api.drazeapp.com/api/announcement/tenant/${tenantId}`,
+              `https://api.gharzoreality.com/api/announcement/tenant/${tenantId}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,

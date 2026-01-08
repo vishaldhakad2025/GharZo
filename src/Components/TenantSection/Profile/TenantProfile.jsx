@@ -39,7 +39,7 @@ const TenantProfile = () => {
           return;
         }
 
-        const profileRes = await axios.get("https://api.drazeapp.com/api/tenant/profile", {
+        const profileRes = await axios.get("https://api.gharzoreality.com/api/tenant/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -61,11 +61,11 @@ const TenantProfile = () => {
           if (tenantData.tenantId) {
             try {
               const sigRes = await axios.get(
-                `https://api.drazeapp.com/api/landlord/tenant/signature/${tenantData.tenantId}`,
+                `https://api.gharzoreality.com/api/landlord/tenant/signature/${tenantData.tenantId}`,
                 { headers: { Authorization: `Bearer ${token}` } }
               );
               if (sigRes.data.success && sigRes.data.signatureUrl) {
-                setSignatureUrl(`https://api.drazeapp.com${sigRes.data.signatureUrl}`);
+                setSignatureUrl(`https://api.gharzoreality.com${sigRes.data.signatureUrl}`);
               }
             } catch (sigError) {
               console.log("No signature found or error fetching:", sigError.response?.data);
@@ -118,7 +118,7 @@ const TenantProfile = () => {
     try {
       setUploading(true);
       const res = await axios.post(
-        "https://api.drazeapp.com/api/landlord/tenant/signature",
+        "https://api.gharzoreality.com/api/landlord/tenant/signature",
         formData,
         {
           headers: {
@@ -129,7 +129,7 @@ const TenantProfile = () => {
       );
 
       if (res.data.success) {
-        setSignatureUrl(`https://api.drazeapp.com${res.data.filePath}`);
+        setSignatureUrl(`https://api.gharzoreality.com${res.data.filePath}`);
         setSignatureFile(null);
         document.getElementById("signatureInput").value = "";
       }
@@ -153,7 +153,7 @@ const TenantProfile = () => {
     try {
       setDeleting(true);
       const res = await axios.delete(
-        `https://api.drazeapp.com/api/landlord/tenant/signature/${tenant.tenantId}`,
+        `https://api.gharzoreality.com/api/landlord/tenant/signature/${tenant.tenantId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -179,7 +179,7 @@ const TenantProfile = () => {
         return;
       }
 
-      const res = await axios.put("https://api.drazeapp.com/api/tenant/profile", formData, {
+      const res = await axios.put("https://api.gharzoreality.com/api/tenant/profile", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

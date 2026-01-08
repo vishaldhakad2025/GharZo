@@ -24,7 +24,7 @@ function RegionalManagerLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://api.drazeapp.com/api/regional-managers/login", {
+      const response = await fetch("https://api.gharzoreality.com/api/regional-managers/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

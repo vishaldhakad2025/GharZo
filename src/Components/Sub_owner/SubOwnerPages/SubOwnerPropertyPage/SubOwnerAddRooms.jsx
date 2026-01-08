@@ -202,7 +202,7 @@ const SubOwnerAddRooms = () => {
   ]);
 
   // Define API base URL
-  const API_BASE = `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/rooms`;
+  const API_BASE = `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/rooms`;
 
   // getToken function
   const getToken = () => localStorage.getItem("token");
@@ -350,7 +350,7 @@ const SubOwnerAddRooms = () => {
       if (!token) {
         throw new Error("No authentication token found. Please log in.");
       }
-      const bedsAPI = `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoomId}/beds`;
+      const bedsAPI = `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/rooms/${selectedRoomId}/beds`;
       for (const bed of beds) {
         if (!bed.name || !bed.price) {
           throw new Error("Bed name and price are required.");

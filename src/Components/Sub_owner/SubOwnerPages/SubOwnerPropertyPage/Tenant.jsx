@@ -50,7 +50,7 @@ const TenantList = () => {
         return;
       }
       const response = await axios.get(
-        `https://api.drazeapp.com/api/sub-owner/properties/${propertyId}/tenants`,
+        `https://api.gharzoreality.com/api/sub-owner/properties/${propertyId}/tenants`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -137,7 +137,7 @@ const TenantList = () => {
       const payload = preparePayload(formData);
       console.log("Update payload:", payload); // Debug: Log update payload
       const response = await axios.put(
-        `https://api.drazeapp.com/api/sub-owner/updateTenant/${formData.tenantId}`,
+        `https://api.gharzoreality.com/api/sub-owner/updateTenant/${formData.tenantId}`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -170,7 +170,7 @@ const TenantList = () => {
       }
       console.log("Deleting tenant with tenantId:", selectedTenant.tenantId); // Debug: Log tenantId
       const response = await axios.delete(
-        `https://api.drazeapp.com/api/sub-owner/deleteTenant/${selectedTenant.tenantId}`,
+        `https://api.gharzoreality.com/api/sub-owner/deleteTenant/${selectedTenant.tenantId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

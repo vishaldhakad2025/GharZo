@@ -155,7 +155,7 @@ const RegionalManagerList = () => {
         return;
       }
 
-      const response = await fetch("https://api.drazeapp.com/api/organization/profile", {
+      const response = await fetch("https://api.gharzoreality.com/api/organization/profile", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -203,9 +203,9 @@ const RegionalManagerList = () => {
       }
 
       setLoading(true);
-      let url = `https://api.drazeapp.com/api/regional-managers/${organizationId}`;
+      let url = `https://api.gharzoreality.com/api/regional-managers/${organizationId}`;
       if (name || region) {
-        url = `https://api.drazeapp.com/api/regional-managers/search?${name ? `name=${encodeURIComponent(name)}&` : ""}${region ? `region=${encodeURIComponent(region)}&` : ""}`.replace(/&$/, "");
+        url = `https://api.gharzoreality.com/api/regional-managers/search?${name ? `name=${encodeURIComponent(name)}&` : ""}${region ? `region=${encodeURIComponent(region)}&` : ""}`.replace(/&$/, "");
       }
       const response = await fetch(url, {
         method: "GET",
@@ -260,7 +260,7 @@ const RegionalManagerList = () => {
       }
 
       const response = await fetch(
-        "https://api.drazeapp.com/api/landlord/properties",
+        "https://api.gharzoreality.com/api/landlord/properties",
         {
           method: "GET",
           headers: {
@@ -381,7 +381,7 @@ const RegionalManagerList = () => {
       }
 
       const response = await fetch(
-        `https://api.drazeapp.com/api/regional-managers/detail/${managerId}`,
+        `https://api.gharzoreality.com/api/regional-managers/detail/${managerId}`,
         {
           method: "GET",
           headers: {
@@ -494,7 +494,7 @@ const RegionalManagerList = () => {
 
       setLoading(true);
       const response = await fetch(
-        `https://api.drazeapp.com/api/regional-managers/${id}`,
+        `https://api.gharzoreality.com/api/regional-managers/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -580,7 +580,7 @@ const RegionalManagerList = () => {
 
 
       const response = await fetch(
-        `https://api.drazeapp.com/api/regional-managers/${id}`,
+        `https://api.gharzoreality.com/api/regional-managers/${id}`,
         {
           method: "PUT",
           headers: {
@@ -604,7 +604,7 @@ const RegionalManagerList = () => {
       // Change password if provided
       if (formData.password) {
         const passwordResponse = await fetch(
-          "https://api.drazeapp.com/api/regional-managers/change-password",
+          "https://api.gharzoreality.com/api/regional-managers/change-password",
           {
             method: "POST",
             headers: {

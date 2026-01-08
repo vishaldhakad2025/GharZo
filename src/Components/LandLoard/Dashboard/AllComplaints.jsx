@@ -67,7 +67,7 @@ const AllComplaints = () => {
         }
 
         const response = await fetch(
-          "https://api.drazeapp.com/api/landlord/analytics/complaints",
+          "https://api.gharzoreality.com/api/landlord/analytics/complaints",
           {
             method: "GET",
             headers: {

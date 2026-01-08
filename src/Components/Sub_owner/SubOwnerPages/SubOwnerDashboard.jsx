@@ -49,7 +49,7 @@ const Dashboard = () => {
 
         // Fetch properties data
         const propertiesResponse = await axios.get(
-          "https://api.drazeapp.com/api/sub-owner/properties",
+          "https://api.gharzoreality.com/api/sub-owner/properties",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -57,7 +57,7 @@ const Dashboard = () => {
 
         // Fetch workers data
         const workersResponse = await axios.get(
-          "https://api.drazeapp.com/api/sub-owner/workers",
+          "https://api.gharzoreality.com/api/sub-owner/workers",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -65,7 +65,7 @@ const Dashboard = () => {
 
         // Fetch dues summary data
         const duesResponse = await axios.get(
-          "https://api.drazeapp.com/api/subowner/dues/summary",
+          "https://api.gharzoreality.com/api/subowner/dues/summary",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -73,7 +73,7 @@ const Dashboard = () => {
 
         // Fetch complaints summary data
         const complaintsResponse = await axios.get(
-          "https://api.drazeapp.com/api/sub-owner/properties/complaints/summary",
+          "https://api.gharzoreality.com/api/sub-owner/properties/complaints/summary",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

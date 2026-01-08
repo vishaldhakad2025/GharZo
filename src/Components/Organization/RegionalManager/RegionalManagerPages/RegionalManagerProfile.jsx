@@ -31,7 +31,7 @@ function RegionalManagerProfile() {
 
       setLoading(true);
       const response = await fetch(
-        "https://api.drazeapp.com/api/regional-managers/profile",
+        "https://api.gharzoreality.com/api/regional-managers/profile",
         {
           method: "GET",
           headers: {
@@ -79,7 +79,7 @@ function RegionalManagerProfile() {
       };
 
       const response = await fetch(
-        "https://api.drazeapp.com/api/regional-managers/profile",
+        "https://api.gharzoreality.com/api/regional-managers/profile",
         {
           method: "PUT",
           headers: {

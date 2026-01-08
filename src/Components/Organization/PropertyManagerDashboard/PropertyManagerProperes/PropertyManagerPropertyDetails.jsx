@@ -30,7 +30,7 @@ const PropertyDetail = () => {
         }
 
         const propertyResponse = await axios.get(
-          `https://api.drazeapp.com/api/pm/properties/${propertyId}`,
+          `https://api.gharzoreality.com/api/pm/properties/${propertyId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

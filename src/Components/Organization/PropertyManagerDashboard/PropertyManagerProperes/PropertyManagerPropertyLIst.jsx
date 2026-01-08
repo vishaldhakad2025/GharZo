@@ -16,7 +16,7 @@ const Properties = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
-        const response = await axios.get("https://api.drazeapp.com/api/pm/properties", {
+        const response = await axios.get("https://api.gharzoreality.com/api/pm/properties", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProperties(response.data);

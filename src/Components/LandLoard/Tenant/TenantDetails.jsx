@@ -25,7 +25,7 @@ const TenantDetails = () => {
   const fetchDocuments = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("https://api.drazeapp.com/api/documents/landlord", {
+      const response = await axios.get("https://api.gharzoreality.com/api/documents/landlord", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -69,7 +69,7 @@ const TenantDetails = () => {
     }
 
     const response = await axios.get(
-      `https://api.drazeapp.com/api/tenant-documents/landlord/${usedId}`,
+      `https://api.gharzoreality.com/api/tenant-documents/landlord/${usedId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -84,7 +84,7 @@ const TenantDetails = () => {
         const filePath = doc.filePath || "";
         const url = filePath.startsWith("http")
           ? filePath
-          : `https://api.drazeapp.com${filePath.startsWith("/") ? "" : "/"}${filePath}`;
+          : `https://api.gharzoreality.com${filePath.startsWith("/") ? "" : "/"}${filePath}`;
 
         return {
           id: doc._id,
@@ -150,7 +150,7 @@ const TenantDetails = () => {
 
           try {
             const propRes = await axios.get(
-              `https://api.drazeapp.com/api/landlord/properties/${acc.propertyId}`,
+              `https://api.gharzoreality.com/api/landlord/properties/${acc.propertyId}`,
               { headers: { Authorization: `Bearer ${token}` } }
             );
             propertyName = propRes.data.property?.name || "N/A";
@@ -158,7 +158,7 @@ const TenantDetails = () => {
 
           try {
             const roomRes = await axios.get(
-              `https://api.drazeapp.com/api/landlord/properties/${acc.propertyId}/rooms/${acc.roomId}`,
+              `https://api.gharzoreality.com/api/landlord/properties/${acc.propertyId}/rooms/${acc.roomId}`,
               { headers: { Authorization: `Bearer ${token}` } }
             );
             roomName = roomRes.data.room?.name || "N/A";
@@ -167,7 +167,7 @@ const TenantDetails = () => {
           try {
             if (acc.bedId) {
               const bedsRes = await axios.get(
-                `https://api.drazeapp.com/api/landlord/properties/${acc.propertyId}/rooms/${acc.roomId}/beds`,
+                `https://api.gharzoreality.com/api/landlord/properties/${acc.propertyId}/rooms/${acc.roomId}/beds`,
                 { headers: { Authorization: `Bearer ${token}` } }
               );
               const matchingBed =
@@ -198,7 +198,7 @@ const TenantDetails = () => {
 
           try {
             const propRes = await axios.get(
-              `https://api.drazeapp.com/api/landlord/properties/${req.propertyId}`,
+              `https://api.gharzoreality.com/api/landlord/properties/${req.propertyId}`,
               { headers: { Authorization: `Bearer ${token}` } }
             );
             propertyName = propRes.data.property?.name || "N/A";
@@ -206,7 +206,7 @@ const TenantDetails = () => {
 
           try {
             const roomRes = await axios.get(
-              `https://api.drazeapp.com/api/landlord/properties/${req.propertyId}/rooms/${req.roomId}`,
+              `https://api.gharzoreality.com/api/landlord/properties/${req.propertyId}/rooms/${req.roomId}`,
               { headers: { Authorization: `Bearer ${token}` } }
             );
             roomName = roomRes.data.room?.name || "N/A";
@@ -215,7 +215,7 @@ const TenantDetails = () => {
           if (req.bedId) {
             try {
               const bedsRes = await axios.get(
-                `https://api.drazeapp.com/api/landlord/properties/${req.propertyId}/rooms/${req.roomId}/beds`,
+                `https://api.gharzoreality.com/api/landlord/properties/${req.propertyId}/rooms/${req.roomId}/beds`,
                 { headers: { Authorization: `Bearer ${token}` } }
               );
               const matchingBed =
@@ -246,7 +246,7 @@ const TenantDetails = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://api.drazeapp.com/api/landlord/tenant/${tenantId}`,
+          `https://api.gharzoreality.com/api/landlord/tenant/${tenantId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -370,7 +370,7 @@ const TenantDetails = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post("https://api.drazeapp.com/api/documents/upload", formData, {
+      const response = await axios.post("https://api.gharzoreality.com/api/documents/upload", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -419,7 +419,7 @@ const TenantDetails = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.delete(`https://api.drazeapp.com/api/documents/${documentId}`, {
+      const response = await axios.delete(`https://api.gharzoreality.com/api/documents/${documentId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -489,7 +489,7 @@ const TenantDetails = () => {
       try {
         const token = localStorage.getItem("token");
         await axios.post(
-          `https://api.drazeapp.com/api/landlord/tenant/remove`,
+          `https://api.gharzoreality.com/api/landlord/tenant/remove`,
           { tenantId, ...formData },
           {
             headers: {
@@ -587,7 +587,7 @@ const TenantDetails = () => {
       e.preventDefault();
       try {
         const token = localStorage.getItem("token");
-        await axios.put(`https://api.drazeapp.com/api/landlord/tenant/${tenantId}`, formData, {
+        await axios.put(`https://api.gharzoreality.com/api/landlord/tenant/${tenantId}`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -1038,7 +1038,7 @@ const TenantDetails = () => {
                             onClick={() => {
                               // If landlord doc has a path, open it
                               const filePath = doc.raw?.filePath || "";
-                              const url = filePath.startsWith("http") ? filePath : `https://api.drazeapp.com${filePath}`;
+                              const url = filePath.startsWith("http") ? filePath : `https://api.gharzoreality.com${filePath}`;
                               if (filePath) window.open(url, "_blank");
                               else toast.error("File URL not available.");
                             }}

@@ -42,7 +42,7 @@ const LandlordSwitchRequests = () => {
           return;
         }
         setLoading(true);
-        const res = await fetch('https://api.drazeapp.com/api/room-switch/all-requests', {
+        const res = await fetch('https://api.gharzoreality.com/api/room-switch/all-requests', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -88,7 +88,7 @@ const LandlordSwitchRequests = () => {
   const updateRoomAndBedStatus = async (token, propertyId, roomId, bedId, status, roomNotes, bedNotes) => {
     try {
       await fetch(
-        `https://api.drazeapp.com/api/landlord/properties/${propertyId}/rooms/${roomId}/status`,
+        `https://api.gharzoreality.com/api/landlord/properties/${propertyId}/rooms/${roomId}/status`,
         {
           method: 'PUT',
           headers: {
@@ -99,7 +99,7 @@ const LandlordSwitchRequests = () => {
         }
       );
       await fetch(
-        `https://api.drazeapp.com/api/landlord/properties/${propertyId}/rooms/${roomId}/beds/${bedId}/status`,
+        `https://api.gharzoreality.com/api/landlord/properties/${propertyId}/rooms/${roomId}/beds/${bedId}/status`,
         {
           method: 'PUT',
           headers: {
@@ -137,7 +137,7 @@ const LandlordSwitchRequests = () => {
         setRejectReason(''); // Reset reason
         setShowRejectModal(false); // Close modal
       }
-      const endpoint = `https://api.drazeapp.com/api/room-switch/${action}/${requestId}`;
+      const endpoint = `https://api.gharzoreality.com/api/room-switch/${action}/${requestId}`;
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -173,7 +173,7 @@ const LandlordSwitchRequests = () => {
             'Bed assigned after switch'
           );
         }
-        const refreshRes = await fetch('https://api.drazeapp.com/api/room-switch/all-requests', {
+        const refreshRes = await fetch('https://api.gharzoreality.com/api/room-switch/all-requests', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

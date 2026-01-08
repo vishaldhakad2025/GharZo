@@ -58,7 +58,7 @@ const Dues = () => {
       }
       try {
         const response = await fetch(
-          "https://api.drazeapp.com/api/landlord/profile",
+          "https://api.gharzoreality.com/api/landlord/profile",
           {
             method: "GET",
             headers: {
@@ -97,7 +97,7 @@ const Dues = () => {
 
       try {
         const response = await fetch(
-          `https://api.drazeapp.com/api/dues/getdue/${landlordId}`,
+          `https://api.gharzoreality.com/api/dues/getdue/${landlordId}`,
           {
             method: "GET",
             headers: {

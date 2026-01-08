@@ -47,7 +47,7 @@ function PropertyManagerLogin() {
     }
 
     try {
-      const response = await fetch("https://api.drazeapp.com/api/property-managers/login", {
+      const response = await fetch("https://api.gharzoreality.com/api/property-managers/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

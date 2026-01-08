@@ -56,7 +56,7 @@ const PropertyManagerSidebar = ({ setSidebarWidth = () => {} }) => {
 
       try {
         const response = await fetch(
-          "https://api.drazeapp.com/api/organization/my-website",
+          "https://api.gharzoreality.com/api/organization/my-website",
           {
             method: "GET",
             headers: {
@@ -70,7 +70,7 @@ const PropertyManagerSidebar = ({ setSidebarWidth = () => {} }) => {
         if (json.success) {
           setLogoUrl(
             json.data.logoUrl
-              ? `https://api.drazeapp.com${json.data.logoUrl}`
+              ? `https://api.gharzoreality.com${json.data.logoUrl}`
               : ""
           );
           setOrgName(json.data.organizationName || "Property Manager");
@@ -239,7 +239,7 @@ const PropertyManagerSidebar = ({ setSidebarWidth = () => {} }) => {
 
     try {
       const response = await fetch(
-        "https://api.drazeapp.com/api/property-managers/logout",
+        "https://api.gharzoreality.com/api/property-managers/logout",
         {
           method: "POST",
           headers: {

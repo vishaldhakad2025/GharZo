@@ -13,9 +13,9 @@ import {
   FaThumbsDown
 } from 'react-icons/fa';
 
-const API_BASE_URL = 'https://api.drazeapp.com/api/verification';
-const LANDLORD_API_BASE_URL = 'https://api.drazeapp.com/api/landlord';
-const BASE_IMAGE_URL = 'https://api.drazeapp.com';
+const API_BASE_URL = 'https://api.gharzoreality.com/api/verification';
+const LANDLORD_API_BASE_URL = 'https://api.gharzoreality.com/api/landlord';
+const BASE_IMAGE_URL = 'https://api.gharzoreality.com';
 
 const PoliceVerification = () => {
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const [landlordId, setLandlordId] = useState(null);
 useEffect(() => {
   const fetchLandlordProfile = async () => {
     try {
-      const res = await fetch("https://api.drazeapp.com/api/landlord/profile", {
+      const res = await fetch("https://api.gharzoreality.com/api/landlord/profile", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ useEffect(() => {
       if (!token) return;
       try {
         setLoading(true);
-        // The user asked specifically: use https://api.drazeapp.com/api/landlord/tenant to get landlordId
+        // The user asked specifically: use https://api.gharzoreality.com/api/landlord/tenant to get landlordId
         const res = await axios.get(`${LANDLORD_API_BASE_URL}/tenant`, {
           headers: { Authorization: `Bearer ${token}` },
         });

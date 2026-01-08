@@ -56,7 +56,7 @@ function Signup() {
     }
     try {
       const res = await axios.post(
-        "https://api.drazeapp.com/api/organization/send-verification",
+        "https://api.gharzoreality.com/api/organization/send-verification",
         { email: form.email.trim() },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -80,7 +80,7 @@ function Signup() {
     }
     try {
       const res = await axios.post(
-        "https://api.drazeapp.com/api/organization/verify-email",
+        "https://api.gharzoreality.com/api/organization/verify-email",
         { email: form.email.trim(), code: verificationCode },
         { headers: { "Content-Type": "application/json" } }
       );

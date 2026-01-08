@@ -22,7 +22,7 @@ const TenantAnnouncements = () => {
 
         // Fetch landlord announcements
         const landlordRes = await fetch(
-          `https://api.drazeapp.com/api/announcement/tenant/${tenantId}`,
+          `https://api.gharzoreality.com/api/announcement/tenant/${tenantId}`,
           {
             method: "GET",
             headers: {
@@ -39,7 +39,7 @@ const TenantAnnouncements = () => {
 
         // Fetch subowner announcements
         const subownerRes = await fetch(
-          `https://api.drazeapp.com/api/subowner/announcements/tenant/${tenantId}`,
+          `https://api.gharzoreality.com/api/subowner/announcements/tenant/${tenantId}`,
           {
             method: "GET",
             headers: {

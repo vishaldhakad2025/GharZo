@@ -39,7 +39,7 @@ const CreateWebsite = () => {
       console.log('Sending request with data:', formData); // Debug log for request payload
 
       // Use the correct API endpoint
-      const apiUrl = 'https://api.drazeapp.com/api/organization/website';
+      const apiUrl = 'https://api.gharzoreality.com/api/organization/website';
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {

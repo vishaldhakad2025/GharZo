@@ -71,7 +71,7 @@ const PropertyManagerExpenses = () => {
         return;
       }
       try {
-        const response = await fetch('https://api.drazeapp.com/api/property-managers/profile', {
+        const response = await fetch('https://api.gharzoreality.com/api/property-managers/profile', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ const PropertyManagerExpenses = () => {
     const fetchProperties = async () => {
       if (!token) return;
       try {
-        const response = await fetch('https://api.drazeapp.com/api/pm/properties', {
+        const response = await fetch('https://api.gharzoreality.com/api/pm/properties', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -127,7 +127,7 @@ const PropertyManagerExpenses = () => {
     if (!pmId || !organizationId || !token) return;
     const fetchCategories = async () => {
       try {
-        const url = `https://api.drazeapp.com/api/pm/categories/all?pmId=${pmId}&organization=${organizationId}`;
+        const url = `https://api.gharzoreality.com/api/pm/categories/all?pmId=${pmId}&organization=${organizationId}`;
         const response = await fetch(url, {
           method: 'GET',
           headers: {
@@ -159,7 +159,7 @@ const PropertyManagerExpenses = () => {
     if (!token) return;
     const fetchExpenses = async () => {
       try {
-        let url = `https://api.drazeapp.com/api/pm/expenses?page=${filters.page}&limit=${filters.limit}`;
+        let url = `https://api.gharzoreality.com/api/pm/expenses?page=${filters.page}&limit=${filters.limit}`;
         const hasFilters = filters.category || filters.property || filters.startDate || filters.endDate || filters.paidBy || filters.paidTo;
         if (hasFilters) {
           const queryParams = new URLSearchParams({
@@ -199,7 +199,7 @@ const PropertyManagerExpenses = () => {
     if (!token) return;
     const fetchAllExpenses = async () => {
       try {
-        const response = await fetch(`https://api.drazeapp.com/api/pm/expenses?page=1&limit=10000`, {
+        const response = await fetch(`https://api.gharzoreality.com/api/pm/expenses?page=1&limit=10000`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -222,7 +222,7 @@ const PropertyManagerExpenses = () => {
     const fetchYearlyData = async () => {
       if (!token) return;
       try {
-        const response = await fetch('https://api.drazeapp.com/api/pm/expenses/analytics/trend/yearly', {
+        const response = await fetch('https://api.gharzoreality.com/api/pm/expenses/analytics/trend/yearly', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -252,7 +252,7 @@ const PropertyManagerExpenses = () => {
       if (!token || !year) return;
       try {
         const params = new URLSearchParams({ year });
-        const response = await fetch(`https://api.drazeapp.com/api/pm/expenses/analytics/trend/monthly?${params}`, {
+        const response = await fetch(`https://api.gharzoreality.com/api/pm/expenses/analytics/trend/monthly?${params}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -285,7 +285,7 @@ const PropertyManagerExpenses = () => {
           year: categorySummaryYear,
           month: categorySummaryMonth,
         });
-        const response = await fetch(`https://api.drazeapp.com/api/pm/expenses/analytics/summary?${params}`, {
+        const response = await fetch(`https://api.gharzoreality.com/api/pm/expenses/analytics/summary?${params}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -313,7 +313,7 @@ const PropertyManagerExpenses = () => {
     if (!token || !organizationId || !categoryId) return;
     try {
       const response = await fetch(
-        `https://api.drazeapp.com/api/pm/categories/${categoryId}?organization=${organizationId}`,
+        `https://api.gharzoreality.com/api/pm/categories/${categoryId}?organization=${organizationId}`,
         {
           method: 'GET',
           headers: {
@@ -337,7 +337,7 @@ const PropertyManagerExpenses = () => {
   const fetchExpenseById = async (expenseId) => {
     if (!token || !expenseId) return null;
     try {
-      const response = await fetch(`https://api.drazeapp.com/api/pm/expenses/${expenseId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/pm/expenses/${expenseId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -373,7 +373,7 @@ const PropertyManagerExpenses = () => {
       if (expenseData.billImage) {
         formData.append('billImage', expenseData.billImage);
       }
-      const response = await fetch('https://api.drazeapp.com/api/pm/expenses/add', {
+      const response = await fetch('https://api.gharzoreality.com/api/pm/expenses/add', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -428,7 +428,7 @@ const PropertyManagerExpenses = () => {
       if (expenseData.billImage) {
         formData.append('billImage', expenseData.billImage);
       }
-      const response = await fetch(`https://api.drazeapp.com/api/pm/expenses/${editExpenseId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/pm/expenses/${editExpenseId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -469,7 +469,7 @@ const PropertyManagerExpenses = () => {
   const handleDeleteExpense = async (expenseId) => {
     if (!token || !expenseId) return;
     try {
-      const response = await fetch(`https://api.drazeapp.com/api/pm/expenses/${expenseId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/pm/expenses/${expenseId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -496,7 +496,7 @@ const PropertyManagerExpenses = () => {
   const handleUpdateCategory = async () => {
     if (!pmId || !organizationId || !token || !categoryName || !editCategoryId) return;
     try {
-      const response = await fetch(`https://api.drazeapp.com/api/pm/categories/${editCategoryId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/pm/categories/${editCategoryId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -526,7 +526,7 @@ const PropertyManagerExpenses = () => {
   const handleAddCategory = async () => {
     if (!pmId || !organizationId || !token || !categoryName) return;
     try {
-      const response = await fetch('https://api.drazeapp.com/api/pm/categories/create', {
+      const response = await fetch('https://api.gharzoreality.com/api/pm/categories/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -555,7 +555,7 @@ const PropertyManagerExpenses = () => {
   const handleDeleteCategory = async (categoryId) => {
     if (!token || !categoryId) return;
     try {
-      const response = await fetch(`https://api.drazeapp.com/api/pm/categories/${categoryId}`, {
+      const response = await fetch(`https://api.gharzoreality.com/api/pm/categories/${categoryId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

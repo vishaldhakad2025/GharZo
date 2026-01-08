@@ -17,7 +17,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import user from "../../../assets/images/user.jpg";
 
-const API_BASE = "https://api.drazeapp.com/";
+const API_BASE = "https://api.gharzoreality.com/";
 
 function LandlordProfile() {
   const [profile, setProfile] = useState(null);

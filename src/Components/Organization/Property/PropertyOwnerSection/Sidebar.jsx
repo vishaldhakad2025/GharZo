@@ -45,7 +45,7 @@ const Sidebar = ({ setSidebarWidth }) => {
       try {
         const token = localStorage.getItem("orgToken");
         if (!token) return;
-        const response = await fetch("https://api.drazeapp.com/api/organization/my-website", {
+        const response = await fetch("https://api.gharzoreality.com/api/organization/my-website", {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -81,7 +81,7 @@ const Sidebar = ({ setSidebarWidth }) => {
         return;
       }
 
-      const response = await fetch("https://api.drazeapp.com/api/organization/logout", {
+      const response = await fetch("https://api.gharzoreality.com/api/organization/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +144,7 @@ const Sidebar = ({ setSidebarWidth }) => {
         className="flex items-center gap-2 p-4"
       >
         <img
-          src={orgData ? `https://api.drazeapp.com${orgData.logoUrl}` : dd}
+          src={orgData ? `https://api.gharzoreality.com${orgData.logoUrl}` : dd}
           alt="Logo"
           className="w-10 h-10 object-contain rounded-md shadow-lg hover:scale-110 transition-transform duration-300"
         />
