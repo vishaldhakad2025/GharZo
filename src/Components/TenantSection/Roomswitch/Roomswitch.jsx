@@ -333,14 +333,14 @@ const Roomswitch = () => {
   <div className="relative">
     {/* Floating badges */}
     <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-      <div className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold rounded-full shadow-lg shadow-purple-500/30">
+      <div className="flex items-center  gap-2 px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold rounded-full shadow-lg shadow-purple-500/30">
         <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
         Room Switch Request Portal
         <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
       </div>
     </div>
 
-    <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 overflow-hidden relative z-10">
+    <div className="bg-white/90 mt-5 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 overflow-hidden relative z-10">
       {/* Header with gradient */}
       <div className="relative px-8 py-8 bg-gradient-to-r from-purple-50 via-white to-blue-50 border-b border-slate-100/50 overflow-hidden">
         {/* Animated background elements */}
@@ -392,87 +392,124 @@ const Roomswitch = () => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Current Information Section */}
-            <div className="relative">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-3 h-8 bg-gradient-to-b from-purple-500 to-blue-500 rounded-full"></div>
-                <h3 className="text-xl font-bold text-slate-800">Current Accommodation</h3>
-                <div className="ml-auto flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-emerald-50 to-green-50 rounded-full border border-emerald-200">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-emerald-700">Currently Occupied</span>
-                </div>
-              </div>
+          <div className="relative">
 
-              {/* Current Info Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Property Card */}
-                <div className="group relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/50 p-6 shadow-lg shadow-purple-100/30 group-hover:shadow-xl group-hover:shadow-purple-200/50 transition-all duration-300 hover:-translate-y-1">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-md">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0l2 2m-2-2l-2 2" />
-                        </svg>
-                      </div>
-                      <span className="text-xs font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">PROPERTY</span>
-                    </div>
-                    <h4 className="text-lg font-bold text-slate-800 mb-2">
-                      {currentAcc ? currentAcc.propertyName : "Not Assigned"}
-                    </h4>
-                    <p className="text-sm text-slate-600">
-                      {currentAcc ? `${currentAcc.propertyAddress}` : "No property information available"}
-                    </p>
-                  </div>
-                </div>
+  {/* Section Header */}
+  <div className="flex items-center gap-4 mb-8">
+    <div className="relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-500 to-blue-500 blur-md rounded-full"></div>
+      <div className="relative w-3 h-10 bg-gradient-to-b from-purple-500 to-blue-500 rounded-full"></div>
+    </div>
 
-                {/* Room Card */}
-                <div className="group relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/50 p-6 shadow-lg shadow-blue-100/30 group-hover:shadow-xl group-hover:shadow-blue-200/50 transition-all duration-300 hover:-translate-y-1">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14s1.5 2 4 2 4-2 4-2m-.5-8H16a2 2 0 012 2v2m-8-4h8" />
-                        </svg>
-                      </div>
-                      <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">ROOM</span>
-                    </div>
-                    <h4 className="text-lg font-bold text-slate-800 mb-2">
-                      {currentAcc ? currentAcc.roomName : "Not Assigned"}
-                    </h4>
-                    <div className="flex items-center gap-2 mt-3">
-                      <span className="text-xs font-medium text-blue-700 bg-blue-100 px-3 py-1 rounded-full">
-                        {currentAcc ? currentAcc.roomType : "N/A"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+    <div>
+      <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+        Current Accommodation
+      </h3>
+      <p className="text-sm text-slate-500">
+        Your active assigned property details
+      </p>
+    </div>
 
-                {/* Bed Card */}
-                <div className="group relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200/50 p-6 shadow-lg shadow-indigo-100/30 group-hover:shadow-xl group-hover:shadow-indigo-200/50 transition-all duration-300 hover:-translate-y-1">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-1.5-1.5M20 7l-1.5 1.5M20 7H4m16 0v10a2 2 0 01-2 2H6a2 2 0 01-2-2V7" />
-                        </svg>
-                      </div>
-                      <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">BED</span>
-                    </div>
-                    <h4 className="text-lg font-bold text-slate-800 mb-2">
-                      {currentAcc ? currentAcc.bedName : "Not Assigned"}
-                    </h4>
-                    <div className="mt-4">
-                      <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div className="w-1/3 h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
-                      </div>
-                      <div className="text-xs text-slate-500 mt-2 text-center">Your Current Spot</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <div className="ml-auto flex items-center gap-2 px-5 py-2 bg-emerald-50 rounded-full border border-emerald-200 shadow-sm">
+      <span className="relative flex h-2.5 w-2.5">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+      </span>
+      <span className="text-sm font-semibold text-emerald-700">
+        Currently Occupied
+      </span>
+    </div>
+  </div>
+
+  {/* Cards */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    {/* PROPERTY */}
+    <div className="group relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-[28px] blur-2xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
+
+      <div className="relative rounded-[24px] p-[1.5px] bg-gradient-to-br from-purple-500 via-blue-500 to-indigo-500">
+        <div className="bg-white/90 backdrop-blur-xl rounded-[22px] p-6 shadow-xl transition-all group-hover:-translate-y-1">
+          <div className="flex justify-between mb-5">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
+              🏢
             </div>
+            <span className="text-xs font-bold text-purple-700 px-3 py-1 rounded-full">
+              PROPERTY
+            </span>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-900 mb-2">
+            {currentAcc ? currentAcc.propertyName : "Not Assigned"}
+          </h4>
+
+          <p className="text-sm text-slate-600 leading-relaxed">
+            {currentAcc ? currentAcc.propertyAddress : "No property information available"}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* ROOM */}
+    <div className="group relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-[28px] blur-2xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
+
+      <div className="relative rounded-[24px] p-[1.5px] bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500">
+        <div className="bg-white/90 backdrop-blur-xl rounded-[22px] p-6 shadow-xl transition-all group-hover:-translate-y-1">
+          <div className="flex justify-between mb-5">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+              🛏️
+            </div>
+            <span className="text-xs font-bold text-blue-700  px-3 py-1 rounded-full">
+              ROOM
+            </span>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-900 mb-3">
+            {currentAcc ? currentAcc.roomName : "Not Assigned"}
+          </h4>
+
+          <span className="inline-flex items-center px-4 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">
+            {currentAcc ? currentAcc.roomType : "N/A"}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {/* BED */}
+    <div className="group relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-[28px] blur-2xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
+
+      <div className="relative rounded-[24px] p-[1.5px] bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+        <div className="bg-white/90 backdrop-blur-xl rounded-[22px] p-6 shadow-xl transition-all group-hover:-translate-y-1">
+          <div className="flex justify-between mb-5">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+              🛌
+            </div>
+            <span className="text-xs font-bold text-indigo-700  px-3 py-1 rounded-full">
+              BED
+            </span>
+          </div>
+
+          <h4 className="text-lg font-bold text-slate-900 mb-4">
+            {currentAcc ? currentAcc.bedName : "Not Assigned"}
+          </h4>
+
+          <div>
+            <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-full w-1/3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+            </div>
+            <p className="text-xs text-slate-500 text-center">
+              Your Assigned Bed
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
             {/* Divider */}
             <div className="relative py-4">
@@ -641,7 +678,7 @@ const Roomswitch = () => {
 
   {/* Enhanced Requests Section */}
   {showRequests && (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 mt-6 animate-fade-in">
       <div className="relative">
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
           <div className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-semibold rounded-full shadow-lg shadow-amber-500/30">
@@ -773,7 +810,7 @@ const Roomswitch = () => {
                     </div>
                     
                     {/* Additional Info on Hover */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4  opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="bg-slate-50/50 rounded-xl p-4">
                         <div className="text-xs text-slate-500 mb-1">Property</div>
                         <div className="font-medium text-slate-800">{req.propertyId?.name || 'N/A'}</div>
@@ -799,8 +836,8 @@ const Roomswitch = () => {
 
   {/* Enhanced Response Messages */}
   {response && (
-    <div className="relative animate-slide-up">
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-3xl blur-xl"></div>
+    <div className="relative animate-slide-up mt-6">
+      <div className="absolute inset-0  bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-3xl blur-xl"></div>
       <div className="relative bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200/50 rounded-3xl p-8 backdrop-blur-sm">
         <div className="flex items-center gap-6">
           <div className="flex-shrink-0">

@@ -172,12 +172,12 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
       icon: User,
       gradient: "from-cyan-400 to-blue-500",
     },
-    {
-      name: "Police Verification ",
-      path: "/tenant/police-verification",
-      icon: User,
-      gradient: "from-cyan-400 to-blue-500",
-    },
+    // {
+    //   name: "Police Verification ",
+    //   path: "/tenant/police-verification",
+    //   icon: User,
+    //   gradient: "from-cyan-400 to-blue-500",
+    // },
   ];
 
   const renderSidebarContent = () => (
@@ -201,7 +201,7 @@ const TenantSidebar = ({ setSidebarWidth, tenantId }) => {
         <img
           src={dd}
           alt="Logo"
-          className="w-20 shadow-2xl h-15 object-contain rounded-md shadow-lg hover:scale-110 transition-transform duration-300"
+          className="w-20  shadow-2xl h-13 object-contain rounded-md shadow-2xs hover:scale-110 transition-transform duration-300"
         />
         {(isHovered || isMobileOpen) && (
           <motion.h2

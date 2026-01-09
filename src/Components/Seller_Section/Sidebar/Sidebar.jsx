@@ -30,7 +30,7 @@ const Sidebar = ({ setSidebarWidth }) => {
   const toggleRef = useRef(null);
 
   const navItems = [
-    { text: "Home", to: "/", icon: <Home size={18} /> },
+    // { text: "Home", to: "/", icon: <Home size={18} /> },
     { text: "Seller Dashboard", to: "/seller/home", icon: <FaTachometerAlt size={18} /> },
     { text: "My Listings", to: "/seller/property", icon: <Building2 size={18} /> },
     { text: "Reels", to: "/seller/reels", icon: <Video size={18} /> }, // Added Reels
@@ -131,16 +131,25 @@ const Sidebar = ({ setSidebarWidth }) => {
       )}
 
       {/* Sidebar */}
-      <nav
-        onMouseEnter={() => window.innerWidth >= 768 && setIsHovered(true)}
-        onMouseLeave={() => window.innerWidth >= 768 && setIsHovered(false)}
-        className={`
-          fixed top-0 left-0 h-screen backdrop-blur-md shadow-2xl transition-all duration-500 ease-in-out z-[9999]
-          ${isMobileOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0"}
-          ${isHovered ? "md:w-56" : "md:w-20"}
-          flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-y-auto [&::-webkit-scrollbar]:hidden
-        `}
-      >
+    <nav
+  onMouseEnter={() => window.innerWidth >= 768 && setIsHovered(true)}
+  onMouseLeave={() => window.innerWidth >= 768 && setIsHovered(false)}
+  style={{
+    background: `
+      radial-gradient(circle at bottom, rgba(245,124,0,0.35), transparent 60%),
+      linear-gradient(180deg, #071a2f 0%, #0d2f52 45%, #123e6b 75%, #0b2a4a 100%)
+    `
+  }}
+  className={`
+    fixed top-0 left-0 h-screen backdrop-blur-md shadow-2xl
+    transition-all duration-500 ease-in-out z-[9999]
+    ${isMobileOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0"}
+    ${isHovered ? "md:w-56" : "md:w-20"}
+    flex flex-col text-white overflow-y-auto
+    [&::-webkit-scrollbar]:hidden
+  `}
+>
+
         {/* Mobile Close Button */}
         {isMobileOpen && (
           <button

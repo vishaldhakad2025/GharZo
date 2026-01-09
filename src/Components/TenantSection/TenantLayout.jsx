@@ -102,51 +102,75 @@ const TenantLayout = () => {
         style={{ marginLeft: sidebarWidth }}
       >
         {/* Header */}
-        <header className="bg-white shadow p-4 flex items-center justify-between sticky top-0 z-10">
-          <motion.h1
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/tenant")}
-            className="text-2xl font-bold text-gray-800 cursor-pointer"
-          >
-            Tenant Dashboard
-          </motion.h1>
-          <div className="flex items-center gap-3">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/")}
-              className="p-2 rounded-full bg-gradient-to-r from-green-400 via-cyan-400 to-blue-500 text-white shadow-lg"
-            >
-              <Home className="w-5 h-5" />
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsNotificationModalOpen(true)}
-              className="relative p-2 rounded-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 text-white shadow-lg"
-            >
-              <Bell className="w-5 h-5" />
-              {notificationCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center min-w-[20px]">
-                  {notificationCount > 99 ? "99+" : notificationCount}
-                </span>
-              )}
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/tenant/profile")}
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-400 text-white px-3 py-2 rounded-xl shadow-lg text-sm font-medium"
-            >
-              <User className="w-5 h-5 drop-shadow-md" />
-              <span className="hidden sm:inline">Profile</span>
-            </motion.button>
-          </div>
-        </header>
+        <header className="sticky top-0 z-20 backdrop-blur-xl bg-white/70 border-b border-slate-200 shadow-sm">
+  <div className="px-6 py-4 flex items-center justify-between">
+
+    {/* Gradient Title */}
+    <motion.h1
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={() => navigate("/tenant")}
+      className="text-3xl font-extrabold cursor-pointer
+        bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600
+        bg-clip-text text-transparent tracking-tight"
+    >
+      Tenant Dashboard
+    </motion.h1>
+
+    {/* Right Actions */}
+    <div className="flex items-center gap-4">
+
+      {/* Home */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => navigate("/")}
+        className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500
+        flex items-center justify-center shadow-lg shadow-emerald-400/40"
+      >
+        <Home className="w-5 h-5 text-white" />
+      </motion.button>
+
+      {/* Notifications */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setIsNotificationModalOpen(true)}
+        className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-yellow-400 via-orange-400 to-red-500
+        flex items-center justify-center shadow-lg shadow-orange-400/40"
+      >
+        <Bell className="w-5 h-5 text-white" />
+        {notificationCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-white text-red-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow">
+            {notificationCount > 99 ? "99+" : notificationCount}
+          </span>
+        )}
+      </motion.button>
+
+      {/* Profile */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => navigate("/tenant/profile")}
+        className="flex items-center gap-3 px-4 py-2 rounded-xl
+        bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400
+        text-white shadow-lg shadow-blue-400/40"
+      >
+        <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+          <User className="w-4 h-4 text-white" />
+        </div>
+        <span className="hidden sm:block text-sm font-semibold">
+          Profile
+        </span>
+      </motion.button>
+
+    </div>
+  </div>
+</header>
+
 
         {/* Page Content */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-3 overflow-y-auto">
           <Outlet />
         </main>
       </div>

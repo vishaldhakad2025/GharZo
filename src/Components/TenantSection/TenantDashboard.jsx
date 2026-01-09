@@ -369,7 +369,6 @@
 
 // export default TenantDashboard;
 
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -389,7 +388,7 @@ import {
   FaShieldAlt,
   FaHome,
   FaCalendarAlt,
-  FaReceipt,
+  FaReceipt,FaArrowRight ,FaTools , FaClock ,FaChevronRight ,
 } from "react-icons/fa";
 
 const TenantDashboard = () => {
@@ -428,7 +427,8 @@ const TenantDashboard = () => {
         if (profileRes.data.success && accRes.data.success) {
           setTenantInfo({
             name: profileRes.data.tenant.name || "",
-            property: accRes.data.accommodations?.[0]?.propertyName || "Not Assigned",
+            property:
+              accRes.data.accommodations?.[0]?.propertyName || "Not Assigned",
           });
 
           const fetchedTenantId = accRes.data.accommodations?.[0]?.tenantId;
@@ -446,8 +446,12 @@ const TenantDashboard = () => {
               `https://api.gharzoreality.com/api/dues/tenant/${tenantId}/${lId}`, // ✅ Fixed
               { headers: { Authorization: `Bearer ${token}` } }
             );
-            const pendingBills = (duesRes.data || []).filter(bill => bill.status === "Unpaid");
-            setTotalDue(pendingBills.reduce((sum, bill) => sum + bill.amount, 0));
+            const pendingBills = (duesRes.data || []).filter(
+              (bill) => bill.status === "Unpaid"
+            );
+            setTotalDue(
+              pendingBills.reduce((sum, bill) => sum + bill.amount, 0)
+            );
           }
 
           // Fetch complaints
@@ -455,8 +459,11 @@ const TenantDashboard = () => {
             `https://api.gharzoreality.com/api/landlord/tenant/${tenantId}/complaints`, // ✅ Fixed
             { headers: { Authorization: `Bearer ${token}` } }
           );
-          const activeComplaints = (complaintsRes.data?.complaints || [])
-            .filter(c => c.status !== "Resolved" && c.status !== "Rejected").length;
+          const activeComplaints = (
+            complaintsRes.data?.complaints || []
+          ).filter(
+            (c) => c.status !== "Resolved" && c.status !== "Rejected"
+          ).length;
           setOpenComplaints(activeComplaints);
 
           // Fetch announcements
@@ -543,167 +550,385 @@ const TenantDashboard = () => {
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#1E3A8A] border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-lg font-medium text-gray-700">Loading your dashboard...</p>
+          <p className="mt-4 text-lg font-medium text-gray-700">
+            Loading your dashboard...
+          </p>
         </div>
       </div>
     );
   }
 
   // === Main UI ===
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Header */}
-      <header className="bg-white/90 backdrop-blur-sm border-b border-gray-200 shadow-sm  z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#1E3A8A] to-[#FF6B00] rounded-xl flex items-center justify-center">
-                  <FaUserCircle className="text-2xl text-white" />
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-white rounded-full"></div>
+ // === Main UI ===
+return (
+  <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+    {/* Enhanced Header */}
+    <header className="bg-white border-b border-gray-100 shadow-sm z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="flex items-center gap-5">
+            <div className="relative">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <FaUserCircle className="text-2xl text-white" />
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  Welcome back, <span className="text-[#1E3A8A]">{tenantInfo.name || "Tenant"}!</span>
-                </h1>
-                <p className="text-sm text-gray-600 flex items-center gap-2">
-                  <FaHome className="text-gray-500" /> {tenantInfo.property || "No property assigned"}
-                </p>
+              <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-r from-green-400 to-emerald-500 border-[3px] border-white rounded-full flex items-center justify-center">
+                <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
               </div>
             </div>
-
-            <div className="flex items-center gap-4">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#1E3A8A] to-[#FF6B00] rounded-xl blur opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                <div className="relative bg-white rounded-xl border border-gray-200">
-                  <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="pl-12 pr-4 py-2.5 w-64 bg-transparent rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
-                  />
+            <div className="space-y-1">
+              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 bg-clip-text text-transparent">
+                Welcome back,{" "}
+                <span className="text-gray-900">
+                  {tenantInfo.name || "Tenant"}! 👋
+                </span>
+              </h1>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 text-gray-600 font-medium">
+                  <FaHome className="text-blue-500" />
+                  <span>{tenantInfo.property || "No property assigned"}</span>
+                </div>
+                <div className="h-4 w-px bg-gray-300"></div>
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <FaCalendarAlt className="text-blue-400" />
+                  <span>{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
                 </div>
               </div>
-              <button className="relative p-2.5 bg-white rounded-xl border border-gray-200 hover:shadow-md">
-                <FaBell className="text-xl text-gray-700" />
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#FF6B00] text-white text-xs rounded-full flex items-center justify-center font-bold">
-                  3
-                </span>
-              </button>
             </div>
           </div>
-        </div>
-      </header>
 
-      <main className="max-w-7xl mx-auto  py-5"> 
-        {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-  {[
-    {
-      title: "Total Due",
-      value: `₹${totalDue.toLocaleString()}`,
-      icon: <FaRupeeSign />,
-      accent: "#f57c00",
-      bg: "#fff7ed",
-    },
-    {
-      title: "Open Complaints",
-      value: openComplaints,
-      icon: <FaExclamationTriangle />,
-      accent: "#d97706",
-      bg: "#fffbeb",
-    },
-    {
-      title: "Announcements",
-      value: announcementsCount,
-      icon: <FaBullhorn />,
-      accent: "#0b2a4a",
-      bg: "#f1f5f9",
-    },
-  ].map((stat, i) => (
-    <div
-      key={i}
-      className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:shadow-lg"
-    >
-      {/* Accent strip */}
-      <div
-        className="absolute left-0 top-0 h-full w-1"
-        style={{ backgroundColor: stat.accent }}
-      />
-
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-md  font-medium text-gray-500">
-            {stat.title}
-          </p>
-          <p className="text-2xl font-semibold text-gray-900 mt-1">
-            {stat.value}
-          </p>
-        </div>
-
-        <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center"
-          style={{ backgroundColor: stat.bg, color: stat.accent }}
-        >
-          <span className="text-xl">{stat.icon}</span>
+       
         </div>
       </div>
-    </div>
-  ))}
-</div>
+    </header>
 
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Enhanced Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        {[
+          {
+            title: "Total Due Amount",
+            value: `₹${totalDue.toLocaleString()}`,
+            icon: <FaRupeeSign />,
+            change: "+₹2,500",
+            trend: "up",
+            color: "from-orange-500 to-amber-500",
+            bg: "bg-gradient-to-br from-orange-50 to-amber-50",
+            border: "border-orange-200"
+          },
+          {
+            title: "Open Complaints",
+            value: openComplaints,
+            icon: <FaExclamationTriangle />,
+            change: "-2 this week",
+            trend: "down",
+            color: "from-red-500 to-rose-500",
+            bg: "bg-gradient-to-br from-red-50 to-rose-50",
+            border: "border-red-200"
+          },
+          {
+            title: "Active Announcements",
+            value: announcementsCount,
+            icon: <FaBullhorn />,
+            change: "3 new today",
+            trend: "up",
+            color: "from-blue-600 to-indigo-600",
+            bg: "bg-gradient-to-br from-blue-50 to-indigo-50",
+            border: "border-blue-200"
+          },
+        ].map((stat, i) => (
+          <div
+            key={i}
+            className={`relative group overflow-hidden rounded-2xl border ${stat.border} ${stat.bg} p-6 transition-all duration-500 hover:scale-[1.02] hover:shadow-xl`}
+          >
+            <div className="relative flex items-center justify-between">
+              <div className="space-y-3">
+                <p className="text-sm font-semibold uppercase tracking-wide text-gray-600">
+                  {stat.title}
+                </p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-3xl font-bold text-gray-900">
+                    {stat.value}
+                  </p>
+                  <span className={`text-sm font-semibold px-2 py-1 rounded-full ${stat.trend === 'up' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                    {stat.change}
+                  </span>
+                </div>
+              </div>
 
-        {/* Quick Actions */}
-           <h2 className="text-2xl font-bold bg-gradient-to-r from-[#1E3A8A] to-[#FF6B00] text-transparent bg-clip-text  mb-2 px-5">Quick Action</h2>
-          <section className="mb-5 pb-3  shadow bg-white px-5 py-2 rounded ">
-        
-           
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {dashboardData.map((item, index) => (
+              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg shadow-black/10`}>
+                <span className="text-2xl text-white">{stat.icon}</span>
+              </div>
+            </div>
+            
+            {/* Progress indicator */}
+            <div className="relative mt-6 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+              <div className="absolute inset-y-0 left-0 w-3/4 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Enhanced Quick Actions Section with Clean White Design */}
+      <section className="mb-12">
+        <div className="relative overflow-hidden rounded-3xl bg-white border border-gray-200 shadow-lg">
+          
+          {/* Section Header */}
+          <div className="px-8 pt-8 pb-6 border-b border-gray-100">
+            <div className="flex items-center gap-4 mb-2">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 shadow-md flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent">
+                  Quick Actions
+                </h2>
+                <p className="text-gray-600">Everything you need, just a click away</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Cards Grid */}
+          <div className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {dashboardData.map((item, index) => {
+              // Define color themes for each card
+              const colorThemes = [
+                { from: "#3b82f6", to: "#1d4ed8", text: "#2563eb", bg: "#eff6ff", border: "#dbeafe" }, // Blue
+                { from: "#10b981", to: "#059669", text: "#059669", bg: "#f0fdf4", border: "#dcfce7" }, // Green
+                { from: "#8b5cf6", to: "#7c3aed", text: "#7c3aed", bg: "#f5f3ff", border: "#ede9fe" }, // Purple
+                { from: "#f59e0b", to: "#d97706", text: "#d97706", bg: "#fffbeb", border: "#fef3c7" }  // Amber
+              ];
+
+              const theme = colorThemes[index % colorThemes.length];
+
+              return (
                 <Link
                   key={index}
                   to={item.link}
-                  className={`group relative overflow-hidden rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${item.bg}`}
+                  className="group relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-xl"
+                  style={{
+                    background: `linear-gradient(135deg, ${theme.bg} 0%, white 100%)`,
+                    border: `2px solid ${theme.border}`,
+                    boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                  }}
                 >
-                  <div className="p-6">
-                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:bg-white/30 transition-colors">
-                      {item.icon}
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-1">{item.title}</h3>
-                    <p className="text-white/80 text-sm">{item.subtitle}</p>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/30 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
-                </Link>
-              ))}
-            </div>
-          </section>
+                  {/* Hover gradient overlay */}
+                  <div 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
+                    style={{
+                      background: `linear-gradient(135deg, ${theme.from} 0%, ${theme.to} 100%)`
+                    }}
+                  ></div>
 
-        {/* Recent Activity */}
-        <section>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-[#1E3A8A] to-[#FF6B00] text-transparent bg-clip-text  mb-2 px-5">Recent Activity</h2>
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+                  {/* Card content */}
+                  <div className="relative p-6">
+                    {/* Icon section */}
+                    <div className="flex items-start justify-between mb-6">
+                      <div 
+                        className="w-14 h-14 rounded-xl flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-110"
+                        style={{
+                          background: `linear-gradient(135deg, ${theme.from} 0%, ${theme.to} 100%)`,
+                        }}
+                      >
+                        <div className="text-white text-2xl">{item.icon}</div>
+                      </div>
+
+                      {/* Animated arrow */}
+                      <div className="opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300">
+                        <svg className="w-6 h-6" style={{ color: theme.text }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Text content */}
+                    <div className="space-y-2">
+                      <h3 
+                        className="text-xl font-bold transition-colors duration-300 group-hover:text-gray-900"
+                        style={{ color: theme.text }}
+                      >
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {item.subtitle}
+                      </p>
+                    </div>
+
+                    {/* Progress indicator on hover */}
+                    <div 
+                      className="absolute bottom-0 left-0 right-0 h-1 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"
+                      style={{
+                        background: `linear-gradient(90deg, ${theme.from} 0%, ${theme.to} 100%)`,
+                      }}
+                    ></div>
+                  </div>
+
+                  {/* Floating particles */}
+                  <div 
+                    className="absolute top-3 right-3 w-2 h-2 rounded-full opacity-0 group-hover:opacity-100 animate-ping"
+                    style={{
+                      backgroundColor: theme.from,
+                      animationDelay: '200ms'
+                    }}
+                  ></div>
+
+                  {/* Corner accent */}
+                  <div 
+                    className="absolute top-0 right-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: `linear-gradient(135deg, ${theme.from} 0%, ${theme.to} 100%)`,
+                      clipPath: 'polygon(100% 0, 0 0, 100% 100%)'
+                    }}
+                  ></div>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Footer */}
+          <div className="px-8 pb-8">
+            <div className="flex items-center justify-between pt-6 border-t border-gray-100">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                  <span>All services active</span>
+                </div>
+                <div className="w-px h-4 bg-gray-200"></div>
+                <div className="text-sm text-gray-500">
+                  Last updated: Just now
+                </div>
+              </div>
+              <div className="text-sm text-gray-500">
+                Click any card to get started
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced Recent Activity Section */}
+      <section className="mb-10">
+        <div className="flex items-center justify-between mb-6">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 bg-clip-text text-transparent">
+              Recent Activity
+            </h2>
+            <p className="text-gray-600">Your latest updates and notifications</p>
+          </div>
+          <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-gray-100 to-gray-50 hover:from-gray-200 hover:to-gray-100 text-gray-700 border border-gray-200 transition-all hover:shadow-md">
+            View All
+            <FaArrowRight className="text-xs" />
+          </button>
+        </div>
+
+        <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+          <div className="p-6">
             <div className="space-y-4">
               {[
-                { icon: <FaCalendarAlt className="text-blue-500" />, title: "Property Inspection", desc: "Scheduled for Oct 15", time: "2 hours ago" },
-                { icon: <FaReceipt className="text-green-500" />, title: "Rent Payment", desc: "October payment confirmed", time: "1 day ago" },
-                { icon: <FaShieldAlt className="text-purple-500" />, title: "Police Verification", desc: "Documents updated", time: "3 days ago" },
+                {
+                  icon: <FaCalendarAlt className="text-blue-500" />,
+                  title: "Property Inspection Scheduled",
+                  desc: "Annual inspection scheduled for October 15th at 2:00 PM",
+                  time: "2 hours ago",
+                  status: "upcoming",
+                  color: "bg-blue-100 border-blue-200"
+                },
+                {
+                  icon: <FaReceipt className="text-green-500" />,
+                  title: "Rent Payment Confirmed",
+                  desc: "October rent payment of ₹15,000 successfully processed",
+                  time: "1 day ago",
+                  status: "completed",
+                  color: "bg-green-100 border-green-200"
+                },
+                {
+                  icon: <FaShieldAlt className="text-purple-500" />,
+                  title: "Police Verification Updated",
+                  desc: "Documents have been verified and updated in the system",
+                  time: "3 days ago",
+                  status: "verified",
+                  color: "bg-purple-100 border-purple-200"
+                },
+                {
+                  icon: <FaTools className="text-amber-500" />,
+                  title: "Maintenance Request",
+                  desc: "Plumbing issue reported - Technician assigned",
+                  time: "5 days ago",
+                  status: "in-progress",
+                  color: "bg-amber-100 border-amber-200"
+                }
               ].map((act, i) => (
-                <div key={i} className="flex items-start gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">{act.icon}</div>
-                  <div className="flex-1">
-                    <p className="font-medium text-gray-900">{act.title}</p>
-                    <p className="text-sm text-gray-600">{act.desc}</p>
+                <div
+                  key={i}
+                  className="group flex items-start gap-5 p-4 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300 border border-gray-100"
+                >
+                  <div className="relative">
+                    <div className={`p-3 rounded-xl ${act.color} shadow-sm group-hover:scale-110 transition-transform duration-300`}>
+                      {act.icon}
+                    </div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-white border-2 border-gray-300 rounded-full"></div>
                   </div>
-                  <span className="text-xs text-gray-500">{act.time}</span>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
+                          {act.title}
+                        </h4>
+                        <p className="text-sm text-gray-600">{act.desc}</p>
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        <span className="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 text-gray-700">
+                          {act.status}
+                        </span>
+                        <span className="text-xs text-gray-500 flex items-center gap-1">
+                          <FaClock className="text-gray-400" />
+                          {act.time}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {act.status === "in-progress" && (
+                      <div className="mt-3">
+                        <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                          <div className="h-full w-3/4 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"></div>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">75% complete</p>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <FaChevronRight className="text-gray-400 group-hover:text-blue-500 transition-colors" />
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-        </section>
-      </main>
-    </div>
-  );
+          
+          <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-white border-t border-gray-200">
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>Completed</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                  <span>In Progress</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span>Showing 4 of 12 activities</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+);
 };
 
 export default TenantDashboard;

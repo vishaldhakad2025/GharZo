@@ -301,17 +301,15 @@
 //   );
 // }
 
-
-
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Home, 
-  Bed, 
-  MapPin, 
-  DollarSign, 
-  Calendar, 
-  Building2, 
+import {
+  Home,
+  Bed,
+  MapPin,
+  DollarSign,
+  Calendar,
+  Building2,
   Wifi,
   Car,
   Dumbbell,
@@ -331,7 +329,7 @@ import {
   Plus,
   Filter,
   Search,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -413,12 +411,15 @@ export default function PropertyPage() {
   const hasRooms = rooms.length > 0;
   const totalProperties = accommodations.length;
   const totalRooms = rooms.length;
-  const totalRent = accommodations.reduce((sum, acc) => sum + (acc.rentAmount || 0), 0);
+  const totalRent = accommodations.reduce(
+    (sum, acc) => sum + (acc.rentAmount || 0),
+    0
+  );
 
   const toggleFavorite = (propertyId) => {
-    setFavoriteProperties(prev =>
+    setFavoriteProperties((prev) =>
       prev.includes(propertyId)
-        ? prev.filter(id => id !== propertyId)
+        ? prev.filter((id) => id !== propertyId)
         : [...prev, propertyId]
     );
   };
@@ -427,28 +428,33 @@ export default function PropertyPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <motion.div
-          animate={{ 
+          animate={{
             rotate: 360,
-            scale: [1, 1.1, 1]
+            scale: [1, 1.1, 1],
           }}
-          transition={{ 
+          transition={{
             rotate: { duration: 2, repeat: Infinity, ease: "linear" },
-            scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+            scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" },
           }}
           className="relative"
         >
           <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-spin opacity-20"></div>
           <div className="absolute inset-4 rounded-full bg-white shadow-lg"></div>
-          <Building2 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500" size={32} />
+          <Building2
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500"
+            size={32}
+          />
         </motion.div>
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="mt-8 text-xl font-medium bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
         >
           Loading your properties...
         </motion.p>
-        <p className="mt-2 text-gray-500">Fetching the finest details for you</p>
+        <p className="mt-2 text-gray-500">
+          Fetching the finest details for you
+        </p>
       </div>
     );
   }
@@ -464,7 +470,7 @@ export default function PropertyPage() {
         >
           <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-r from-pink-100 to-purple-100 rounded-full"></div>
           <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-full"></div>
-          
+
           <div className="relative z-10 text-center">
             <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-red-400 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
               <motion.div
@@ -474,7 +480,9 @@ export default function PropertyPage() {
                 <span className="text-white text-3xl font-bold">!</span>
               </motion.div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-3">Oops! Something went wrong</h3>
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">
+              Oops! Something went wrong
+            </h3>
             <p className="text-gray-600 mb-8">{error}</p>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -495,7 +503,7 @@ export default function PropertyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-5 px-4 sm:px-6 lg:px-5">
+    <div className="min-h-screen bg-white ">
       <div className="max-w-7xl mx-auto">
         {/* Header with Search */}
         <motion.div
@@ -503,7 +511,7 @@ export default function PropertyPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex flex-col bg-white px-5 rounded shadow-md py-3 lg:flex-row lg:items-center justify-between gap-6 mb-8">
+          <div className="flex flex-col bg-white px-10 rounded shadow-md py-3 lg:flex-row lg:items-center justify-between  gap-6 mb-8">
             <div className="">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text py-1 text-transparent">
                 My Properties
@@ -511,112 +519,92 @@ export default function PropertyPage() {
               <p className="text-gray-600 mt-2">Manage your accommodations and rooms with ease</p>
             </div>
             
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                <input
-                  type="text"
-                  placeholder="Search properties..."
-                  className="pl-12 pr-4 py-3 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent w-full lg:w-64 shadow-sm"
-                />
+           
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 px-10 gap-8">
+            <motion.div
+              whileHover={{ scale: 1.04, y: -6 }}
+              transition={{ type: "spring", stiffness: 200 }}
+              className="relative rounded-3xl p-[1px] bg-gradient-to-br from-blue-400 via-cyan-400 to-indigo-500 shadow-xl"
+            >
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 h-full">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-blue-600 text-sm font-semibold uppercase tracking-wide">
+                      Total Properties
+                    </p>
+                    <p className="text-4xl font-extrabold text-gray-900 mt-2">
+                      {totalProperties}
+                    </p>
+
+                    <div className="flex items-center gap-2 mt-3">
+                      <TrendingUp size={16} className="text-green-500" />
+                      <span className="text-green-600 text-sm font-medium">
+                        +2 this month
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-400/40">
+                    <Building2 className="text-white" size={30} />
+                  </div>
+                </div>
               </div>
-              <button className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:shadow-lg transition-shadow">
-                <Filter size={20} />
-                <span className="font-medium">Filter</span>
-              </button>
-            </div>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.04, y: -6 }}
+              transition={{ type: "spring", stiffness: 200 }}
+              className="relative rounded-3xl p-[1px] bg-gradient-to-br from-purple-400 via-pink-400 to-fuchsia-500 shadow-xl"
+            >
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 h-full">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-purple-600 text-sm font-semibold uppercase tracking-wide">
+                      Total Rooms
+                    </p>
+                    <p className="text-4xl font-extrabold text-gray-900 mt-2">
+                      {totalRooms}
+                    </p>
+                    <p className="text-gray-500 text-sm mt-3">
+                      Available for occupancy
+                    </p>
+                  </div>
+
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-400/40">
+                    <Bed className="text-white" size={30} />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.04, y: -6 }}
+              transition={{ type: "spring", stiffness: 200 }}
+              className="relative rounded-3xl p-[1px] bg-gradient-to-br from-rose-400 via-pink-400 to-orange-400 shadow-xl"
+            >
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 h-full">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-rose-600 text-sm font-semibold uppercase tracking-wide">
+                      Monthly Rent
+                    </p>
+                    <p className="text-4xl font-extrabold text-gray-900 mt-2">
+                      ₹{totalRent.toLocaleString()}
+                    </p>
+                    <p className="text-gray-500 text-sm mt-3">
+                      Total monthly payment
+                    </p>
+                  </div>
+
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-lg shadow-rose-400/40">
+                    <DollarSign className="text-white" size={30} />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-  {/* TOTAL PROPERTIES */}
-  <motion.div
-    whileHover={{ scale: 1.04, y: -6 }}
-    transition={{ type: "spring", stiffness: 200 }}
-    className="relative rounded-3xl p-[1px] bg-gradient-to-br from-blue-400 via-cyan-400 to-indigo-500 shadow-xl"
-  >
-    <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 h-full">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-blue-600 text-sm font-semibold uppercase tracking-wide">
-            Total Properties
-          </p>
-          <p className="text-4xl font-extrabold text-gray-900 mt-2">
-            {totalProperties}
-          </p>
-
-          <div className="flex items-center gap-2 mt-3">
-            <TrendingUp size={16} className="text-green-500" />
-            <span className="text-green-600 text-sm font-medium">
-              +2 this month
-            </span>
-          </div>
-        </div>
-
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-400/40">
-          <Building2 className="text-white" size={30} />
-        </div>
-      </div>
-    </div>
-  </motion.div>
-
-  {/* TOTAL ROOMS */}
-  <motion.div
-    whileHover={{ scale: 1.04, y: -6 }}
-    transition={{ type: "spring", stiffness: 200 }}
-    className="relative rounded-3xl p-[1px] bg-gradient-to-br from-purple-400 via-pink-400 to-fuchsia-500 shadow-xl"
-  >
-    <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 h-full">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-purple-600 text-sm font-semibold uppercase tracking-wide">
-            Total Rooms
-          </p>
-          <p className="text-4xl font-extrabold text-gray-900 mt-2">
-            {totalRooms}
-          </p>
-          <p className="text-gray-500 text-sm mt-3">
-            Available for occupancy
-          </p>
-        </div>
-
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-400/40">
-          <Bed className="text-white" size={30} />
-        </div>
-      </div>
-    </div>
-  </motion.div>
-
-  {/* MONTHLY RENT */}
-  <motion.div
-    whileHover={{ scale: 1.04, y: -6 }}
-    transition={{ type: "spring", stiffness: 200 }}
-    className="relative rounded-3xl p-[1px] bg-gradient-to-br from-rose-400 via-pink-400 to-orange-400 shadow-xl"
-  >
-    <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 h-full">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-rose-600 text-sm font-semibold uppercase tracking-wide">
-            Monthly Rent
-          </p>
-          <p className="text-4xl font-extrabold text-gray-900 mt-2">
-            ₹{totalRent.toLocaleString()}
-          </p>
-          <p className="text-gray-500 text-sm mt-3">
-            Total monthly payment
-          </p>
-        </div>
-
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-lg shadow-rose-400/40">
-          <DollarSign className="text-white" size={30} />
-        </div>
-      </div>
-    </div>
-  </motion.div>
-
-</div>
-
         </motion.div>
 
         {/* Main Content */}
@@ -645,7 +633,7 @@ export default function PropertyPage() {
                   {accommodations.length}
                 </span>
               </motion.button>
-              
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -696,23 +684,26 @@ export default function PropertyPage() {
                           {/* Property Image Header */}
                           <div className="h-48 relative overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100">
                             <div className="absolute inset-0 flex items-center justify-center">
-                              <Building2 size={64} className="text-blue-300 group-hover:text-blue-400 transition-all duration-300" />
+                              <Building2
+                                size={64}
+                                className="text-blue-300 group-hover:text-blue-400 transition-all duration-300"
+                              />
                             </div>
-                            
+
                             {/* Top Badges */}
                             <div className="absolute top-4 left-4">
                               <span className="px-3 py-1.5 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 text-white text-xs font-semibold shadow-lg flex items-center gap-1">
                                 <CheckCircle size={12} /> Active
                               </span>
                             </div>
-                            
+
                             {/* Favorite Button */}
                             <button
                               onClick={() => toggleFavorite(item.propertyId)}
                               className="absolute top-4 right-4 p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg"
                             >
-                              <Heart 
-                                size={20} 
+                              <Heart
+                                size={20}
                                 className={`transition-colors ${
                                   favoriteProperties.includes(item.propertyId)
                                     ? "text-red-500 fill-red-500"
@@ -721,7 +712,7 @@ export default function PropertyPage() {
                               />
                             </button>
                           </div>
-                          
+
                           <div className="p-6">
                             {/* Property Info */}
                             <div className="mb-4">
@@ -733,10 +724,13 @@ export default function PropertyPage() {
                                   whileHover={{ rotate: 90 }}
                                   className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-gradient-to-r from-blue-400 to-purple-400 transition-all"
                                 >
-                                  <ArrowRight size={20} className="text-gray-500 group-hover:text-white" />
+                                  <ArrowRight
+                                    size={20}
+                                    className="text-gray-500 group-hover:text-white"
+                                  />
                                 </motion.div>
                               </div>
-                              
+
                               <div className="flex items-center gap-2 text-gray-600 mb-4">
                                 <MapPin size={16} />
                                 <span className="text-sm">
@@ -748,12 +742,22 @@ export default function PropertyPage() {
                             {/* Price Section */}
                             <div className="grid grid-cols-2 gap-4 mb-6">
                               <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
-                                <p className="text-blue-600 text-sm font-medium">Monthly Rent</p>
-                                <p className="text-2xl font-bold text-gray-800">₹{item.rentAmount?.toLocaleString() || "0"}</p>
+                                <p className="text-blue-600 text-sm font-medium">
+                                  Monthly Rent
+                                </p>
+                                <p className="text-2xl font-bold text-gray-800">
+                                  ₹{item.rentAmount?.toLocaleString() || "0"}
+                                </p>
                               </div>
                               <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
-                                <p className="text-purple-600 text-sm font-medium">Security</p>
-                                <p className="text-2xl font-bold text-gray-800">₹{item.securityDeposit?.toLocaleString() || "0"}</p>
+                                <p className="text-purple-600 text-sm font-medium">
+                                  Security
+                                </p>
+                                <p className="text-2xl font-bold text-gray-800">
+                                  ₹
+                                  {item.securityDeposit?.toLocaleString() ||
+                                    "0"}
+                                </p>
                               </div>
                             </div>
 
@@ -761,12 +765,20 @@ export default function PropertyPage() {
                             <div className="space-y-3 mb-6">
                               <div className="flex items-center gap-3">
                                 <Bed size={18} className="text-blue-500" />
-                                <span className="text-gray-700">Flat/Room: {item.roomName}</span>
+                                <span className="text-gray-700">
+                                  Flat/Room: {item.roomName}
+                                </span>
                               </div>
                               <div className="flex items-center gap-3">
-                                <Calendar size={18} className="text-purple-500" />
+                                <Calendar
+                                  size={18}
+                                  className="text-purple-500"
+                                />
                                 <span className="text-gray-700">
-                                  Move-in: {new Date(item.moveInDate).toLocaleDateString('en-IN')}
+                                  Move-in:{" "}
+                                  {new Date(item.moveInDate).toLocaleDateString(
+                                    "en-IN"
+                                  )}
                                 </span>
                               </div>
                             </div>
@@ -799,9 +811,12 @@ export default function PropertyPage() {
                       <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 flex items-center justify-center">
                         <Building2 size={48} className="text-blue-400" />
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-800 mb-3">No Accommodations Yet</h3>
+                      <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                        No Accommodations Yet
+                      </h3>
                       <p className="text-gray-500 max-w-md mx-auto mb-8">
-                        Your properties will appear here once they are added to your portfolio.
+                        Your properties will appear here once they are added to
+                        your portfolio.
                       </p>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -844,14 +859,23 @@ export default function PropertyPage() {
                                   <Bed size={24} className="text-purple-500" />
                                 </div>
                                 <div>
-                                  <h3 className="font-bold text-gray-800">{room.roomName}</h3>
+                                  <h3 className="font-bold text-gray-800">
+                                    {room.roomName}
+                                  </h3>
                                   <div className="flex items-center gap-2 mt-1">
-                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                      room.status === 'Active' || room.isActive
-                                        ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-emerald-600'
-                                        : 'bg-gray-100 text-gray-600'
-                                    }`}>
-                                      {room.status ? room.status : (room.isActive ? "Active" : "Inactive")}
+                                    <span
+                                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                        room.status === "Active" ||
+                                        room.isActive
+                                          ? "bg-gradient-to-r from-green-100 to-emerald-100 text-emerald-600"
+                                          : "bg-gray-100 text-gray-600"
+                                      }`}
+                                    >
+                                      {room.status
+                                        ? room.status
+                                        : room.isActive
+                                        ? "Active"
+                                        : "Inactive"}
                                     </span>
                                     {room.floor && (
                                       <span className="px-2 py-1 rounded-full bg-blue-100 text-blue-600 text-xs">
@@ -866,14 +890,21 @@ export default function PropertyPage() {
                             {/* Room Details */}
                             <div className="space-y-4 mb-6">
                               <div className="flex items-center justify-between">
-                                <span className="text-gray-600">Monthly Rent</span>
+                                <span className="text-gray-600">
+                                  Monthly Rent
+                                </span>
                                 <span className="text-2xl font-bold text-gray-800">
-                                  ₹{room.rentAmount ? room.rentAmount.toLocaleString() : "N/A"}
+                                  ₹
+                                  {room.rentAmount
+                                    ? room.rentAmount.toLocaleString()
+                                    : "N/A"}
                                 </span>
                               </div>
                               <div className="flex items-center justify-between">
                                 <span className="text-gray-600">Area</span>
-                                <span className="font-medium text-gray-800">{room.area || "N/A"} sq.ft</span>
+                                <span className="font-medium text-gray-800">
+                                  {room.area || "N/A"} sq.ft
+                                </span>
                               </div>
                             </div>
 
@@ -902,9 +933,12 @@ export default function PropertyPage() {
                       <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-pink-100 to-rose-100 flex items-center justify-center">
                         <Bed size={48} className="text-pink-400" />
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-800 mb-3">No Rooms Available</h3>
+                      <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                        No Rooms Available
+                      </h3>
                       <p className="text-gray-500 max-w-md mx-auto mb-8">
-                        You don't have any rooms assigned yet. Rooms will appear here once allocated.
+                        You don't have any rooms assigned yet. Rooms will appear
+                        here once allocated.
                       </p>
                     </motion.div>
                   )}
@@ -918,9 +952,11 @@ export default function PropertyPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-2 text-gray-600">
                 <Shield size={20} className="text-blue-500" />
-                <span className="text-sm">All properties are verified and secure</span>
+                <span className="text-sm">
+                  All properties are verified and secure
+                </span>
               </div>
-              
+
               <div className="flex items-center gap-4">
                 <Link
                   to="/tenant"
@@ -933,9 +969,12 @@ export default function PropertyPage() {
                     ⬅
                   </motion.span>
                   Back to Dashboard
-                  <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight
+                    size={18}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
                 </Link>
-                
+
                 <button className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 font-medium transition-colors">
                   View All Properties
                 </button>
