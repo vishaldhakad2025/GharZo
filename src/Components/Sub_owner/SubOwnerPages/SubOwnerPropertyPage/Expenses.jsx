@@ -8,13 +8,18 @@ import {
   FaImage,
   FaHome,
   FaClock,
-  FaExclamationCircle,
-  FaSpinner,
-  FaUserCircle,
   FaEye,
+  FaSpinner,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import baseurl from "../../../../../BaseUrl";
+
+// ──────────────────────────────────────────────────────────────
+//  BRAND COLORS
+// ──────────────────────────────────────────────────────────────
+const NAVY = "#172554";
+const ORANGE = "#F97316";
+const ORANGE_DARK = "#ea580c";
 
 const PropertyExpenses = ({ propertyId }) => {
   const [data, setData] = useState({
@@ -25,86 +30,52 @@ const PropertyExpenses = ({ propertyId }) => {
     pages: 1,
     expenses: [],
   });
-  const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isSidebarHovered, setIsSidebarHovered] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
-  // Detect sidebar hover state
-  useEffect(() => {
-    const sidebar = document.querySelector(".sidebar");
-    if (sidebar) {
-      const handleMouseEnter = () => setIsSidebarHovered(true);
-      const handleMouseLeave = () => setIsSidebarHovered(false);
-
-      sidebar.addEventListener("mouseenter", handleMouseEnter);
-      sidebar.addEventListener("mouseleave", handleMouseLeave);
-
-      return () => {
-        sidebar.removeEventListener("mouseenter", handleMouseEnter);
-        sidebar.removeEventListener("mouseleave", handleMouseLeave);
-      };
-    }
-  }, []);
-
-  // Fetch expenses data for the given propertyId
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          setError("No authentication token found. Please log in.");
-          setLoading(false);
+          setError("Authentication required. Please login.");
           return;
         }
 
         const response = await fetch(
           `${baseurl}api/subowner/expenses/property/${propertyId}`,
           {
-            method: "GET",
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }
         );
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error("Failed to fetch expenses");
 
-        const responseData = await response.json();
-        setData(responseData);
-        setError(null);
+        const result = await response.json();
+        setData(result);
       } catch (err) {
-        setError("Failed to fetch property expenses: " + err.message);
+        setError(err.message || "Failed to load expenses");
       } finally {
         setLoading(false);
       }
     };
 
-    if (propertyId) {
-      fetchExpenses();
-    } else {
-      setError("No property ID provided.");
-      setLoading(false);
-    }
+    if (propertyId) fetchExpenses();
   }, [propertyId]);
 
-  // Format date to readable string
   const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
+    if (!dateString) return "—";
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      day: "numeric",
       month: "short",
       year: "numeric",
     });
   };
 
-  // Handle image view click
   const handleViewImage = (billImage) => {
     if (billImage) {
       setSelectedImage(`https://api.drazeapp.com${billImage}`);
@@ -112,42 +83,12 @@ const PropertyExpenses = ({ propertyId }) => {
     }
   };
 
-  // Colorful 3D Icon Component
-  const Colorful3DIcon = ({
-    icon: Icon,
-    color,
-    size = "lg",
-    className = "",
-  }) => (
-    <motion.div
-      className={`relative p-2 rounded-2xl shadow-lg bg-gradient-to-br ${color} transform hover:scale-110 hover:rotate-3 transition-all duration-300 perspective-1000 ${className}`}
-      style={{ transformStyle: "preserve-3d" }}
-      whileHover={{ y: -5 }}
-    >
-      <Icon className={`text-white text-${size} drop-shadow-lg`} />
-      <div className="absolute inset-0 bg-white/20 rounded-2xl blur opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-    </motion.div>
-  );
-
   if (loading) {
     return (
-      <div
-        className={`min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center transition-all duration-500 min-w-0 ${
-          isSidebarHovered
-            ? "md:ml-[256px] md:w-[calc(100%-256px)]"
-            : "md:ml-[64px] md:w-[calc(100%-64px)]"
-        }`}
-        style={{ boxSizing: "border-box" }}
-      >
-        <div className="text-center">
-          <Colorful3DIcon
-            icon={FaSpinner}
-            color="from-blue-500 to-purple-600"
-            size="2xl"
-          />
-          <p className="mt-4 text-lg font-semibold text-gray-600">
-            Loading Expenses...
-          </p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-14 h-14 border-4 border-[#F97316] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#172554] font-medium">Loading expenses...</p>
         </div>
       </div>
     );
@@ -155,194 +96,185 @@ const PropertyExpenses = ({ propertyId }) => {
 
   if (error) {
     return (
-      <div
-        className={`min-h-screen bg-gradient-to-br from-red-50 to-pink-100 flex items-center justify-center transition-all duration-500 min-w-0 ${
-          isSidebarHovered
-            ? "md:ml-[256px] md:w-[calc(100%-256px)]"
-            : "md:ml-[64px] md:w-[calc(100%-64px)]"
-        }`}
-        style={{ boxSizing: "border-box" }}
-      >
-        <div className="text-center p-8 bg-white rounded-2xl shadow-lg">
-          <Colorful3DIcon
-            icon={FaExclamationCircle}
-            color="from-red-500 to-orange-500"
-          />
-          <p className="mt-4 text-lg font-semibold text-red-600">{error}</p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl p-10 shadow-lg max-w-md w-full text-center border-t-4 border-red-500">
+          <div className="text-red-500 text-5xl mb-6">
+            <FaExclamationCircle />
+          </div>
+          <h2 className="text-xl font-bold text-[#172554] mb-3">Error</h2>
+          <p className="text-gray-600">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-   
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gray-50 pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            Property Expenses
+        {/* <div className="text-center mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#172554]">
+            GHARZO <span className="text-[#F97316]">Expenses</span>
           </h1>
-          <p className="text-xl text-gray-600">
-            View all expenses for this property
+          <p className="text-gray-600 mt-3">
+            Track all financial transactions for this property
           </p>
-        </div>
+        </div> */}
 
-        {/* Total Expenses Stat */}
-        <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl p-6 shadow-lg border-l-4 border-blue-500">
-            <Colorful3DIcon
-              icon={FaMoneyBillWave}
-              color="from-blue-500 to-indigo-600"
-            />
-            <div className="mt-4">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                Total Expenses
-              </h3>
-              <p className="text-3xl font-bold text-gray-900">{data.total}</p>
+        {/* Total Summary Card */}
+        <div className="mb-12">
+          <div className="bg-white rounded-2xl shadow-lg border-t-4 border-[#F97316] p-8 text-center">
+            <div className="flex justify-center mb-5">
+              <div className="w-20 h-20 rounded-full bg-[#F97316]/10 flex items-center justify-center">
+                <FaMoneyBillWave className="text-[#F97316] text-4xl" />
+              </div>
             </div>
+            <h2 className="text-5xl sm:text-6xl font-extrabold text-[#172554] mb-2">
+              ₹{data.total?.toLocaleString() || "0"}
+            </h2>
+            <p className="text-xl text-gray-600 font-medium">Total Expenses</p>
           </div>
         </div>
 
-        {/* Expenses Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.expenses.map((expense) => (
-            <div
-              key={expense._id}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Colorful3DIcon
-                  icon={FaFileInvoiceDollar}
-                  color="from-green-500 to-emerald-600"
-                  size="2xl"
-                />
-                <b>Expense</b>
-              </div>
-              <div className="space-y-2 text-sm text-gray-600">
-                <p className="flex items-center gap-2">
-                  <Colorful3DIcon
-                    icon={FaHome}
-                    color="from-purple-500 to-pink-600"
-                    size="xs"
-                  />
-                  <span>
-                    Category: {expense.category ? expense.category.name : "N/A"}
-                  </span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Colorful3DIcon
-                    icon={FaMoneyBillWave}
-                    color="from-indigo-500 to-blue-600"
-                    size="xs"
-                  />
-                  <span>Amount: ₹{expense.amount.toLocaleString()}</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Colorful3DIcon
-                    icon={FaCalendarAlt}
-                    color="from-yellow-500 to-orange-600"
-                    size="xs"
-                  />
-                  <span>Date: {formatDate(expense.date)}</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Colorful3DIcon
-                    icon={FaUser}
-                    color="from-red-500 to-pink-600"
-                    size="xs"
-                  />
-                  <span>Paid By: {expense.paidBy}</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Colorful3DIcon
-                    icon={FaUserCircle}
-                    color="from-teal-500 to-cyan-600"
-                    size="xs"
-                  />
-                  <span>Paid To: {expense.paidTo}</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Colorful3DIcon
-                    icon={FaCreditCard}
-                    color="from-purple-500 to-indigo-600"
-                    size="xs"
-                  />
-                  <span>Mode: {expense.collectionMode}</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Colorful3DIcon
-                    icon={FaImage}
-                    color="from-orange-500 to-red-600"
-                    size="xs"
-                  />
-                  <span>
-                    Bill Image: {expense.billImage ? "Available" : "N/A"}
-                    {expense.billImage && (
-                      <button
-                        onClick={() => handleViewImage(expense.billImage)}
-                        className="ml-2 text-blue-600 hover:text-blue-800"
-                      >
-                        <FaEye className="inline-block" />
-                      </button>
-                    )}
-                  </span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Colorful3DIcon
-                    icon={FaClock}
-                    color="from-gray-500 to-gray-700"
-                    size="xs"
-                  />
-                  <span>Created: {formatDate(expense.createdAt)}</span>
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Image Modal */}
-        {isImageModalOpen && (
-          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-fadeIn">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl m-2 sm:m-4 max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-gray-200 rounded-t-2xl flex justify-between items-center">
-                <h3 className="text-xl font-bold text-gray-900">Bill Image</h3>
-                <button
-                  onClick={() => setIsImageModalOpen(false)}
-                  className="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100"
-                >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="p-6">
-                <img
-                  src={selectedImage}
-                  alt="Bill"
-                  className="w-full h-auto max-h-[70vh] object-contain rounded-lg"
-                />
-              </div>
-            </div>
+        {/* Expenses List */}
+        {data.expenses?.length === 0 ? (
+          <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-200">
+            <FaMoneyBillWave className="mx-auto text-7xl text-[#F97316]/30 mb-6" />
+            <h3 className="text-2xl font-semibold text-[#172554] mb-3">
+              No expenses recorded
+            </h3>
+            <p className="text-gray-600">
+              All property expenses will appear here once added
+            </p>
           </div>
-        )}
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.expenses.map((expense) => (
+              <motion.div
+                key={expense._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -6 }}
+                className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:border-[#F97316]/40 transition-all duration-300"
+              >
+                {/* Top accent bar */}
+                <div className="h-2 bg-gradient-to-r from-[#F97316] to-[#ea580c]" />
 
-        {data.expenses.length === 0 && (
-          <div className="text-center py-8 text-gray-600 bg-white rounded-2xl shadow-lg">
-            No expenses found for this property
+                <div className="p-6">
+                  {/* Category & Amount */}
+                  <div className="flex justify-between items-start mb-5">
+                    <div>
+                      <h3 className="text-xl font-bold text-[#172554] mb-1">
+                        {expense.category?.name || "Uncategorized"}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {formatDate(expense.date)}
+                      </p>
+                    </div>
+
+                    <div className="text-right">
+                      <p className="text-2xl font-bold text-[#F97316]">
+                        ₹{expense.amount?.toLocaleString() || "0"}
+                      </p>
+                      <p className="text-xs text-gray-500">Paid</p>
+                    </div>
+                  </div>
+
+                  {/* Details Grid */}
+                  <div className="grid grid-cols-2 gap-4 text-sm mb-6">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                        <FaUser className="text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Paid By</p>
+                        <p className="font-medium text-[#172554] truncate">
+                          {expense.paidBy || "—"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                        <FaUser className="text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Paid To</p>
+                        <p className="font-medium text-[#172554] truncate">
+                          {expense.paidTo || "—"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
+                        <FaCreditCard className="text-green-600" />
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Mode</p>
+                        <p className="font-medium text-[#172554]">
+                          {expense.collectionMode || "—"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                        <FaClock className="text-amber-600" />
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Created</p>
+                        <p className="font-medium text-[#172554]">
+                          {formatDate(expense.createdAt)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bill Image */}
+                  {expense.billImage && (
+                    <button
+                      onClick={() => handleViewImage(expense.billImage)}
+                      className="w-full flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-[#172554] py-3 rounded-xl transition-colors border border-gray-200"
+                    >
+                      <FaImage className="text-[#F97316]" />
+                      View Bill Image
+                      <FaEye className="text-gray-600" />
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            ))}
           </div>
         )}
       </div>
-  
+
+      {/* Image Preview Modal */}
+      {isImageModalOpen && (
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          onClick={() => setIsImageModalOpen(false)}
+        >
+          <div
+            className="relative max-w-4xl w-full max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setIsImageModalOpen(false)}
+              className="absolute top-4 right-4 z-10 bg-black/60 text-white p-3 rounded-full hover:bg-black/80 transition-colors"
+            >
+              <FaTimes size={20} />
+            </button>
+
+            <img
+              src={selectedImage}
+              alt="Bill"
+              className="w-full h-auto max-h-[90vh] object-contain"
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

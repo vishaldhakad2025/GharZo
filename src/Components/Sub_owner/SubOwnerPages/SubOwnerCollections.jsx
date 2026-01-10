@@ -32,16 +32,13 @@ const ForecastSummary = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Retrieve token from localStorage
         const token = localStorage.getItem("token");
-        console.log("Retrieved token:", token); // Debug log
         if (!token) {
           setError("No authentication token found. Please log in.");
           setLoading(false);
           return;
         }
 
-        // Fetch forecast data with token in Authorization header
         const response = await axios.get(
           `${baseurl}api/subowner/collections/forecast`,
           {
@@ -49,7 +46,6 @@ const ForecastSummary = () => {
           }
         );
 
-        console.log("API response:", response.data); // Debug log
         if (response.data.success) {
           setData(response.data);
           setError(null);
@@ -57,7 +53,6 @@ const ForecastSummary = () => {
           setError("Failed to fetch forecast data.");
         }
       } catch (err) {
-        console.error("API error:", err); // Debug log
         if (err.response?.status === 404) {
           setError("Forecast endpoint not found. Please check the API URL or contact support.");
         } else if (err.response?.status === 401) {
@@ -73,35 +68,30 @@ const ForecastSummary = () => {
     fetchData();
   }, []);
 
-  // Colorful 3D Icon Component
-  const Colorful3DIcon = ({
-    icon: Icon,
-    color,
-    size = "[5px]",
-    className = "",
-  }) => (
+  // Modern brand icon component
+  const BrandIcon = ({ icon: Icon, accent = false, size = "xl", className = "" }) => (
     <motion.div
-      className={`relative p-3 rounded-2xl shadow-lg bg-gradient-to-br ${color} transform hover:scale-110 hover:rotate-3 transition-all duration-300 perspective-1000 ${className}`}
-      style={{ transformStyle: "preserve-3d" }}
-      whileHover={{ y: -5 }}
+      className={`relative p-4 rounded-2xl shadow-lg bg-gradient-to-br ${
+        accent ? "from-[#FF6600] to-[#FF994D]" : "from-[#003366] to-[#336699]"
+      } transform hover:scale-110 hover:rotate-2 transition-all duration-300 ${className}`}
+      whileHover={{ y: -6, rotate: 3 }}
+      whileTap={{ scale: 0.95 }}
     >
-      <Icon className={`text-white text-${size} drop-shadow-lg`} />
-      <div className="absolute inset-0 bg-white/20 rounded-2xl blur opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+      <Icon className={`text-white text-${size} drop-shadow-md`} />
     </motion.div>
   );
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center transition-all duration-500">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <Colorful3DIcon
-            icon={FaSpinner}
-            color="from-green-500 to-blue-600"
-            size="2xl"
-          />
-          <p className="mt-4 text-lg font-semibold text-gray-600">
-            Loading Forecast Summary...
-          </p>
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
+          >
+            <BrandIcon icon={FaSpinner} size="6xl" accent={true} />
+          </motion.div>
+          <p className="mt-6 text-xl font-medium text-gray-700">Loading Collection Forecast...</p>
         </div>
       </div>
     );
@@ -109,13 +99,10 @@ const ForecastSummary = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-100 flex items-center justify-center transition-all duration-500">
-        <div className="text-center p-8 bg-white rounded-2xl shadow-lg">
-          <Colorful3DIcon
-            icon={FaExclamationCircle}
-            color="from-red-500 to-orange-500"
-          />
-          <p className="mt-4 text-lg font-semibold text-red-600">{error}</p>
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-rose-50 flex items-center justify-center p-6">
+        <div className="bg-white rounded-3xl p-12 shadow-xl max-w-lg w-full text-center border border-red-100">
+          <BrandIcon icon={FaExclamationCircle} size="6xl" accent={true} />
+          <p className="mt-6 text-xl font-medium text-red-700">{error}</p>
         </div>
       </div>
     );
@@ -124,298 +111,168 @@ const ForecastSummary = () => {
   const { forecast } = data;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 text-gray-800 transition-all duration-500">
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-gray-50 pb-16">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 pt-12">
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            Collection Forecast
+        <div className="text-center mb-16">
+          <h1 className="text-5xl md:text-6xl font-extrabold">
+            <span className="text-[#003366]">Collection</span>
+            <span className="bg-gradient-to-r from-[#FF6600] to-[#FF994D] bg-clip-text text-transparent ml-3">
+              Forecast
+            </span>
           </h1>
-          <p className="text-xl text-gray-600">
-            Projected collections for upcoming months
+          <p className="mt-4 text-xl text-gray-600">
+            Projected rent & maintenance collections overview
           </p>
         </div>
 
-        {/* Forecast Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* Current Month */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <Colorful3DIcon
-                icon={FaCalendarAlt}
-                color="from-green-500 to-teal-500"
-                size="xl"
-              />
-              <h3 className="text-lg font-bold text-gray-800">
-                {forecast.currentMonth.month}
-              </h3>
-            </div>
-            <div className="space-y-3 text-sm text-gray-600">
-              <p className="flex items-center gap-2">
-                <Colorful3DIcon
-                  icon={FaRupeeSign}
-                  color="from-blue-500 to-indigo-600"
-                  size="sm"
-                />
-                <span>Expected: ₹{forecast.currentMonth.expected.toLocaleString()}</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <Colorful3DIcon
-                  icon={FaArrowUp}
-                  color="from-purple-500 to-pink-600"
-                  size="sm"
-                />
-                <span>Projected: ₹{forecast.currentMonth.projectedCollection.toLocaleString()}</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <Colorful3DIcon
-                  icon={FaBuilding}
-                  color="from-yellow-500 to-orange-600"
-                  size="sm"
-                />
-                <span>By Property:</span>
-                <ul className="ml-4 list-disc">
-                  {forecast.currentMonth.byProperty.map((prop) => (
-                    <li key={prop.propertyId}>
-                      {prop.propertyName}: ₹{prop.expected.toLocaleString()}
-                    </li>
-                  ))}
-                </ul>
-              </p>
-            </div>
-          </div>
+        {/* 3-Month Forecast Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          {[
+            { title: forecast.currentMonth.month, data: forecast.currentMonth, accent: true },
+            { title: forecast.nextMonth.month, data: forecast.nextMonth, accent: false },
+            { title: forecast.twoMonthsAhead.month, data: forecast.twoMonthsAhead, accent: false },
+          ].map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <BrandIcon icon={FaCalendarAlt} size="4xl" accent={item.accent} />
+                <h3 className="text-2xl font-bold text-[#003366]">{item.title}</h3>
+              </div>
 
-          {/* Next Month */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <Colorful3DIcon
-                icon={FaCalendarAlt}
-                color="from-blue-500 to-indigo-500"
-                size="xl"
-              />
-              <h3 className="text-lg font-bold text-gray-800">
-                {forecast.nextMonth.month}
-              </h3>
-            </div>
-            <div className="space-y-3 text-sm text-gray-600">
-              <p className="flex items-center gap-2">
-                <Colorful3DIcon
-                  icon={FaRupeeSign}
-                  color="from-blue-500 to-indigo-600"
-                  size="sm"
-                />
-                <span>Expected: ₹{forecast.nextMonth.expected.toLocaleString()}</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <Colorful3DIcon
-                  icon={FaArrowUp}
-                  color="from-purple-500 to-pink-600"
-                  size="sm"
-                />
-                <span>Projected: ₹{forecast.nextMonth.projectedCollection.toLocaleString()}</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <Colorful3DIcon
-                  icon={FaBuilding}
-                  color="from-yellow-500 to-orange-600"
-                  size="sm"
-                />
-                <span>By Property:</span>
-                <ul className="ml-4 list-disc">
-                  {forecast.nextMonth.byProperty.map((prop) => (
-                    <li key={prop.propertyId}>
-                      {prop.propertyName}: ₹{prop.expected.toLocaleString()}
-                    </li>
-                  ))}
-                </ul>
-              </p>
-            </div>
-          </div>
+              <div className="space-y-5">
+                <div className="flex justify-between items-center bg-gray-50 rounded-xl p-4">
+                  <span className="text-gray-600">Expected</span>
+                  <span className="text-xl font-bold text-gray-800">
+                    ₹{item.data.expected.toLocaleString()}
+                  </span>
+                </div>
 
-          {/* Two Months Ahead */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <Colorful3DIcon
-                icon={FaCalendarAlt}
-                color="from-purple-500 to-pink-500"
-                size="xl"
-              />
-              <h3 className="text-lg font-bold text-gray-800">
-                {forecast.twoMonthsAhead.month}
-              </h3>
-            </div>
-            <div className="space-y-3 text-sm text-gray-600">
-              <p className="flex items-center gap-2">
-                <Colorful3DIcon
-                  icon={FaRupeeSign}
-                  color="from-blue-500 to-indigo-600"
-                  size="sm"
-                />
-                <span>Expected: ₹{forecast.twoMonthsAhead.expected.toLocaleString()}</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <Colorful3DIcon
-                  icon={FaArrowUp}
-                  color="from-purple-500 to-pink-600"
-                  size="sm"
-                />
-                <span>Projected: ₹{forecast.twoMonthsAhead.projectedCollection.toLocaleString()}</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <Colorful3DIcon
-                  icon={FaBuilding}
-                  color="from-yellow-500 to-orange-600"
-                  size="sm"
-                />
-                <span>By Property:</span>
-                <ul className="ml-4 list-disc">
-                  {forecast.twoMonthsAhead.byProperty.map((prop) => (
-                    <li key={prop.propertyId}>
-                      {prop.propertyName}: ₹{prop.expected.toLocaleString()}
-                    </li>
-                  ))}
-                </ul>
-              </p>
-            </div>
-          </div>
+                <div className="flex justify-between items-center bg-gray-50 rounded-xl p-4">
+                  <span className="text-gray-600">Projected</span>
+                  <span className="text-xl font-bold text-[#FF6600]">
+                    ₹{item.data.projectedCollection.toLocaleString()}
+                  </span>
+                </div>
+
+                <div className="pt-3">
+                  <p className="text-sm text-gray-500 mb-3 font-medium">By Property:</p>
+                  <div className="space-y-2 text-sm">
+                    {item.data.byProperty.map((prop) => (
+                      <div
+                        key={prop.propertyId}
+                        className="flex justify-between bg-gray-50 px-4 py-2.5 rounded-lg border border-gray-200"
+                      >
+                        <span className="text-gray-700 truncate">{prop.propertyName}</span>
+                        <span className="font-semibold text-gray-800">
+                          ₹{prop.expected.toLocaleString()}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         {/* Breakdown Section */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-center mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-            Breakdown by Property
+        <div className="mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-10 text-[#003366]">
+            Property-wise Breakdown
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
             {forecast.breakdown.map((prop) => (
-              <div
+              <motion.div
                 key={prop.propertyId}
-                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="bg-white rounded-3xl p-7 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <Colorful3DIcon
-                    icon={FaBuilding}
-                    color="from-orange-500 to-red-500"
-                    size="xl"
-                  />
-                  <h3 className="text-lg font-bold text-gray-800">
+                <div className="flex items-center gap-4 mb-6">
+                  <BrandIcon icon={FaBuilding} size="4xl" />
+                  <h3 className="text-2xl font-bold text-[#003366] truncate">
                     {prop.propertyName}
                   </h3>
                 </div>
-                <div className="space-y-3 text-sm text-gray-600">
-                  <p className="flex items-center gap-2">
-                    <Colorful3DIcon
-                      icon={FaRupeeSign}
-                      color="from-green-500 to-emerald-600"
-                      size="sm"
-                    />
-                    <span>Rent: ₹{prop.rentAmount.toLocaleString()}</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Colorful3DIcon
-                      icon={FaRupeeSign}
-                      color="from-blue-500 to-indigo-600"
-                      size="sm"
-                    />
-                    <span>Maintenance: ₹{prop.maintenanceAmount.toLocaleString()}</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Colorful3DIcon
-                      icon={FaRupeeSign}
-                      color="from-purple-500 to-pink-600"
-                      size="sm"
-                    />
-                    <span>Electricity: ₹{prop.electricityAmount.toLocaleString()}</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Colorful3DIcon
-                      icon={FaRupeeSign}
-                      color="from-yellow-500 to-orange-600"
-                      size="sm"
-                    />
-                    <span>Water: ₹{prop.waterAmount.toLocaleString()}</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Colorful3DIcon
-                      icon={FaRupeeSign}
-                      color="from-red-500 to-pink-600"
-                      size="sm"
-                    />
-                    <span>Other: ₹{prop.otherAmount.toLocaleString()}</span>
-                  </p>
-                  <p className="flex items-center gap-2 font-bold">
-                    <Colorful3DIcon
-                      icon={FaChartLine}
-                      color="from-green-500 to-blue-600"
-                      size="sm"
-                    />
-                    <span>Total: ₹{prop.totalAmount.toLocaleString()}</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Colorful3DIcon
-                      icon={FaPercentage}
-                      color="from-indigo-500 to-purple-600"
-                      size="sm"
-                    />
-                    <span>Tenants: {prop.tenantCount}</span>
-                  </p>
+
+                <div className="grid grid-cols-2 gap-4 text-m">
+                  {[
+                    { label: "Rent", value: prop.rentAmount, color: "text-blue-600" },
+                    { label: "Maintenance", value: prop.maintenanceAmount, color: "text-cyan-600" },
+                    { label: "Electricity", value: prop.electricityAmount, color: "text-purple-600" },
+                    { label: "Water", value: prop.waterAmount, color: "text-teal-600" },
+                    { label: "Other", value: prop.otherAmount, color: "text-orange-600" },
+                  ].map((item, i) => (
+                    <div key={i} className="bg-gray-50 rounded-xl p-4">
+                      <p className="text-gray-500 text-m mb-1">{item.label}</p>
+                      <p className={`font-bold text-lg ${item.color}`}>
+                        ₹{item.value.toLocaleString()}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              </div>
+
+                <div className="mt-6 pt-6 border-t border-gray-200 grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-gray-500 text-sm">Total Amount</p>
+                    <p className="text-xl font-bold text-[#FF6600]">
+                      ₹{prop.totalAmount.toLocaleString()}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-sm">Tenants</p>
+                    <p className="text-xl font-bold text-gray-800">{prop.tenantCount}</p>
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Efficiency Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Past Collection Efficiency */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <Colorful3DIcon
-                icon={FaHistory}
-                color="from-red-500 to-orange-500"
-                size="xl"
-              />
-              <h3 className="text-lg font-bold text-gray-800">
-                Past Collection Efficiency
-              </h3>
+        {/* Efficiency Overview */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Past Efficiency */}
+          <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-200">
+            <div className="flex items-center gap-4 mb-8">
+              <BrandIcon icon={FaHistory} size="4xl" accent={true} />
+              <h3 className="text-3xl font-bold text-[#003366]">Past Collection Efficiency</h3>
             </div>
-            <div className="space-y-3 text-sm text-gray-600">
+            <div className="space-y-4">
               {forecast.pastCollectionEfficiency.map((eff) => (
-                <p key={eff.month} className="flex items-center gap-2">
-                  <Colorful3DIcon
-                    icon={FaPercentage}
-                    color="from-purple-500 to-indigo-600"
-                    size="sm"
-                  />
-                  <span>
-                    {eff.month}: Collected ₹{eff.collected.toLocaleString()} / Expected ₹{eff.expected.toLocaleString()} ({eff.efficiency}%)
-                  </span>
-                </p>
+                <div
+                  key={eff.month}
+                  className="flex justify-between items-center bg-gray-50 rounded-xl p-5 border border-gray-200"
+                >
+                  <div>
+                    <p className="text-gray-700 font-medium">{eff.month}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-600">
+                      Collected ₹{eff.collected.toLocaleString()}
+                    </p>
+                    <p className="text-xl font-bold text-[#003366]">
+                      {eff.efficiency}% <span className="text-gray-500 text-base">of expected</span>
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
 
           {/* Projected Efficiency */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <Colorful3DIcon
-                icon={FaArrowUp}
-                color="from-green-500 to-emerald-500"
-                size="xl"
-              />
-              <h3 className="text-lg font-bold text-gray-800">
-                Projected Efficiency
-              </h3>
+          <div className="bg-white rounded-3xl p-10 shadow-lg border border-gray-200 flex flex-col justify-center items-center text-center">
+            <BrandIcon icon={FaArrowUp} size="6xl" accent={true} className="mb-8" />
+            <h3 className="text-3xl font-bold text-[#003366] mb-6">Projected Efficiency</h3>
+            <div className="text-7xl md:text-9xl font-black text-[#FF6600]">
+              {forecast.projectedEfficiency}%
             </div>
-            <div className="space-y-3 text-sm text-gray-600">
-              <p className="flex items-center gap-2 text-2xl font-bold">
-                <Colorful3DIcon
-                  icon={FaPercentage}
-                  color="from-blue-500 to-green-600"
-                  size="lg"
-                />
-                <span>{forecast.projectedEfficiency}%</span>
-              </p>
-            </div>
+            <p className="mt-6 text-xl text-gray-600">Expected performance next period</p>
           </div>
         </div>
       </div>

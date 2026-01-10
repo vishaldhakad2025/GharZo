@@ -1,8 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { motion } from "framer-motion";
+import {
+  FaBullhorn,
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaSpinner,
+  FaCalendarAlt,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
 import baseurl from "../../../../../BaseUrl";
+
+// ──────────────────────────────────────────────────────────────
+//  BRAND COLORS
+// ──────────────────────────────────────────────────────────────
+const NAVY = "#172554";
+const ORANGE = "#F97316";
+const ORANGE_DARK = "#ea580c";
 
 const Announcements = () => {
   const [formData, setFormData] = useState({
@@ -17,134 +35,89 @@ const Announcements = () => {
   const [fetchLoading, setFetchLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
-  // Function to dynamically fetch token from localStorage
-  const getAuthToken = () => {
-    const token = localStorage.getItem("token");
-    return token || null;
-  };
+  const getAuthToken = () => localStorage.getItem("token");
 
-  // Fetch all announcements
   const fetchAnnouncements = async () => {
     setFetchLoading(true);
     setFetchError(null);
-    setAnnouncements([]);
 
     const token = getAuthToken();
     if (!token) {
-      setFetchError("No authentication token found. Please log in again.");
+      setFetchError("Authentication token missing. Please log in again.");
       setFetchLoading(false);
       return;
     }
 
     try {
-      const res = await axios.get(
-        `${baseurl}api/subowner/announcements`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.get(`${baseurl}api/subowner/announcements`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       setAnnouncements(res.data.announcements || []);
     } catch (err) {
-      setFetchError(
-        err.response?.data?.message || "Failed to fetch announcements"
-      );
+      setFetchError(err.response?.data?.message || "Failed to load announcements");
     } finally {
       setFetchLoading(false);
     }
   };
 
-  // Handle delete announcement
   const handleDelete = async (announcement) => {
     const token = getAuthToken();
     if (!token) {
-      toast.error("No authentication token found. Please log in again.", {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error("Authentication required");
       return;
     }
 
     try {
-      const res = await axios.delete(
+      await axios.delete(
         `${baseurl}api/subowner/announcements/${announcement._id}`,
         {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          data: {
-            title: announcement.title,
-            message: announcement.message,
-            tenantId: announcement.tenantId,
-            sendToAll: announcement.tenantId === null,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-      toast.success(
-        `Announcement deleted successfully!`,
-        {
-          position: "top-right",
-          autoClose: 3000,
-        }
-      );
+
+      toast.success("Announcement deleted successfully");
       fetchAnnouncements();
     } catch (err) {
-      toast.error(
-        err.response?.data?.message || "Failed to delete announcement",
-        {
-          position: "top-right",
-          autoClose: 3000,
-        }
-      );
+      toast.error(err.response?.data?.message || "Failed to delete announcement");
     }
   };
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const setData = editData ? setEditData : setFormData;
-    setData((prev) => ({
+    const setter = editData ? setEditData : setFormData;
+    setter((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  // Handle form submission for create
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     const token = getAuthToken();
     if (!token) {
-      toast.error("No authentication token found. Please log in again.", {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error("Authentication required");
       setLoading(false);
       return;
     }
 
     try {
-      const res = await axios.post(
+      await axios.post(
         `${baseurl}api/subowner/announcements/create`,
         formData,
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
-      toast.success(
-        `Announcement created`,
-        {
-          position: "top-right",
-          autoClose: 3000,
-        }
-      );
+
+      toast.success("Announcement created successfully");
       fetchAnnouncements();
       setFormData({
         title: "",
@@ -153,19 +126,12 @@ const Announcements = () => {
         tenantId: null,
       });
     } catch (err) {
-      toast.error(
-        err.response?.data?.message || "Failed to create announcement",
-        {
-          position: "top-right",
-          autoClose: 3000,
-        }
-      );
+      toast.error(err.response?.data?.message || "Failed to create announcement");
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle edit initiation
   const handleEdit = (announcement) => {
     setEditData({
       _id: announcement._id,
@@ -176,23 +142,19 @@ const Announcements = () => {
     });
   };
 
-  // Handle edit submission
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     const token = getAuthToken();
-    if (!token) {
-      toast.error("No authentication token found. Please log in again.", {
-        position: "top-right",
-        autoClose: 3000,
-      });
+    if (!token || !editData?._id) {
+      toast.error("Invalid data or authentication");
       setLoading(false);
       return;
     }
 
     try {
-      const res = await axios.put(
+      await axios.put(
         `${baseurl}api/subowner/announcements/${editData._id}`,
         {
           title: editData.title,
@@ -202,156 +164,80 @@ const Announcements = () => {
         },
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
-      toast.success(
-        `Announcement updated successfully!`,
-        {
-          position: "top-right",
-          autoClose: 3000,
-        }
-      );
+
+      toast.success("Announcement updated successfully");
       fetchAnnouncements();
       setEditData(null);
     } catch (err) {
-      toast.error(
-        err.response?.data?.message || "Failed to update announcement",
-        {
-          position: "top-right",
-          autoClose: 3000,
-        }
-      );
+      toast.error(err.response?.data?.message || "Failed to update announcement");
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch announcements on component mount
   useEffect(() => {
     fetchAnnouncements();
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Announcements</h2>
+    <div className="min-h-screen bg-gray-50 pb-16">
+      <ToastContainer position="top-right" theme="colored" />
 
-      {/* Toast Container */}
-      <ToastContainer />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#172554]">
+            GHARZO <span className="text-[#F97316]">Announcements</span>
+          </h1>
+          <p className="text-gray-600 mt-3">
+            Create and manage announcements for your tenants
+          </p>
+        </div>
 
-      {/* Create Announcement Form */}
-      <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-4 text-gray-700">
-          Create New Announcement
-        </h3>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="title"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-              placeholder="Enter announcement title"
-              required
-            />
-          </div>
+        {/* Create / Edit Form */}
+        <div className="bg-white rounded-2xl shadow-lg border-t-4 border-[#F97316] p-8 mb-12">
+          <h2 className="text-2xl font-bold text-[#172554] mb-6 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#F97316]/10 flex items-center justify-center">
+              <FaBullhorn className="text-[#F97316]" />
+            </div>
+            {editData ? "Edit Announcement" : "Create New Announcement"}
+          </h2>
 
-          <div>
-            <label
-              htmlFor="message"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-              rows="4"
-              placeholder="Enter announcement message"
-              required
-            />
-          </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="sendToAll"
-              name="sendToAll"
-              checked={formData.sendToAll}
-              onChange={handleChange}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label htmlFor="sendToAll" className="ml-2 text-sm text-gray-700">
-              Send to All
-            </label>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          <form
+            onSubmit={editData ? handleEditSubmit : handleSubmit}
+            className="space-y-6"
           >
-            {loading ? "Submitting..." : "Create Announcement"}
-          </button>
-        </form>
-      </div>
-
-      {/* Edit Announcement Form */}
-      {editData && (
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">
-            Edit Announcement
-          </h3>
-          <form onSubmit={handleEditSubmit} className="space-y-4">
             <div>
-              <label
-                htmlFor="editTitle"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Title
               </label>
               <input
                 type="text"
-                id="editTitle"
                 name="title"
-                value={editData.title}
+                value={editData ? editData.title : formData.title}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                placeholder="Enter announcement title"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F97316]/40 focus:border-[#F97316] outline-none transition-all"
+                placeholder="Announcement title"
                 required
               />
             </div>
 
             <div>
-              <label
-                htmlFor="editMessage"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Message
               </label>
               <textarea
-                id="editMessage"
                 name="message"
-                value={editData.message}
+                value={editData ? editData.message : formData.message}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                rows="4"
-                placeholder="Enter announcement message"
+                rows={5}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#F97316]/40 focus:border-[#F97316] outline-none transition-all resize-none"
+                placeholder="Write your announcement message here..."
                 required
               />
             </div>
@@ -359,117 +245,165 @@ const Announcements = () => {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                id="editSendToAll"
+                id="sendToAll"
                 name="sendToAll"
-                checked={editData.sendToAll}
+                checked={editData ? editData.sendToAll : formData.sendToAll}
                 onChange={handleChange}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="w-5 h-5 text-[#F97316] border-gray-300 rounded focus:ring-[#F97316]"
               />
               <label
-                htmlFor="editSendToAll"
-                className="ml-2 text-sm text-gray-700"
+                htmlFor="sendToAll"
+                className="ml-3 text-gray-700 font-medium"
               >
-                Send to All
+                Send to All Tenants
               </label>
             </div>
 
-            <div className="flex space-x-4">
-              <button
+            <div className="flex flex-col sm:flex-row gap-4">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 type="submit"
                 disabled={loading}
-                className={`w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
+                className={`flex-1 py-3 px-6 rounded-xl font-medium text-white transition-all shadow-md ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-[#F97316] hover:bg-[#ea580c]"
                 }`}
               >
-                {loading ? "Updating..." : "Update Announcement"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setEditData(null)}
-                className="w-full py-2 px-4 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                Cancel
-              </button>
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <FaSpinner className="animate-spin" />
+                    {editData ? "Updating..." : "Creating..."}
+                  </div>
+                ) : editData ? (
+                  "Update Announcement"
+                ) : (
+                  "Create Announcement"
+                )}
+              </motion.button>
+
+              {editData && (
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  type="button"
+                  onClick={() => setEditData(null)}
+                  className="flex-1 py-3 px-6 rounded-xl font-medium bg-gray-200 text-gray-800 hover:bg-gray-300 transition-all"
+                >
+                  Cancel Edit
+                </motion.button>
+              )}
             </div>
           </form>
         </div>
-      )}
 
-      {/* Fetch Announcements Section */}
-      <div>
-        <h3 className="text-xl font-semibold mb-4 text-gray-700">
-          All Announcements
-        </h3>
-        <button
-          onClick={fetchAnnouncements}
-          disabled={fetchLoading}
-          className={`mb-4 py-2 px-4 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 ${
-            fetchLoading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-        >
-          {fetchLoading ? "Fetching..." : "Refresh Announcements"}
-        </button>
+        {/* All Announcements Section */}
+        <div className="bg-white rounded-2xl shadow-lg border-t-4 border-[#F97316] overflow-hidden">
+          <div className="p-6 border-b flex justify-between items-center">
+            <h2 className="text-2xl font-bold text-[#172554] flex items-center gap-3">
+              <FaBullhorn className="text-[#F97316]" />
+              All Announcements
+            </h2>
 
-        {fetchLoading && (
-          <div className="text-center text-gray-600">
-            Loading announcements...
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={fetchAnnouncements}
+              disabled={fetchLoading}
+              className={`px-5 py-2 rounded-xl font-medium transition-colors ${
+                fetchLoading
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  : "bg-[#172554] text-white hover:bg-[#1e3a8a]"
+              }`}
+            >
+              {fetchLoading ? "Refreshing..." : "Refresh List"}
+            </motion.button>
           </div>
-        )}
 
-        {fetchError && (
-          <div className="mt-4 p-4 bg-red-100 text-red-800 rounded-md">
-            <h3 className="font-semibold">Error</h3>
-            <p>{fetchError}</p>
-          </div>
-        )}
-
-        {announcements.length > 0 ? (
-          <div className="space-y-4">
-            {announcements.map((announcement) => (
-              <div
-                key={announcement._id}
-                className="p-4 bg-gray-50 border border-gray-200 rounded-md"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h4 className="font-semibold text-lg text-gray-800">
-                      {announcement.title}
-                    </h4>
-                    <p className="text-gray-600">{announcement.message}</p>
-                   
-                    <p className="text-sm text-gray-500">
-                      Created At:{" "}
-                      {new Date(announcement.createdAt).toLocaleString()}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Active: {announcement.isActive ? "Yes" : "No"}
-                    </p>
-                  </div>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => handleEdit(announcement)}
-                      className="py-1 px-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(announcement)}
-                      className="py-1 px-3 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          !fetchLoading && (
-            <div className="text-center text-gray-600">
-              No announcements found.
+          {fetchLoading ? (
+            <div className="p-12 text-center text-gray-600">
+              <FaSpinner className="animate-spin text-4xl text-[#F97316] mx-auto mb-4" />
+              <p>Loading announcements...</p>
             </div>
-          )
-        )}
+          ) : fetchError ? (
+            <div className="p-8 text-center">
+              <div className="text-red-500 text-5xl mb-4">
+                <FaExclamationCircle />
+              </div>
+              <p className="text-red-600 font-medium">{fetchError}</p>
+            </div>
+          ) : announcements.length === 0 ? (
+            <div className="p-12 text-center text-gray-600">
+              <FaBullhorn className="text-6xl text-[#F97316]/30 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-[#172554] mb-2">
+                No announcements yet
+              </h3>
+              <p>Create your first announcement above</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-100">
+              {announcements.map((ann) => (
+                <motion.div
+                  key={ann._id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-6 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-lg font-bold text-[#172554] mb-1 truncate">
+                        {ann.title}
+                      </h4>
+                      <p className="text-gray-700 mb-2">{ann.message}</p>
+                      <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                        <div className="flex items-center gap-1.5">
+                          <FaCalendarAlt className="text-[#F97316]" />
+                          {new Date(ann.createdAt).toLocaleDateString()}
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          {ann.tenantId === null ? (
+                            <>
+                              <FaCheckCircle className="text-green-500" />
+                              <span>All Tenants</span>
+                            </>
+                          ) : (
+                            <>
+                              <FaUser className="text-orange-500" />
+                              <span>Specific Tenant</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3 mt-4 sm:mt-0">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => handleEdit(ann)}
+                        className="p-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors"
+                        title="Edit"
+                      >
+                        <FaEdit />
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => handleDelete(ann)}
+                        className="p-2.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg transition-colors"
+                        title="Delete"
+                      >
+                        <FaTrash />
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

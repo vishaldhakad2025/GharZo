@@ -9,13 +9,19 @@ import {
   FiEye,
   FiEyeOff,
 } from "react-icons/fi";
-import { FaList } from "react-icons/fa"; // Added for permissions modal button
+import { FaList } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import user from "../../../assets/images/user.jpg";
-import axios from "axios"; // Added axios import
+import axios from "axios";
 import baseurl from "../../../../BaseUrl";
+
+// Brand colors
+const NAVY = "#172554";
+const ORANGE = "#F97316";
+const ORANGE_DARK = "#ea580c";
+const LIGHT_BG = "#f8fafc";
 
 /* ---------- Main Component ---------- */
 function SubOwnerProfile() {
@@ -24,7 +30,7 @@ function SubOwnerProfile() {
   const [previewImage, setPreviewImage] = useState(null);
   const [subOwnerData, setSubOwnerData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPermissionsModalOpen, setIsPermissionsModalOpen] = useState(false); // New state for permissions modal
+  const [isPermissionsModalOpen, setIsPermissionsModalOpen] = useState(false);
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -34,7 +40,6 @@ function SubOwnerProfile() {
     newPassword: false,
   });
 
-  // Fetch profile data on component mount
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -48,22 +53,19 @@ function SubOwnerProfile() {
       }
 
       setLoading(true);
-      const response = await fetch(
-        `${baseurl}api/sub-owner/auth/profile`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${baseurl}api/sub-owner/auth/profile`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       const data = await response.json();
       if (response.ok && data.success) {
         setSubOwnerData(data.subOwner);
       } else {
-        toast.error("Failed to fetch profile data");
+        toast.error(data.message || "Failed to fetch profile data");
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -96,35 +98,21 @@ function SubOwnerProfile() {
   const handleUpdate = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Please login to update profile");
-        return;
-      }
+      if (!token) return toast.error("Please login to update profile");
 
       setLoading(true);
 
       const formData = new FormData();
-      if (subOwnerData.name) {
-        formData.append("name", subOwnerData.name);
-      }
-
-      if (
-        subOwnerData.profilePhoto &&
-        subOwnerData.profilePhoto instanceof File
-      ) {
+      if (subOwnerData.name) formData.append("name", subOwnerData.name);
+      if (subOwnerData.profilePhoto instanceof File) {
         formData.append("profilePhoto", subOwnerData.profilePhoto);
       }
 
-      const response = await fetch(
-        `${baseurl}api/sub-owner/auth/profile`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${baseurl}api/sub-owner/auth/profile`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
 
       const data = await response.json();
       if (response.ok && data.success) {
@@ -147,14 +135,11 @@ function SubOwnerProfile() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Please login to change password");
-        return;
-      }
+      if (!token) return toast.error("Please login to change password");
 
       setLoading(true);
       const response = await axios.put(
-        "https://api.drazeapp.com/api/sub-owner/auth/change-password",
+        `${baseurl}api/sub-owner/auth/change-password`,
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword,
@@ -171,17 +156,13 @@ function SubOwnerProfile() {
         setIsModalOpen(false);
         setPasswordData({ currentPassword: "", newPassword: "" });
         setShowPasswords({ currentPassword: false, newPassword: false });
-        toast.success(
-          response.data.message || "Password changed successfully!"
-        );
+        toast.success(response.data.message || "Password changed successfully!");
       } else {
         toast.error(response.data.message || "Failed to change password");
       }
     } catch (error) {
-      console.error("Error changing password:", error);
       toast.error(
-        error.response?.data?.message ||
-          "An error occurred while changing password."
+        error.response?.data?.message || "Error changing password"
       );
     } finally {
       setLoading(false);
@@ -194,29 +175,28 @@ function SubOwnerProfile() {
   };
 
   const togglePasswordVisibility = (field) => {
-    setShowPasswords((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }));
+    setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-250 to-blue-300">
-        <div className="text-white text-lg">Loading profile...</div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-[#172554] text-xl font-medium flex items-center gap-3">
+          <div className="w-8 h-8 border-4 border-[#F97316] border-t-transparent rounded-full animate-spin" />
+          Loading profile...
+        </div>
       </div>
     );
   }
 
   if (!subOwnerData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-250 to-blue-300">
-        <div className="text-white text-lg">Profile not found</div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-red-600 text-xl font-medium">Profile not found</div>
       </div>
     );
   }
 
-  // Format date for display
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-IN", {
       year: "numeric",
@@ -226,272 +206,196 @@ function SubOwnerProfile() {
   };
 
   return (
-    <div className="min-h-screen py-4 sm:py-6 px-4 sm:px-6 md:px-8 bg-gray-50">
-      <ToastContainer position="top-right" />
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative mx-auto w-full max-w-4xl lg:max-w-5xl"
-      >
-        {/* Card */}
-        <div className="relative bg-gradient-to-br from-slate-900 via-indigo-250 to-blue-300 border border-white/10 rounded-2xl sm:rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] backdrop-blur-xl">
-          {/* Title and Change Password Button */}
-          <div className="flex items-center justify-between px-4 sm:px-6 pt-4 sm:pt-6">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white/90 text-center">
-              Sub Owner Profile
-            </h1>
-            <NeonButton
-              onClick={() => setIsModalOpen(true)}
-              variant="primary"
-              icon={FiKey}
-            >
-              Change Password
-            </NeonButton>
-          </div>
-          {/* Avatar */}
-          <div className="px-4 sm:px-6 mt-4 sm:mt-6 flex justify-center">
-            <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 180, damping: 15 }}
-              className="relative"
-            >
-              <img
-                src={
-                  previewImage
-                    ? previewImage
-                    : subOwnerData.profilePhoto &&
-                      subOwnerData.profilePhoto.startsWith("http")
-                    ? `https://api.drazeapp.com${subOwnerData.profilePhoto}`
-                    : subOwnerData.profilePhoto
-                    ? `https://api.drazeapp.com${subOwnerData.profilePhoto}`
-                    : user
-                }
-                alt="Profile"
-                className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-44 lg:h-44 rounded-full object-cover border-4 border-indigo-400/40 shadow-lg"
-                onError={(e) => {
-                  e.target.src = user;
-                }}
-              />
-              {editMode && (
-                <label className="mt-3 sm:mt-4 block text-center w-full">
-                  <input
-                    type="file"
-                    name="profilePhoto"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="block w-full text-sm text-indigo-200 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:font-semibold file:bg-indigo-600/80 file:text-white hover:file:bg-indigo-600/95 cursor-pointer"
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <ToastContainer position="top-right" theme="colored" />
+
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#172554]">
+            GHARZO <span className="text-[#F97316]">Profile</span>
+          </h1>
+          <p className="text-gray-600 mt-2">Manage your sub-owner account details</p>
+        </div>
+
+        {/* Main Card */}
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+          {/* Top accent bar */}
+          <div className="h-2 bg-gradient-to-r from-[#F97316] to-[#ea580c]" />
+
+          <div className="p-6 sm:p-8 lg:p-10">
+            {/* Profile Header */}
+            <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
+              <div className="relative group">
+                <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-[#F97316]/30 shadow-lg">
+                  <img
+                    src={
+                      previewImage ||
+                      (subOwnerData.profilePhoto?.startsWith("http")
+                        ? subOwnerData.profilePhoto
+                        : subOwnerData.profilePhoto
+                        ? `${baseurl}${subOwnerData.profilePhoto}`
+                        : user)
+                    }
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                    onError={(e) => (e.target.src = user)}
                   />
-                </label>
-              )}
-            </motion.div>
-          </div>
-          <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-6 sm:py-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <Field
-                label="Name"
+                </div>
+
+                {editMode && (
+                  <label className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                    <span className="text-white text-sm font-medium bg-[#F97316]/90 px-4 py-2 rounded-full">
+                      Change Photo
+                    </span>
+                  </label>
+                )}
+              </div>
+
+              <div className="text-center md:text-left">
+                <h2 className="text-2xl sm:text-3xl font-bold text-[#172554]">
+                  {subOwnerData.name || "Sub-Owner"}
+                </h2>
+                <p className="text-[#F97316] font-medium mt-1">{subOwnerData.role || "Sub-Owner"}</p>
+
+                <div className="mt-6 flex flex-wrap gap-4 justify-center md:justify-start">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="flex items-center gap-2 bg-[#172554] text-white px-5 py-2.5 rounded-lg hover:bg-[#1e3a8a] transition-colors"
+                  >
+                    <FiKey size={18} />
+                    Change Password
+                  </button>
+
+                  {editMode ? (
+                    <button
+                      onClick={handleUpdate}
+                      disabled={loading}
+                      className="flex items-center gap-2 bg-[#F97316] text-white px-6 py-2.5 rounded-lg hover:bg-[#ea580c] transition-colors disabled:opacity-60"
+                    >
+                      {loading ? (
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <FiSave size={18} />
+                      )}
+                      Save Changes
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setEditMode(true)}
+                      className="flex items-center gap-2 bg-gray-700 text-white px-6 py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
+                    >
+                      <FiEdit size={18} />
+                      Edit Profile
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Main Info Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+              <ProfileField
+                label="Full Name"
                 icon={<HiOutlineUser />}
-                value={subOwnerData?.name || "—"}
+                value={subOwnerData.name}
                 name="name"
                 onChange={handleChange}
                 editMode={editMode}
-                type="text"
               />
-              <Field
-                label="Email"
+
+              <ProfileField
+                label="Email Address"
                 icon={<HiOutlineMail />}
-                value={subOwnerData?.email || "—"}
-                name="email"
-                onChange={handleChange}
-                editMode={editMode}
-                type="email"
+                value={subOwnerData.email}
                 disabled
               />
-              <Field
-                label="Mobile"
+
+              <ProfileField
+                label="Mobile Number"
                 icon={<HiOutlinePhone />}
-                value={subOwnerData?.mobile || "—"}
-                name="mobile"
-                onChange={handleChange}
-                editMode={editMode}
-                type="tel"
+                value={subOwnerData.mobile}
                 disabled
               />
-              <Field
+
+              <ProfileField
                 label="Gender"
                 icon={<HiOutlineUser />}
-                value={subOwnerData?.gender || "—"}
-                name="gender"
-                onChange={handleChange}
-                editMode={editMode}
-                type="text"
+                value={subOwnerData.gender || "—"}
                 disabled
               />
             </div>
-          </div>
-          {subOwnerData.assignedProperties &&
-            subOwnerData.assignedProperties.length > 0 && (
-              <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 border-t border-white/20">
-                <h2 className="text-lg sm:text-xl font-semibold text-white/90 mb-4">
+
+            {/* Assigned Properties */}
+            {subOwnerData.assignedProperties?.length > 0 && (
+              <div className="mb-10">
+                <h3 className="text-xl font-semibold text-[#172554] mb-5 flex items-center gap-3">
+                  <MdLocationOn className="text-[#F97316]" size={24} />
                   Assigned Properties
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                  {subOwnerData.assignedProperties.map((assignment, index) => (
-                    <motion.div
-                      key={assignment.property.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20"
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {subOwnerData.assignedProperties.map((item, index) => (
+                    <div
+                      key={item.property.id}
+                      className="bg-white border border-gray-200 rounded-xl p-5 hover:border-[#F97316]/40 transition-colors"
                     >
-                      <div className="flex items-center gap-3 mb-2">
-                        <MdLocationOn className="text-indigo-300 text-lg" />
-                        <h3 className="text-white font-medium text-sm sm:text-base">
-                          {assignment.property.name}
-                        </h3>
-                      </div>
-                      <div className="text-indigo-200 text-xs sm:text-sm space-y-1">
-                        <p>
-                          <span className="font-medium">Type:</span>{" "}
-                          {assignment.property.type}
+                      <h4 className="font-semibold text-lg text-[#172554] mb-3">
+                        {item.property.name}
+                      </h4>
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <p>Type: <span className="font-medium">{item.property.type}</span></p>
+                        <p>Location: <span className="font-medium">{item.property.city}</span></p>
+                        <p className="text-[#F97316] font-medium">
+                          Status: {item.status}
                         </p>
-                        <p>
-                          <span className="font-medium">Location:</span>{" "}
-                          {assignment.property.city},{" "}
-                          {assignment.property.address}
-                        </p>
-                        <p>
-                          <span className="font-medium">Rooms:</span>{" "}
-                          {assignment.property.totalRooms} |{" "}
-                          <span className="font-medium">Beds:</span>{" "}
-                          {assignment.property.totalBeds}
-                        </p>
-                        <p className="text-green-300">
-                          <span className="font-medium">Status:</span>{" "}
-                          {assignment.status}
-                        </p>
-                        <p className="text-orange-300">
-                          <span className="font-medium">Assigned:</span>{" "}
-                          {formatDate(assignment.assignedDate)}
+                        <p className="text-gray-500 text-xs mt-3">
+                          Assigned on {formatDate(item.assignedDate)}
                         </p>
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </div>
             )}
-          {subOwnerData.permissions && subOwnerData.permissions.length > 0 && (
-            <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 border-t border-white/20">
-              <h2 className="text-lg sm:text-xl font-semibold text-white/90 mb-4">
-                Permissions
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                {subOwnerData.permissions
-                  .slice(0, 6)
-                  .map((permission, index) => (
-                    <motion.div
-                      key={permission.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20 flex items-center gap-3"
-                    >
-                      <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
-                      <div className="text-indigo-200 text-xs sm:text-sm">
-                        <div className="font-medium text-white">
-                          {permission.name.replace(/_/g, " ").toUpperCase()}
-                        </div>
-                        <div className="text-indigo-300">
-                          {permission.description}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                {subOwnerData.permissions.length > 6 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 }}
-                    className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20 col-span-1 md:col-span-2 text-center"
-                  >
-                    <NeonButton
-                      onClick={() => setIsPermissionsModalOpen(true)}
-                      variant="primary"
-                      icon={FaList}
-                    >
-                      View All Permissions ({subOwnerData.permissions.length})
-                    </NeonButton>
-                  </motion.div>
-                )}
-              </div>
-            </div>
-          )}
-          <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-6 border-t border-white/20">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <Field
-                label="Last Login"
-                icon={<HiOutlineUser />}
-                value={formatDate(subOwnerData.lastLogin)}
-                name="lastLogin"
-                editMode={false}
-                type="text"
-                disabled
-              />
-              <Field
-                label="Created At"
-                icon={<HiOutlineUser />}
-                value={formatDate(subOwnerData.createdAt)}
-                name="createdAt"
-                editMode={false}
-                type="text"
-                disabled
-              />
-            </div>
-          </div>
 
-          <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 lg:px-10 pb-4 sm:pb-6">
-            {editMode ? (
-              <NeonButton
-                onClick={handleUpdate}
-                variant="success"
-                icon={FiSave}
-                loading={loading}
-                disabled={loading}
+            {/* Logout Button */}
+            <div className="flex justify-end">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-colors"
               >
-                {loading ? "Saving..." : "Save"}
-              </NeonButton>
-            ) : (
-              <NeonButton
-                onClick={() => setEditMode(true)}
-                variant="primary"
-                icon={FiEdit}
-              >
-                Edit Profile
-              </NeonButton>
-            )}
-            <NeonButton onClick={handleLogout} variant="danger" icon={FiLogOut}>
-              Logout
-            </NeonButton>
+                <FiLogOut size={18} />
+                Logout
+              </button>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Password Change Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white/10 backdrop-blur-md rounded-xl p-4 sm:p-6 max-w-md w-full mx-4 sm:mx-auto border border-white/20 shadow-lg"
-            >
-              <h2 className="text-xl sm:text-2xl font-bold text-white/90 mb-4 text-center">
-                Change Password
-              </h2>
-              <form onSubmit={handlePasswordChange}>
-                <div className="mb-4 relative">
-                  <label className="block text-sm sm:text-base text-indigo-200 mb-2">
+      {/* Password Change Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+          >
+            <div className="bg-gradient-to-r from-[#F97316] to-[#ea580c] p-6 text-white">
+              <h2 className="text-2xl font-bold">Change Password</h2>
+            </div>
+
+            <div className="p-6">
+              <form onSubmit={handlePasswordChange} className="space-y-5">
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
                     Current Password
                   </label>
                   <input
@@ -499,24 +403,20 @@ function SubOwnerProfile() {
                     name="currentPassword"
                     value={passwordData.currentPassword}
                     onChange={handlePasswordInputChange}
-                    className="w-full px-3 py-2 rounded-lg bg-white/20 border border-white/30 text-white placeholder-indigo-300 focus:ring-2 focus:ring-indigo-400 outline-none focus:bg-white/30 transition-all pr-10"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F97316]/40 focus:border-[#F97316] outline-none"
                     required
                   />
-                  <motion.button
+                  <button
                     type="button"
                     onClick={() => togglePasswordVisibility("currentPassword")}
-                    className="absolute right-3 bottom-3 transform  text-indigo-200 hover:text-indigo-100"
-                    whileTap={{ scale: 0.9 }}
+                    className="absolute right-3 top-10 text-gray-500 hover:text-[#F97316]"
                   >
-                    {showPasswords.currentPassword ? (
-                      <FiEyeOff size={20} />
-                    ) : (
-                      <FiEye size={20} />
-                    )}
-                  </motion.button>
+                    {showPasswords.currentPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
                 </div>
-                <div className="mb-4 relative">
-                  <label className="block text-sm sm:text-base text-indigo-200 mb-2">
+
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
                     New Password
                   </label>
                   <input
@@ -524,170 +424,116 @@ function SubOwnerProfile() {
                     name="newPassword"
                     value={passwordData.newPassword}
                     onChange={handlePasswordInputChange}
-                    className="w-full px-3 py-2 rounded-lg bg-white/20 border border-white/30 text-white placeholder-indigo-300 focus:ring-2 focus:ring-indigo-400 outline-none focus:bg-white/30 transition-all pr-10"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F97316]/40 focus:border-[#F97316] outline-none"
                     required
                   />
-                  <motion.button
+                  <button
                     type="button"
                     onClick={() => togglePasswordVisibility("newPassword")}
-                    className="absolute right-3 bottom-3 transform text-indigo-200 hover:text-indigo-100"
-                    whileTap={{ scale: 0.9 }}
+                    className="absolute right-3 top-10 text-gray-500 hover:text-[#F97316]"
                   >
-                    {showPasswords.newPassword ? (
-                      <FiEyeOff size={20} />
-                    ) : (
-                      <FiEye size={20} />
-                    )}
-                  </motion.button>
+                    {showPasswords.newPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
                 </div>
-                <div className="flex gap-3">
-                  <NeonButton
+
+                <div className="flex gap-4 mt-8">
+                  <button
                     type="submit"
-                    variant="success"
-                    loading={loading}
                     disabled={loading}
+                    className="flex-1 bg-[#F97316] text-white py-3 rounded-lg hover:bg-[#ea580c] transition-colors disabled:opacity-60"
                   >
-                    {loading ? "Saving..." : "Save"}
-                  </NeonButton>
-                  <NeonButton
-                    variant="danger"
+                    {loading ? "Updating..." : "Update Password"}
+                  </button>
+
+                  <button
+                    type="button"
                     onClick={() => setIsModalOpen(false)}
+                    className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition-colors"
                   >
                     Cancel
-                  </NeonButton>
+                  </button>
                 </div>
               </form>
-            </motion.div>
-          </div>
-        )}
+            </div>
+          </motion.div>
+        </div>
+      )}
 
-        {/* Permissions Modal */}
-        {isPermissionsModalOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white/10 backdrop-blur-md rounded-xl p-4 sm:p-6 max-w-lg w-full mx-4 sm:mx-auto border border-white/20 shadow-lg"
-            >
-              <h2 className="text-xl sm:text-2xl font-bold text-white/90 mb-4 text-center">
-                All Permissions
-              </h2>
-              <div className="max-h-96 overflow-y-auto space-y-3">
-                {subOwnerData.permissions.map((permission, index) => (
-                  <motion.div
-                    key={permission.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20 flex items-center gap-3"
+      {/* Permissions Modal - optional (kept minimal) */}
+      {isPermissionsModalOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden">
+            <div className="bg-[#172554] text-white p-6">
+              <h2 className="text-2xl font-bold">All Permissions</h2>
+            </div>
+
+            <div className="p-6 overflow-y-auto max-h-[60vh]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {subOwnerData.permissions?.map((perm, i) => (
+                  <div
+                    key={perm.id || i}
+                    className="p-4 bg-gray-50 rounded-xl border border-gray-200"
                   >
-                    <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
-                    <div className="text-indigo-200 text-xs sm:text-sm">
-                      <div className="font-medium text-white">
-                        {permission.name.replace(/_/g, " ").toUpperCase()}
-                      </div>
-                      <div className="text-indigo-300">
-                        {permission.description}
-                      </div>
+                    <div className="font-medium text-[#172554] mb-1">
+                      {perm.name.replace(/_/g, " ").toUpperCase()}
                     </div>
-                  </motion.div>
+                    <div className="text-sm text-gray-600">{perm.description}</div>
+                  </div>
                 ))}
               </div>
-              <div className="mt-4 flex justify-end">
-                <NeonButton
-                  variant="danger"
-                  onClick={() => setIsPermissionsModalOpen(false)}
-                >
-                  Close
-                </NeonButton>
-              </div>
-            </motion.div>
+            </div>
+
+            <div className="p-6 border-t flex justify-end">
+              <button
+                onClick={() => setIsPermissionsModalOpen(false)}
+                className="px-8 py-3 bg-[#172554] text-white rounded-lg hover:bg-[#1e3a8a] transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
-        )}
-      </motion.div>
+        </div>
+      )}
     </div>
   );
 }
 
-/* ---------- UI Components ---------- */
-function NeonButton({
-  children,
-  icon: Icon,
-  onClick,
-  variant = "primary",
-  loading = false,
-  disabled = false,
-}) {
-  const variants = {
-    primary: "bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg",
-    success: "bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg",
-    danger: "bg-rose-600 hover:bg-rose-500 text-white shadow-lg",
-  }[variant];
-
-  return (
-    <motion.button
-      whileTap={{ scale: 0.96 }}
-      whileHover={{ y: -2 }}
-      onClick={onClick}
-      disabled={disabled}
-      className={`${variants} flex items-center justify-center gap-2 text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed`}
-    >
-      {loading ? (
-        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-      ) : Icon ? (
-        <Icon className="text-lg" />
-      ) : null}
-      {children}
-    </motion.button>
-  );
-}
-
-function Field({
+/* ---------- Reusable Field Component ---------- */
+function ProfileField({
   label,
   icon,
   value,
   name,
   onChange,
   editMode,
-  type = "text",
   disabled = false,
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="flex items-center gap-3 rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-white/10 backdrop-blur-sm text-white shadow-md border border-white/20"
-    >
-      <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl bg-indigo-600/80 text-white flex-shrink-0">
-        {icon}
+    <div className="bg-white border border-gray-200 rounded-xl p-5 hover:border-[#F97316]/30 transition-colors">
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-xl bg-[#F97316]/10 flex items-center justify-center text-[#F97316] flex-shrink-0">
+          {icon}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <label className="block text-sm text-gray-500 mb-1">{label}</label>
+
+          {editMode && !disabled ? (
+            <input
+              type="text"
+              name={name}
+              value={value || ""}
+              onChange={onChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F97316]/40 focus:border-[#F97316] outline-none"
+            />
+          ) : (
+            <div className="text-lg font-medium text-[#172554] truncate">
+              {value || "—"}
+            </div>
+          )}
+        </div>
       </div>
-      {editMode && !disabled ? (
-        <div className="flex flex-col w-full">
-          <label className="text-xs sm:text-sm text-indigo-200 mb-1">
-            {label}
-          </label>
-          <input
-            type={type}
-            name={name}
-            value={value || ""}
-            onChange={onChange}
-            className="w-full rounded-lg px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-indigo-300 focus:ring-2 focus:ring-indigo-400 outline-none focus:bg-white/30 transition-all"
-            placeholder={label}
-            disabled={disabled}
-          />
-        </div>
-      ) : (
-        <div className="flex flex-col w-full">
-          <span className="text-xs sm:text-sm text-indigo-200">{label}</span>
-          <span className="font-medium text-white/90 text-sm sm:text-base truncate">
-            {value}
-          </span>
-        </div>
-      )}
-    </motion.div>
+    </div>
   );
 }
 
