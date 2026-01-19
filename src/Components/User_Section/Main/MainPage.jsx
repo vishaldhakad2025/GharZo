@@ -6,6 +6,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import CardCarousel from "../Card_Carousel/CardCarousel";
 import PGHostelSection from "./PGHostelSection";
+import RentalPropety from "./RentalPropety";
 import {
   FaQuoteLeft,
   FaPhoneAlt,
@@ -42,6 +43,9 @@ import axios from "axios";
 import SearchFilter from "./SearchFilter";
 import ExploreCities from "./ExploreCities";
 import { useAuth } from "../../User_Section/Context/AuthContext.jsx";
+import PropertyInquiryForm from "./PropertyInquiryForm.jsx";
+import PlotsHome from "./PlotsHome.jsx";
+import DownloadAppSection from "./DownloadAppSection.jsx";
 
 function MainPage() {
   const navigate = useNavigate();
@@ -179,13 +183,11 @@ function MainPage() {
     return null;
   };
 
-  // Get token from auth data or use provided token
   const getToken = () => {
     const authData = getAuthData();
     return authData ? authData.token : null;
   };
 
-  // Fetch properties with authentication
   const fetchProperties = async () => {
     try {
       const token = getToken();
@@ -235,15 +237,15 @@ function MainPage() {
     fetchProperties();
   }, []);
 
-  // 🎬 Auto-slide effect for hero background images (every 5 seconds)
+  // Auto-slide effect for hero background images
   useEffect(() => {
     if (isPaused) return;
 
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
+      setCurrentImageIndex((prevIndex) =>
         prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
       );
-    }, 1000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [isPaused, heroImages.length]);
@@ -255,7 +257,7 @@ function MainPage() {
     return () => clearInterval(interval);
   }, []);
 
- // Mouse movement for interactivity
+  // Mouse movement for interactivity
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMouse({ x: e.clientX, y: e.clientY });
@@ -270,6 +272,71 @@ function MainPage() {
     const y = (e.clientY / innerHeight - 0.5) * 40;
     setMousePos({ x, y });
   };
+
+  // ─── Keyboard Arrow Keys Support ───────────────────────────────
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowLeft") {
+        setCurrentImageIndex((prev) =>
+          prev === 0 ? heroImages.length - 1 : prev - 1
+        );
+      } else if (e.key === "ArrowRight") {
+        setCurrentImageIndex((prev) =>
+          prev === heroImages.length - 1 ? 0 : prev + 1
+        );
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [heroImages.length]);
+
+  // ─── Touch Swipe Support (Mobile) ──────────────────────────────
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    };
+
+    const handleTouchEnd = (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleGesture();
+    };
+
+    const handleGesture = () => {
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > 50) { // minimum swipe distance
+        if (diff > 0) {
+          // Swipe Left → Next image
+          setCurrentImageIndex((prev) =>
+            prev === heroImages.length - 1 ? 0 : prev + 1
+          );
+        } else {
+          // Swipe Right → Previous image
+          setCurrentImageIndex((prev) =>
+            prev === 0 ? heroImages.length - 1 : prev - 1
+          );
+        }
+      }
+    };
+
+    const hero = document.querySelector(".hero-section");
+
+    if (hero) {
+      hero.addEventListener("touchstart", handleTouchStart, { passive: true });
+      hero.addEventListener("touchend", handleTouchEnd, { passive: true });
+    }
+
+    return () => {
+      if (hero) {
+        hero.removeEventListener("touchstart", handleTouchStart);
+        hero.removeEventListener("touchend", handleTouchEnd);
+      }
+    };
+  }, [heroImages.length]);
 
   const testimonials = [
     {
@@ -370,260 +437,132 @@ function MainPage() {
   return (
     <div className="flex flex-col min-h-screen" style={{ marginTop: "-20px" }}>
       {/* 🎬 HERO SECTION WITH CINEMATIC BACKGROUND SLIDER */}
-   <section
-  className="pt-12 h-[85vh] sm:h-[90vh] md:h-screen flex items-center justify-center text-white text-center relative overflow-hidden px-2 sm:px-6"
-  onMouseEnter={() => setIsPaused(true)}
-  onMouseLeave={() => setIsPaused(false)}
->
-  {/* Background Image Slider */}
-  <div className="absolute inset-0">
-    <AnimatePresence initial={false}>
-      <motion.img
-        key={currentImageIndex}
-        src={heroImages[currentImageIndex]}
-        alt={`Hero Background ${currentImageIndex + 1}`}
-        className="absolute inset-0 w-full h-full object-cover"
-        initial={{ opacity: 0, scale: 1 }}
-        animate={{
-          opacity: 1,
-          scale: 1.1,
-        }}
-        exit={{ opacity: 0, scale: 1.15 }}
-        transition={{
-          opacity: { duration: 1.5 },
-          scale: { duration: 8, ease: "linear" },
-        }}
-      />
-    </AnimatePresence>
-  </div>
+      <section
+        className="pt-12 h-[85vh] sm:h-[90vh] md:h-screen flex items-center justify-center text-white text-center relative overflow-hidden px-2 sm:px-6 hero-section"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Background Image Slider */}
+        <div className="absolute inset-0">
+          <AnimatePresence initial={false}>
+            <motion.img
+              key={currentImageIndex}
+              src={heroImages[currentImageIndex]}
+              alt={`Hero Background ${currentImageIndex + 1}`}
+              className="absolute inset-0 w-full h-full object-cover"
+              initial={{ opacity: 0, scale: 1 }}
+              animate={{
+                opacity: 1,
+                scale: 1.1,
+              }}
+              exit={{ opacity: 0, scale: 1.15 }}
+              transition={{
+                opacity: { duration: 1.5 },
+                scale: { duration: 8, ease: "linear" },
+              }}
+            />
+          </AnimatePresence>
+        </div>
 
-  {/* Gradient Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-br from-[#1E3A5F]/90 via-[#1E3A5F]/70 to-orange-600/50 z-10" />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1E3A5F]/90 via-[#1E3A5F]/70 to-orange-600/50 z-10" />
 
-  {/* Animated particles */}
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
-    {[...Array(20)].map((_, i) => (
-      <motion.div
-        key={i}
-        className="absolute w-2 h-2 bg-orange-400/30 rounded-full"
-        style={{
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-        }}
-        animate={{
-          y: [0, -30, 0],
-          opacity: [0.1, 0.5, 0.2],
-        }}
-        transition={{
-          duration: 3 + Math.random() * 2,
-          repeat: Infinity,
-          delay: Math.random() * 2,
-        }}
-      />
-    ))}
-  </div>
+        {/* Animated particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-orange-400/30 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0.1, 0.5, 0.2],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+              }}
+            />
+          ))}
+        </div>
 
-  {/* Navigation Arrows - using charcoal style dark blue */}
-{/* Left */}
-<button
-  onClick={() => setCurrentImageIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length)}
-  className="absolute -left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30
-             w-14 h-14 flex items-center justify-center
-             bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20
-             rounded-full transition-all duration-300 shadow-xl
-             group"
-  aria-label="Previous image"
->
-<span
-  className="text-white text-7xl sm:text-6xl transition-transform duration-300
-             group-hover:-translate-x-1.5 group-hover:-translate-y-2"
->
-  ‹
-</span>
-</button>
+        {/* Navigation Arrows */}
+        <button
+          onClick={() =>
+            setCurrentImageIndex((prev) =>
+              prev === 0 ? heroImages.length - 1 : prev - 1
+            )
+          }
+          className="absolute -left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-14 h-14 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full transition-all duration-300 shadow-xl group"
+          aria-label="Previous image"
+        >
+          <span className="text-white text-7xl sm:text-6xl transition-transform duration-300 group-hover:-translate-x-1.5 group-hover:-translate-y-2">
+            ‹
+          </span>
+        </button>
 
-{/* Right */}
-<button
-  onClick={() => setCurrentImageIndex((prev) => (prev + 1) % heroImages.length)}
-  className="absolute -right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30
-             w-14 h-14 flex items-center justify-center
-             bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20
-             rounded-full transition-all duration-300 shadow-xl
-             group"
-  aria-label="Next image"
->
-  <span
-  className="text-white text-4xl sm:text-5xl transition-transform duration-300
-             group-hover:-translate-y-2"
->
-  ›
-</span>
-</button>
+        <button
+          onClick={() =>
+            setCurrentImageIndex((prev) =>
+              prev === heroImages.length - 1 ? 0 : prev + 1
+            )
+          }
+          className="absolute -right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-14 h-14 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full transition-all duration-300 shadow-xl group"
+          aria-label="Next image"
+        >
+          <span className="text-white text-4xl sm:text-5xl transition-transform duration-300 group-hover:-translate-y-2">
+            ›
+          </span>
+        </button>
 
-  {/* Slide Indicators */}
-  <div className="absolute bottom-5 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 z-30">
-    {heroImages.map((_, index) => (
-      <button
-        key={index}
-        onClick={() => setCurrentImageIndex(index)}
-        className={`transition-all duration-300 rounded-full ${
-          index === currentImageIndex
-            ? "w-6 sm:w-8 h-2 bg-orange-500"
-            : "w-2 h-2 bg-white/50 hover:bg-white/70"
-        }`}
-        aria-label={`Go to slide ${index + 1}`}
-      />
-    ))}
-  </div>
+        {/* Slide Indicators */}
+        <div className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2 z-30 flex flex-col items-center gap-3 pointer-events-none">
+          <div className="flex gap-2.5">
+            {heroImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImageIndex(index)}
+                className={`transition-all duration-300 rounded-full ${
+                  index === currentImageIndex
+                    ? "w-8 h-2.5 bg-orange-500 shadow-md"
+                    : "w-2.5 h-2.5 bg-white/60 hover:bg-white/90"
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        </div>
 
-  {/* Content */}
-  <div
-    className="relative z-30 px-2 sm:px-4"
-    data-aos="fade-up"
-  >
-    <motion.h1
-      initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 bg-gradient-to-r from-white via-cyan-100 to-orange-200 bg-clip-text text-transparent drop-shadow-2xl"
-    >
-      Welcome to GharZo
-    </motion.h1>
+        {/* Content */}
+        <div className="relative z-30 px-2 sm:px-4" data-aos="fade-up">
+          <motion.h1
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 bg-gradient-to-r from-white via-cyan-100 to-orange-200 bg-clip-text text-transparent drop-shadow-2xl"
+          >
+            Welcome to GharZo
+          </motion.h1>
 
-    <motion.p
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-      className="text-sm sm:text-lg md:text-2xl max-w-md sm:max-w-xl md:max-w-2xl mx-auto mb-6 sm:mb-8 text-gray-100 font-light"
-    >
-      Your one stop solution for rent, buy and sell your property.
-    </motion.p>
-  </div>
-</section>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-sm sm:text-lg md:text-2xl max-w-md sm:max-w-xl md:max-w-2xl mx-auto mb-6 sm:mb-8 text-gray-100 font-light"
+          >
+            Your one-stop solution to rent, buy, and sell property
+          </motion.p>
+        </div>
+      </section>
 
       <PGHostelSection />
 
-      {/* Popular Properties Section */}
-  <section className="py-20 px-6 bg-gradient-to-b from-[#0c2344] to-[#0b4f91]  text-white overflow-hidden">
-  <div className="max-w-7xl mx-auto">
-    {/* Header - Refined for luxury */}
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="text-center mb-16"
-    >
-      <span className="text-orange-400 font-semibold text-sm uppercase tracking-wider">
-        Our Premium Projects
-      </span>
-      <h2 className="text-4xl md:text-5xl font-bold mt-4">
-        <span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-          Popular Rental Properties
-        </span>
-      </h2>
-      <div className="w-32 h-1 bg-gradient-to-r from-orange-400 to-orange-600 mx-auto mt-6 rounded-full" />
-      <p className="mt-6 text-gray-300 max-w-2xl mx-auto">
-        Explore exclusive societies and projects with world-class amenities.
-      </p>
-    </motion.div>
-
-    {/* Properties Display */}
-    <div className="max-w-6xl mx-auto">
-      {loading ? (
-        <div className="flex justify-center items-center py-32">
-          <div className="w-20 h-20 border-6 border-orange-500 border-t-transparent rounded-full animate-spin" />
-        </div>
-      ) : properties.length === 0 ? (
-        <p className="text-center text-gray-400 py-32 text-xl">No properties available at the moment.</p>
-      ) : (
-        /* Remove CardCarousel if you want static grid, or keep it to wrap the map below */
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {Array.isArray(properties) && properties.length > 0 ? (
-  properties.map((property, index) => (
-    <motion.div
-      key={property?.id || index}
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.7 }}
-      className="group relative rounded-3xl overflow-hidden shadow-2xl cursor-pointer h-96 md:h-[500px] bg-cover bg-center"
-      style={{
-        backgroundImage: `url(${
-          property?.images?.[0] || "/placeholder-project.jpg"
-        })`,
-      }}
-    >
-      {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-
-      {/* Content at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 p-8 text-left">
-        <h3 className="text-2xl md:text-4xl font-bold text-white">
-          {property?.name || property?.projectName || "Unnamed Project"}
-        </h3>
-
-        <p className="text-lg md:text-xl text-gray-200 mt-2">
-          {property?.location?.area || ""} {property?.location?.city || ""}
-        </p>
-
-        <div className="flex items-center justify-between mt-8">
-          <p className="text-gray-300 text-base md:text-lg">
-            Interested in this project by{" "}
-            <span className="font-semibold text-white">
-              {property?.builder || "Premium Developer"}
-            </span>
-            ?
-          </p>
-
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl shadow-lg flex items-center gap-3 transition-all hover:shadow-xl">
-            <svg
-              className="w-3 h-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 5a22 22 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-              />
-            </svg>
-            View Number
-          </button>
-        </div>
-      </div>
-
-      {/* Navigation arrow */}
-      {index < properties.length - 1 && (
-        <div className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity">
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={3}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </div>
-      )}
-    </motion.div>
-  ))
-) : (
-  <p className="text-center text-gray-500">No properties available.</p>
-)}
-        </div>
-      )}
-    </div>
-  </div>
-</section>
-
+      <RentalPropety />
+      <PlotsHome />
       <ExploreCities />
 
       <section className="py-16 px-6 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -678,8 +617,6 @@ function MainPage() {
                   <p className="text-gray-600 mt-3 italic text-sm">
                     "Here to make your property experience seamless."
                   </p>
-                  
-                
                 </div>
               </motion.div>
             ))}
@@ -687,83 +624,68 @@ function MainPage() {
         </div>
       </section>
 
+      <PropertyInquiryForm />
+
+      <DownloadAppSection />
+
       {/* Testimonials Section */}
+      <section className="py-20 px-6 bg-gray-50 overflow-hidden relative">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="bg-gradient-to-b from-[#0c2344] to-[#0b4f91] bg-clip-text text-transparent font-semibold text-sm uppercase tracking-wider">
+              Testimonials
+            </span>
 
-<section className="py-20 px-6 bg-gray-50 overflow-hidden relative">
-  <div className="max-w-7xl mx-auto">
-    {/* Header */}
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="text-center mb-16"
-    >
-     <span className="bg-gradient-to-b from-[#0c2344] to-[#0b4f91] bg-clip-text text-transparent font-semibold text-sm uppercase tracking-wider">
-  Testimonials
-</span>
+            <h2 className="bg-gradient-to-b from-[#0c2344] to-[#0b4f91] bg-clip-text text-transparent text-4xl md:text-5xl font-bold mt-4">
+              Hear from our satisfied buyers, tenants, owners and dealers
+            </h2>
 
-<h2 className="bg-gradient-to-b from-[#0c2344] to-[#0b4f91] bg-clip-text text-transparent text-4xl md:text-5xl font-bold mt-4">
-  Hear from our satisfied buyers, tenants, owners and dealers
-</h2>
+            <div className="w-32 h-1.5 bg-gradient-to-b from-[#0c2344] to-[#0b4f91] mx-auto mt-8 rounded-full" />
+          </motion.div>
 
-      <div className="w-32 h-1.5 bg-gradient-to-b from-[#0c2344] to-[#0b4f91] mx-auto mt-8 rounded-full" />
-    </motion.div>
+          <motion.div
+            className="flex gap-6"
+            animate={{ x: ["0%", "-100%"] }}
+            transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+            whileHover={{ animationPlayState: "paused" }}
+          >
+            {[...testimonials, ...testimonials].map((testimonial, i) => (
+              <div
+                key={i}
+                className="relative bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl p-6 min-w-[300px] flex-shrink-0 transform hover:scale-105 hover:shadow-2xl transition-all duration-500 border border-gray-100"
+              >
+                <div className="absolute inset-0 -z-10 overflow-hidden rounded-3xl">
+                  <div className="absolute -top-12 -left-12 w-48 h-48 bg-gradient-radial from-orange-300/40 to-transparent rounded-full animate-pulse" />
+                  <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-gradient-radial from-pink-300/30 to-transparent animate-ping delay-1000" />
+                </div>
 
-    {/* Single Attractive Slider (Marquee) */}
-    <motion.div
-      className="flex gap-6"
-      animate={{ x: ["0%", "-100%"] }}
-      transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
-      whileHover={{ animationPlayState: "paused" }}
-    >
-      {[...testimonials, ...testimonials].map((testimonial, i) => (
-        <div
-          key={i}
-          className="relative bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl p-6 min-w-[300px] flex-shrink-0 transform hover:scale-105 hover:shadow-2xl transition-all duration-500 border border-gray-100"
-        >
-          {/* Glowing Starburst Background */}
-          <div className="absolute inset-0 -z-10 overflow-hidden rounded-3xl">
-            <div className="absolute -top-12 -left-12 w-48 h-48 bg-gradient-radial from-orange-300/40 to-transparent rounded-full animate-pulse" />
-            <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-gradient-radial from-pink-300/30 to-transparent rounded-full animate-ping delay-1000" />
-          </div>
+                <div className="flex flex-col items-center mb-5">
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-pink-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 text-center mt-3">
+                    {testimonial.name}
+                  </h3>
+                  <p className="text-xs text-gray-600 mt-1">
+                    {testimonial.role}
+                  </p>
+                </div>
 
-          {/* Company Logo / Initial */}
-          <div className="flex flex-col items-center mb-5">
-            {testimonial.logo ? (
-              <img
-                src={testimonial.logo}
-                alt={testimonial.name}
-                className="w-16 h-16 rounded-full object-contain mb-3 shadow-md"
-              />
-            ) : (
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-pink-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md">
-                {testimonial.name.charAt(0)}
+                <div className="relative text-center">
+                  <p className="text-gray-700 text-sm italic leading-relaxed mt-6">
+                    "{testimonial.feedback}"
+                  </p>
+                </div>
               </div>
-            )}
-            <h3 className="text-lg font-bold text-gray-900 text-center">
-              {testimonial.name}
-            </h3>
-            <p className="text-xs text-gray-600 mt-1">
-              {testimonial.location || testimonial.role}
-            </p>
-          </div>
-
-          {/* Feedback Quote */}
-          <div className="relative text-center">
-            {/* <FaQuoteLeft className="text-orange-400 text-3xl absolute -top-3 left-1/2 -translate-x-1/2 opacity-30" /> */}
-            <p className="text-gray-700 text-sm italic leading-relaxed mt-6">
-              "{testimonial.feedback}"
-            </p>
-          </div>
+            ))}
+          </motion.div>
         </div>
-      ))}
-    </motion.div>
-
-   
-  </div>
-</section>
-
-     
+      </section>
     </div>
   );
 }

@@ -1,21 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
-import { BedDouble, MapPin, Home, Users, Search, RotateCcw } from "lucide-react";
-import { Link } from "react-router-dom";
+import { BedDouble, MapPin, Home, Users, Search, RotateCcw, ArrowLeft } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { motion } from "framer-motion";
 import baseurl from "../../../../BaseUrl";
 
 function AllProperty() {
+  const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [city, setCity] = useState("");
-  const [rooms, setRooms] = useState("");
-  const [priceRange, setPriceRange] = useState("");
-  const [gender, setGender] = useState("");
+  const [purpose, setPurpose] = useState("");          // Rent / Buy
   const [propertyType, setPropertyType] = useState("");
+  const [priceRange, setPriceRange] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const propertiesPerPage = 9;
 
@@ -58,12 +57,7 @@ function AllProperty() {
             totalRooms: item.totalRooms,
             totalBeds: item.totalBeds,
             createdAt: item.createdAt || new Date().toISOString(),
-            gender:
-              item.rooms &&
-              item.rooms.length > 0 &&
-              item.rooms[0].allFacilities?.propertySpecific?.genderSpecific
-                ? item.rooms[0].allFacilities.propertySpecific.genderSpecific.toLowerCase()
-                : "unisex",
+            purpose: item.purpose || "rent", // assuming some default
           }));
           setProperties(formatted);
           setFilteredProperties(formatted);
@@ -111,55 +105,37 @@ function AllProperty() {
         property.city.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
         property.address.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
 
-      const matchesCity = city
-        ? property.city.toLowerCase() === city.toLowerCase()
+      const matchesPurpose = purpose
+        ? property.purpose?.toLowerCase() === purpose.toLowerCase()
         : true;
 
       const matchesType = propertyType
-        ? property.propertyType.toLowerCase() === propertyType.toLowerCase()
+        ? property.propertyType?.toLowerCase() === propertyType.toLowerCase()
         : true;
 
-      const matchesRooms = rooms
-        ? rooms === "4"
-          ? property.totalRooms >= 4
-          : property.totalRooms === parseInt(rooms)
-        : true;
-
-      const matchesGender = gender
-        ? property.gender.toLowerCase() === gender.toLowerCase()
-        : true;
-
-      const price = property.price;
+      const price = property.price || 0;
       const matchesPrice = (() => {
         if (priceRange === "0-5000") return price <= 5000;
-        if (priceRange === "5001-6000") return price > 5000 && price <= 6000;
-        if (priceRange === "6001-7000") return price > 6000 && price <= 7000;
-        if (priceRange === "7001+") return price > 7000;
+        if (priceRange === "5000-10000") return price > 5000 && price <= 10000;
+        if (priceRange === "10000-20000") return price > 10000 && price <= 20000;
+        if (priceRange === "20000-50000") return price > 20000 && price <= 50000;
+        if (priceRange === "50000+") return price > 50000;
         return true;
       })();
 
-      return (
-        matchesSearch &&
-        matchesCity &&
-        matchesType &&
-        matchesRooms &&
-        matchesGender &&
-        matchesPrice
-      );
+      return matchesSearch && matchesPurpose && matchesType && matchesPrice;
     });
 
     setFilteredProperties(filtered);
     setCurrentPage(1);
-  }, [debouncedSearchTerm, city, rooms, priceRange, gender, propertyType, properties]);
+  }, [debouncedSearchTerm, purpose, propertyType, priceRange, properties]);
 
   // Reset handler
   const handleReset = () => {
     setSearchTerm("");
-    setCity("");
-    setRooms("");
-    setPriceRange("");
-    setGender("");
+    setPurpose("");
     setPropertyType("");
+    setPriceRange("");
   };
 
   // Pagination logic
@@ -170,9 +146,19 @@ function AllProperty() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-orange-50">
+      {/* Back Button */}
+      <div className="max-w-full mx-auto px-4 pt-6 pb-2 bg-gradient-to-r from-[#002B5C] via-[#003A75] to-[#002B5C]">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
+        >
+          <ArrowLeft size={20} />
+          <span>Back</span>
+        </button>
+      </div>
+      
       {/* Hero Header Section */}
       <div className="relative bg-gradient-to-r from-[#002B5C] via-[#003A75] to-[#002B5C] py-16 px-4 overflow-hidden">
-        {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-96 h-96 bg-[#FF6B00]/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#FF6B00]/10 rounded-full blur-3xl" />
         
@@ -219,57 +205,48 @@ function AllProperty() {
 
           {/* Filter Pills */}
           <div className="flex flex-wrap items-center gap-3">
+            {/* Looking For (Rent/Buy) */}
+            <select
+              value={purpose}
+              onChange={(e) => setPurpose(e.target.value)}
+              className="px-4 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-full text-gray-700 font-medium focus:outline-none focus:border-[#FF6B00] focus:bg-white transition-all cursor-pointer hover:border-gray-300"
+            >
+              <option value="">🔍 Looking for</option>
+              <option value="rent">Rent</option>
+              <option value="buy">Buy</option>
+            </select>
+
+            {/* Property Type */}
             <select
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
               className="px-4 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-full text-gray-700 font-medium focus:outline-none focus:border-[#FF6B00] focus:bg-white transition-all cursor-pointer hover:border-gray-300"
             >
-              <option value="">🏠 All Types</option>
-              {[...new Set(properties.map((p) => p.propertyType).filter((type) => type))]
-                .sort()
-                .map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
+              <option value="">🏠 Property Type</option>
+              <option value="room">Room</option>
+              <option value="house">House</option>
+              <option value="villa">Villa</option>
+              <option value="flat/apartment">Flat/Apartment</option>
+              <option value="plot/land">Plot/Land</option>
+              <option value="commercial">Commercial</option>
+              <option value="office space">Office Space</option>
+              <option value="shop">Shop</option>
+              <option value="warehouse">Warehouse</option>
+              <option value="pg/hostel">PG/Hostel</option>
             </select>
 
+            {/* Price Range */}
             <select
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
+              value={priceRange}
+              onChange={(e) => setPriceRange(e.target.value)}
               className="px-4 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-full text-gray-700 font-medium focus:outline-none focus:border-[#FF6B00] focus:bg-white transition-all cursor-pointer hover:border-gray-300"
             >
-              <option value="">📍 All Cities</option>
-              {[...new Set(properties.map((p) => p.city).filter((cityName) => cityName))]
-                .sort()
-                .map((cityName) => (
-                  <option key={cityName} value={cityName}>
-                    {cityName}
-                  </option>
-                ))}
-            </select>
-
-            <select
-              value={rooms}
-              onChange={(e) => setRooms(e.target.value)}
-              className="px-4 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-full text-gray-700 font-medium focus:outline-none focus:border-[#FF6B00] focus:bg-white transition-all cursor-pointer hover:border-gray-300"
-            >
-              <option value="">🛏️ All Rooms</option>
-              <option value="1">1 Room</option>
-              <option value="2">2 Rooms</option>
-              <option value="3">3 Rooms</option>
-              <option value="4">4+ Rooms</option>
-            </select>
-
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="px-4 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-full text-gray-700 font-medium focus:outline-none focus:border-[#FF6B00] focus:bg-white transition-all cursor-pointer hover:border-gray-300"
-            >
-              <option value="">👥 All Genders</option>
-              <option value="girl">Girls</option>
-              <option value="boy">Boys</option>
-              <option value="unisex">Unisex</option>
+              <option value="">💰 Price Range</option>
+              <option value="0-5000">Up to ₹5,000</option>
+              <option value="5000-10000">₹5,000 - ₹10,000</option>
+              <option value="10000-20000">₹10,000 - ₹20,000</option>
+              <option value="20000-50000">₹20,000 - ₹50,000</option>
+              <option value="50000+">₹50,000+</option>
             </select>
 
             <button
@@ -283,7 +260,7 @@ function AllProperty() {
         </motion.div>
       </div>
 
-      {/* Properties Grid */}
+      {/* Properties Grid - remains exactly the same */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         {loading ? (
           <div className="flex flex-col items-center justify-center h-64">
@@ -320,7 +297,6 @@ function AllProperty() {
                 >
                   <Link to={`/property/${property.id}`}>
                     <div className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100">
-                      {/* Image */}
                       <div className="relative w-full h-56 overflow-hidden bg-gray-100">
                         <img
                           src={
@@ -330,29 +306,16 @@ function AllProperty() {
                           alt={property.name}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
-                        
-                        {/* Overlay Gradient */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        
-                        {/* Property Type Badge */}
                         <div className="absolute top-4 right-4 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-bold text-[#002B5C] shadow-lg">
                           {property.propertyType}
                         </div>
-
-                        {/* Gender Badge */}
-                        {property.gender !== "unisex" && (
-                          <div className="absolute top-4 left-4 px-3 py-1.5 bg-[#FF6B00]/95 backdrop-blur-sm rounded-full text-xs font-bold text-white shadow-lg capitalize">
-                            {property.gender}
-                          </div>
-                        )}
                       </div>
 
-                      {/* Content */}
                       <div className="p-5">
                         <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#FF6B00] transition-colors line-clamp-1">
                           {property.name}
                         </h2>
-                        
                         <div className="flex items-start gap-2 text-gray-600 mb-4">
                           <MapPin size={16} className="mt-1 text-[#FF6B00] flex-shrink-0" />
                           <p className="text-sm line-clamp-2">
@@ -360,7 +323,6 @@ function AllProperty() {
                           </p>
                         </div>
 
-                        {/* Stats */}
                         <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
                           <div className="flex items-center gap-2">
                             <div className="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center">
@@ -383,15 +345,13 @@ function AllProperty() {
                           </div>
                         </div>
 
-                        {/* View Details Button */}
                         <div className="mt-4">
-                          <div className="w-full py-2.5 bg-gradient-to-r from-[#FF6B00] to-[#FF8C3A] text-white text-center rounded-xl font-semibold  duration-300">
+                          <div className="w-full py-2.5 bg-gradient-to-r from-[#FF6B00] to-[#FF8C3A] text-white text-center rounded-xl font-semibold">
                             View Details
                           </div>
                         </div>
                       </div>
 
-                      {/* Hover Border Glow */}
                       <div className="absolute inset-0 border-2 border-[#FF6B00]/0 group-hover:border-[#FF6B00]/50 rounded-2xl transition-all duration-300 pointer-events-none" />
                     </div>
                   </Link>
@@ -399,7 +359,6 @@ function AllProperty() {
               ))}
             </div>
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <motion.div
                 initial={{ opacity: 0 }}

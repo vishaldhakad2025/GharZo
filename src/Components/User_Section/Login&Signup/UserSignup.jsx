@@ -13,12 +13,12 @@ function UserSignup() {
   const { login } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const mobileFromLogin = location.state?.mobile || "";
+  const phoneFromLogin = location.state?.phone || "";
 
   const [form, setForm] = useState({
     fullName: "",
     email: "",
-    mobile:"",
+    phone: "",
     age: "",
     gender: "",
     address: {
@@ -32,18 +32,13 @@ function UserSignup() {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
 
-  // Email verification states
-  const [emailVerified, setEmailVerified] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
-  const [showCodeInput, setShowCodeInput] = useState(false);
-
-  // Dialog state
+  // Dialog state (kept but not used for email anymore)
   const [dialog, setDialog] = useState({ open: false, title: "", message: "", type: "info" });
 
   // Regex definitions
   const fullNameRegex = /^[A-Za-z]+(?: [A-Za-z]+)+$/;
   const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-  const mobileRegex = /^\d{10}$/;
+  const phoneRegex = /^\d{10}$/;
   const ageRegex = /^\d{2}$/;
   const cityRegex = /^[A-Za-z\s]+$/;
   const postalCodeRegex = /^\d{6}$/;
@@ -65,9 +60,9 @@ function UserSignup() {
           return "Email must be a valid Gmail address (e.g., user@gmail.com)";
         }
         break;
-      case "mobile":
-        if (!mobileRegex.test(trimmed)) {
-          return "Mobile number must be exactly 10 digits";
+      case "phone":
+        if (!phoneRegex.test(trimmed)) {
+          return "Phone number must be exactly 10 digits";
         }
         break;
       case "age":
@@ -78,7 +73,6 @@ function UserSignup() {
         break;
       case "gender":
         return "";
-      // REMOVED STREET VALIDATION (only required now)
       case "city":
         if (!cityRegex.test(trimmed)) {
           return "City must contain only letters";
@@ -109,15 +103,14 @@ function UserSignup() {
     const newErrors = {};
     newErrors.fullName = validateField("fullName", form.fullName, false);
     newErrors.email = validateField("email", form.email, false);
-    newErrors.mobile = validateField("mobile", form.mobile, false);
+    newErrors.phone = validateField("phone", form.phone, false);
     newErrors.age = validateField("age", form.age, false);
     newErrors.gender = validateField("gender", form.gender, false);
-    newErrors.street = validateField("street", form.address.street, false); // Only checks required
+    newErrors.street = validateField("street", form.address.street, false);
     newErrors.city = validateField("city", form.address.city, false);
     newErrors.state = validateField("state", form.address.state, false);
     newErrors.postalCode = validateField("postalCode", form.address.postalCode, false);
     newErrors.country = validateField("country", form.address.country, false);
-    newErrors.emailVerification = !emailVerified ? "Email verification is required" : "";
 
     setFieldErrors(newErrors);
     return Object.values(newErrors).every((err) => !err);
@@ -134,21 +127,18 @@ function UserSignup() {
   const handleEmailChange = (e) => {
     const { value } = e.target;
     setForm((prev) => ({ ...prev, email: value }));
-    setEmailVerified(false);
-    setShowCodeInput(false);
-    setVerificationCode("");
     setError("");
     const errorMsg = validateField("email", value, true);
-    setFieldErrors((prev) => ({ ...prev, email: errorMsg, emailVerification: "" }));
+    setFieldErrors((prev) => ({ ...prev, email: errorMsg }));
   };
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     const numericValue = value.replace(/^\+?91/, '').replace(/\D/g, '').slice(0, 10);
-    setForm((prev) => ({ ...prev, mobile: numericValue }));
+    setForm((prev) => ({ ...prev, phone: numericValue }));
     setError("");
-    const errorMsg = validateField("mobile", numericValue, true);
-    setFieldErrors((prev) => ({ ...prev, mobile: errorMsg }));
+    const errorMsg = validateField("phone", numericValue, true);
+    setFieldErrors((prev) => ({ ...prev, phone: errorMsg }));
   };
 
   const handleAgeChange = (e) => {
@@ -208,66 +198,6 @@ function UserSignup() {
     setFieldErrors((prev) => ({ ...prev, country: errorMsg }));
   };
 
-  // Send Email Verification
-  const sendVerification = async (e) => {
-    e.preventDefault();
-    if (!form.email || !emailRegex.test(form.email)) {
-      toast.error("Please enter a valid Gmail address.");
-      return;
-    }
-    try {
-      const res = await axios.post(
-        `${baseurl}api/users/auth/request-otp`,
-        { email: form.email,
-              mobile: form.mobile,
-         },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      if (res.data.success) {
-        setShowCodeInput(true);
-        toast.success(res.data.message);
-      } else {
-        toast.error("Failed to send verification email");
-      }
-    } catch (error) {
-      console.error("Send verification error:", error);
-      toast.error(error.response?.data?.message || "Error sending verification email");
-    }
-  };
-
-  // Verify Email Code
-  const verifyEmail = async (e) => {
-    e.preventDefault();
-    if (!verificationCode || verificationCode.length !== 6) {
-      toast.error("Please enter a valid 6-digit code");
-      return;
-    }
-    try {
-      const res = await axios.post(
-        `${baseurl}organization/verify-email`,
-        { email: form.email, code: verificationCode },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      if (res.data.success) {
-        setEmailVerified(true);
-        setShowCodeInput(false);
-        setVerificationCode("");
-        toast.success(res.data.message);
-        setDialog({
-          open: true,
-          title: "Email Verified!",
-          message: `Great! Your email ${form.email} is now verified.`,
-          type: "success"
-        });
-      } else {
-        toast.error("Failed to verify email");
-      }
-    } catch (error) {
-      console.error("Verify email error:", error);
-      toast.error(error.response?.data?.message || "Error verifying email");
-    }
-  };
-
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
@@ -279,11 +209,11 @@ function UserSignup() {
 
     try {
       const res = await axios.post(
-          `${baseurl}api/auth/user/register`,
+        `${baseurl}api/auth/user/register`,
         {
           fullName: form.fullName.trim(),
           email: form.email.trim().toLowerCase(),
-          mobile: form.mobile.replace(/\D/g, ''),
+          phone: form.phone.replace(/\D/g, ''),
           age: parseInt(form.age) || 0,
           gender: form.gender || "",
           address: {
@@ -319,12 +249,11 @@ function UserSignup() {
     }
   };
 
-  // Check if form is submittable
-  const hasErrors = Object.values(fieldErrors).some(err => err) || !emailVerified;
+  // Check if form is submittable (removed email verification condition)
+  const hasErrors = Object.values(fieldErrors).some(err => err);
 
   return (
     <>
-      {/* UI UPDATED: Modern toast with custom styling */}
       <Toaster 
         position="top-center" 
         reverseOrder={false}
@@ -336,7 +265,6 @@ function UserSignup() {
         }}
       />
       
-      {/* UI UPDATED: Premium Dialog Modal */}
       <AnimatePresence>
         {dialog.open && (
           <motion.div
@@ -380,7 +308,6 @@ function UserSignup() {
         )}
       </AnimatePresence>
 
-      {/* UI UPDATED: Main container with gradient background */}
       <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-slate-100 flex items-center justify-center p-4 sm:p-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -388,31 +315,26 @@ function UserSignup() {
           transition={{ duration: 0.5 }}
           className="w-full max-w-6xl"
         >
-          {/* UI UPDATED: Premium glassmorphism card */}
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20">
             <div className="flex flex-col lg:flex-row">
               
-              {/* UI UPDATED: Left Side - Real Estate Image Panel */}
+              {/* Left Side - Image Panel (unchanged) */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="lg:w-2/5 relative overflow-hidden min-h-[300px] lg:min-h-[800px]"
               >
-                {/* UI UPDATED: Background image */}
                 <div 
                   className="absolute inset-0 bg-cover bg-center"
                   style={{
                     backgroundImage: `url(${signupImage})`,
                   }}
                 >
-                  {/* UI UPDATED: Gradient overlay for better text readability */}
                   <div className="absolute inset-0 bg-gradient-to-br from-slate-900/70 via-cyan-900/60 to-blue-900/70"></div>
                 </div>
 
-                {/* UI UPDATED: Content overlay on image */}
                 <div className="relative h-full flex flex-col justify-between p-8 sm:p-12 z-10">
-                  {/* UI UPDATED: Top - Logo section */}
                   <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -429,7 +351,6 @@ function UserSignup() {
                     </div>
                   </motion.div>
 
-                  {/* UI UPDATED: Bottom - Tagline and features */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -443,7 +364,6 @@ function UserSignup() {
                       Join thousands of happy residents who found their perfect rental property with us.
                     </p>
 
-                    {/* UI UPDATED: Feature badges */}
                     <div className="flex flex-wrap gap-3">
                       {['Verified Properties', 'Secure Platform', 'Best Prices'].map((feature, i) => (
                         <motion.div
@@ -458,7 +378,6 @@ function UserSignup() {
                       ))}
                     </div>
 
-                    {/* UI UPDATED: Stats */}
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -479,14 +398,13 @@ function UserSignup() {
                 </div>
               </motion.div>
 
-              {/* UI UPDATED: Right Side - Form Panel (Unchanged from before) */}
+              {/* Right Side - Form Panel */}
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="lg:w-3/5 p-6 sm:p-10 overflow-y-auto max-h-[90vh]"
               >
-                {/* UI UPDATED: Header */}
                 <div className="mb-6">
                   <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
                     Create Your Account
@@ -496,7 +414,6 @@ function UserSignup() {
                   </p>
                 </div>
 
-                {/* UI UPDATED: Error banner */}
                 {error && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
@@ -512,7 +429,7 @@ function UserSignup() {
                 
                 <form onSubmit={handleSignup} className="space-y-6">
                   
-                  {/* UI UPDATED: Section 1 - Personal Information */}
+                  {/* Section 1 - Personal Information */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -526,7 +443,6 @@ function UserSignup() {
                       <h3 className="text-lg font-bold text-gray-800">Personal Information</h3>
                     </div>
 
-                    {/* Full Name */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Full Name <span className="text-red-500">*</span>
@@ -554,7 +470,6 @@ function UserSignup() {
                       )}
                     </div>
 
-                    {/* Age + Gender */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -619,7 +534,7 @@ function UserSignup() {
                     </div>
                   </motion.div>
 
-                  {/* UI UPDATED: Section 2 - Contact Information */}
+                  {/* Section 2 - Contact Information */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -633,7 +548,6 @@ function UserSignup() {
                       <h3 className="text-lg font-bold text-gray-800">Contact Information</h3>
                     </div>
 
-                    {/* Email + Phone */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -674,130 +588,34 @@ function UserSignup() {
                             +91
                           </span>
                           <input
-                            name="mobile"
+                            name="phone"
                             type="tel"
                             placeholder="10-digit number"
-                            value={form.mobile}
+                            value={form.phone}
                             onChange={handlePhoneChange}
                             maxLength="10"
                             className={`flex-1 px-4 py-3 bg-gray-50 border-2 rounded-r-xl focus:outline-none transition-all duration-300 ${
-                              fieldErrors.mobile
+                              fieldErrors.phone
                                 ? "border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-100"
                                 : "border-gray-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
                             }`}
                           />
                         </div>
-                        {fieldErrors.mobile && (
+                        {fieldErrors.phone && (
                           <motion.p
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             className="text-red-600 text-xs mt-1.5 flex items-center gap-1"
                           >
                             <span>⚠</span>
-                            {fieldErrors.mobile}
+                            {fieldErrors.phone}
                           </motion.p>
                         )}
                       </div>
                     </div>
-
-                    {/* UI UPDATED: Email Verification - Step Indicator */}
-                    {/* <div className="mt-5 p-5 bg-gradient-to-br from-cyan-50 to-blue-50 border-2 border-cyan-200 rounded-2xl">
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-sm font-bold text-gray-800 flex items-center gap-2">
-                          <span className="w-6 h-6 bg-cyan-500 text-white rounded-full flex items-center justify-center text-xs">
-                            ✉
-                          </span>
-                          Email Verification
-                        </h4>
-                        {emailVerified && (
-                          <motion.span
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="text-green-600 text-sm font-semibold flex items-center gap-1"
-                          >
-                            <span className="text-lg">✓</span>
-                            Verified
-                          </motion.span>
-                        )}
-                      </div>
-
-                      {!emailVerified ? (
-                        <div className="space-y-3">
-                          {!showCodeInput ? (
-                            <motion.button
-                              whileHover={{ scale: 1.01 }}
-                              whileTap={{ scale: 0.99 }}
-                              type="button"
-                              onClick={sendVerification}
-                              disabled={!form.email || !!fieldErrors.email}
-                              className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 ${
-                                !form.email || !!fieldErrors.email
-                                  ? "bg-gray-300 cursor-not-allowed text-gray-500"
-                                  : "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white shadow-lg shadow-cyan-500/30"
-                              }`}
-                            >
-                              📧 Send Verification Code
-                            </motion.button>
-                          ) : (
-                            <div className="space-y-3">
-                              <div className="relative">
-                                <input
-                                  placeholder="Enter 6-digit code"
-                                  value={verificationCode}
-                                  onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
-                                  maxLength={6}
-                                  className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100 text-center text-xl font-semibold tracking-widest"
-                                />
-                              </div>
-                              <motion.button
-                                whileHover={{ scale: 1.01 }}
-                                whileTap={{ scale: 0.99 }}
-                                type="button"
-                                onClick={verifyEmail}
-                                disabled={verificationCode.length !== 6}
-                                className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 ${
-                                  verificationCode.length !== 6
-                                    ? "bg-gray-300 cursor-not-allowed text-gray-500"
-                                    : "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg shadow-green-500/30"
-                                }`}
-                              >
-                                ✓ Verify Email
-                              </motion.button>
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <motion.div
-                          initial={{ opacity: 0, scale: 0.95 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          className="p-4 bg-green-100 border-2 border-green-300 rounded-xl"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white text-xl">
-                              ✓
-                            </div>
-                            <div>
-                              <p className="text-green-800 font-semibold text-sm">Email Verified!</p>
-                              <p className="text-green-600 text-xs">{form.email}</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                      
-                      {fieldErrors.emailVerification && (
-                        <motion.p
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          className="text-red-600 text-xs mt-2 flex items-center gap-1"
-                        >
-                          <span>⚠</span>
-                          {fieldErrors.emailVerification}
-                        </motion.p>
-                      )}
-                    </div> */}
                   </motion.div>
 
-                  {/* UI UPDATED: Section 3 - Address Information */}
+                  {/* Section 3 - Address Information */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -811,7 +629,6 @@ function UserSignup() {
                       <h3 className="text-lg font-bold text-gray-800">Address Details</h3>
                     </div>
 
-                    {/* Street */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Street Address <span className="text-red-500">*</span>
@@ -839,7 +656,6 @@ function UserSignup() {
                       )}
                     </div>
 
-                    {/* City + State */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -896,7 +712,6 @@ function UserSignup() {
                       </div>
                     </div>
 
-                    {/* Postal Code + Country */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -956,7 +771,6 @@ function UserSignup() {
                     </div>
                   </motion.div>
 
-                  {/* UI UPDATED: Submit Button - Premium gradient with animation */}
                   <motion.button
                     whileHover={!hasErrors ? { scale: 1.01, y: -2 } : {}}
                     whileTap={!hasErrors ? { scale: 0.99 } : {}}
@@ -969,12 +783,10 @@ function UserSignup() {
                     }`}
                   >
                     {hasErrors
-                      ? (emailVerified ? "⚠ Fix errors to continue" : "✉ Verify email first")
-                      : "🎉 Complete Registration"
-                    }
+                      ? "⚠ Fix errors to continue"
+                      : "🎉 Complete Registration"}
                   </motion.button>
 
-                  {/* UI UPDATED: Footer note */}
                   <p className="text-xs text-center text-gray-500 mt-4">
                     By registering, you agree to our{" "}
                     <button className="text-cyan-600 hover:text-cyan-700 underline">

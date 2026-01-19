@@ -31,7 +31,6 @@ import Contact from "./Components/User_Section/Contact/Contact";
 import Hostel from "./Components/User_Section/Hostel/Hostel";
 import HostelDetail from "./Components/User_Section/Hostel/HostelDetail";
 
-
 import RentPropertyDetail from "./Components/User_Section/RentProperty/RentPropertyDetails";
 import SellPropertyDetail from "./Components/User_Section/SellProperty/SellPropertyDetail";
 import BlogPage from "./Components/User_Section/Blog.jsx";
@@ -113,7 +112,6 @@ import UserSignup from "./Components/User_Section/Login&Signup/UserSignup.jsx";
 import TenantRentPayments from "./Components/TenantSection/Rent/RentPayments";
 import VisitRequest from "./Components/LandLoard/Property/VisitRequest.jsx";
 
-
 import LandlordComplaints from "./Components/LandLoard/Property/LandlordComplaints.jsx";
 import DuePackages from "./Components/LandLoard/Property/DuesPackages.jsx";
 import Facilities from "./Components/TenantSection/Facilities/Facilities.jsx";
@@ -154,9 +152,6 @@ import TenantSidebar from "./Components/TenantSection/TenantSidebar.jsx";
 
 import SellerMySubscriptions from "./Components/Seller_Section/Subscription/SellerMySubscription.jsx";
 
-
-
-
 // draze Worker dashboard section .............. Org .................
 import WorkerDashboardLoginDr from "./Components/DrazeWorkerDashboard/WorkerDashboardLoginDr.jsx"
 import WorkerDashboardDr from "./Components/DrazeWorkerDashboard/WorkerDashboardDr.jsx"
@@ -166,7 +161,15 @@ import SellerMyReelSubscription from "./Components/Seller_Section/Subscription/S
 import PoliceVerification from "./Components/LandLoard/Property/PoliceVerification.jsx";
 import TenantPoliceVerification from "./Components/TenantSection/Docqments/TenantPoliceVerification.jsx";
 import SubOwnerPoliceVerification from "./Components/Sub_owner/SubOwnerPages/SubOwnerPoliceVerification.jsx";
-
+import RentListingPage from "./Components/User_Section/Main/RentListingPage.jsx";
+import SaleListingPage from "./Components/User_Section/Main/SaleListingPage.jsx";
+import RoomsListingPage from "./Components/User_Section/Main/RoomsListingPage.jsx";
+import CommercialListingPage from "./Components/User_Section/Main/CommercialListingPage.jsx";
+import PGHostelSection from "./Components/User_Section/Main/PGHostelSection.jsx";
+import HostelsListingPage from "./Components/User_Section/Main/HostelsListingPage.jsx";
+import ServicesListingPage from "./Components/User_Section/Main/ServicesListingPage.jsx";
+import AddListingForm from "./Components/User_Section/Main/AddListingForm.jsx";
+import RentalPropety from "./Components/User_Section/Main/RentalPropety.jsx";
 
 // ScrollToTop Component
 const ScrollToTop = () => {
@@ -176,6 +179,9 @@ const ScrollToTop = () => {
   }, [location.pathname]);
   return null;
 };
+
+// Floating Add Button (imported from separate file)
+import FloatingAddButton from "./Components/FloatingAddButton";
 
 function App() {
   useEffect(() => {
@@ -187,6 +193,10 @@ function App() {
       <AuthProvider>
         <Router>
           <ScrollToTop />
+
+          {/* Floating Add Button - visible on all pages */}
+          <FloatingAddButton />
+
           <Routes>
             {/* Public Website */}
             <Route
@@ -209,10 +219,23 @@ function App() {
                       <Route path="/hostel" element={<Hostel />} />
                       <Route path="/hostel/:id" element={<HostelDetail />} />
                       <Route path="/toparea" element={<PropertyListMain />} />
+                      <Route path="/rentalpropety" element={<RentalPropety />} />
                       <Route
                         path="/details/:name"
                         element={<PropertyDetailMain />}
                       />
+
+                      {/* ────── NEW LISTING ROUTES ADDED HERE ────── */}
+                      <Route path="/rent" element={<RentListingPage />} />
+                      <Route path="/sale" element={<SaleListingPage />} />
+                      <Route path="/rooms" element={<RoomsListingPage />} />
+                      <Route path="/commercial" element={<CommercialListingPage />} />
+                      <Route path="/pg" element={<PGHostelSection />} />
+                      <Route path="/hostels" element={<HostelsListingPage />} />
+                      <Route path="/services" element={<ServicesListingPage />} />
+                      <Route path="/add-listing" element={<AddListingForm />} />
+                      {/* ──────────────────────────────────────── */}
+
                       <Route path="/login" element={<Login />} />
                       <Route path="/signupuser" element={<UserSignup />} />
                       <Route
@@ -279,7 +302,6 @@ function App() {
                 element={<LandLoardreelsub />}
               />
 
-
               <Route path="property-list" element={<PropertyList />} />
               <Route path="add-property" element={<AddProperty />} />
               <Route path="police-verification" element={<PoliceVerification />} />
@@ -307,10 +329,6 @@ function App() {
               <Route
                 path="/landlord/tenantdues/:propertyId"
                 element={<TenantDues />}
-              />
-              <Route
-                path="/landlord/switch-requests"
-                element={<LandlordSwitchRequests />}
               />
               <Route
                 path="/landlord/switch-requests"
@@ -351,12 +369,8 @@ function App() {
             <Route path="/landlord/subadmin/list" element={<SubAdminList />} />
             <Route path="/landlord/subadmin/add" element={<AddSubAdmin />} />
 
-
             {/* Tenant Dashboard Section */}
-            <Route
-              path="/landlord/subscription-plans"
-              element={<SubscriptionPlans />}
-            />
+            <Route path="/landlord/subscription-plans" element={<SubscriptionPlans />} />
 
             <Route path="/tenant" element={<TenantLayout />}>
               <Route index element={<TenantDashboard />} />
@@ -499,4 +513,4 @@ function App() {
   );
 }
 
-export default App;   
+export default App;

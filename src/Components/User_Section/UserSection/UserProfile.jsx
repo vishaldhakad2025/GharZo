@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import profileBG from "../../../assets/Images/profileBG.jpg";
 import baseurl from "../../../../BaseUrl";
+import ProfileTabs from './ProfileTabs';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
@@ -502,6 +503,17 @@ const ProfilePage = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* ProfileTabs Component */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-8"
+        >
+          <ProfileTabs />
+        </motion.div>
+
       </motion.div>
     </div>
   );
@@ -520,7 +532,7 @@ function Field({
   error,
 }) {
   return (
-    <div className="space-y-2 ">
+    <div className="space-y-2">
       <label className="block text-sm font-semibold text-gray-700 mb-2">
         {label}
       </label>

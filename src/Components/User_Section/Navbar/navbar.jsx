@@ -9,8 +9,9 @@ import {
   Phone,
   Video,
   LogOut,
-  MapPin,
+  // MapPin,           // commented out
   UserCircle,
+  Smartphone,         // added for app icon
 } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
@@ -18,15 +19,24 @@ import logo from "../../../assets/logo/logo.png";
 import { motion, useReducedMotion } from "framer-motion";
 import { useAuth } from "../../User_Section/Context/AuthContext.jsx";
 
-// Component for displaying location
-const LocationDisplay = ({ city, error }) => (
-  <div className="relative group flex items-center gap-2 text-white bg-gradient-to-r from-orange-400 to-blue-600 text-transparent backdrop-blur-md px-3 py-2 rounded-full border border-white/20 shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 text-sm">
-    <MapPin className="text-base animate-pulse" />
-    <span className="hidden md:inline font-medium tracking-wide">{error || city}</span>
-    <span className="absolute top-full left-1/2 -translate-x-1/2 mt-2 hidden group-hover:block text-white bg-gradient-to-r from-blue-600 to-cyan-500 px-3 py-1.5 rounded-lg text-xs z-50 whitespace-nowrap shadow-xl border border-white/20">
-      {error || city}
-    </span>
-  </div>
+// Download App Button Component
+const DownloadAppButton = () => (
+  <motion.a
+    href="#"
+    target="_blank"
+    rel="noopener noreferrer"
+    whileHover={{ scale: 1.06, y: -1 }}
+    className={`
+      flex items-center gap-2 px-4 py-2 
+      bg-gradient-to-r from-orange-400 to-blue-600  
+      text-white text-sm font-medium 
+      rounded-full shadow-md hover:shadow-lg 
+      transition-all duration-300
+    `}
+  >
+    <Smartphone size={18} />
+    Download App
+  </motion.a>
 );
 
 function Navbar() {
@@ -48,42 +58,9 @@ function Navbar() {
     { text: "Properties", to: "/properties", icon: <Building2 size={18} />, protected: true },
     { text: "Reels", to: "/reels", icon: <Video size={18} />, protected: true, onClick: () => setIsOpen(false) },
     { text: "About Us", to: "/about", icon: <Info size={18} /> },
-    { text: "My Visits", to: "/my-visits", icon: <MapPin size={18} />, hiddenIfUnauth: true, protected: true },
+    { text: "My Visits", to: "/my-visits", icon: <Smartphone size={18} />, hiddenIfUnauth: true, protected: true },
     { text: "Contact", to: "/contact", icon: <Phone size={18} /> },
   ];
-
-  const [currentLocation, setCurrentLocation] = useState({ city: "" });
-  const [locationError, setLocationError] = useState("");
-
-  const GOOGLE_MAPS_API_KEY = "AIzaSyAc0p_mCDiRFX_up_KkMCFtlXuoimG3iWg" || "";
-
-  const getCurrentLocation = async (latitude, longitude) => {
-    try {
-      localStorage.setItem("userLocation", JSON.stringify({ latitude, longitude }));
-
-      if (!GOOGLE_MAPS_API_KEY) throw new Error("Google Maps API key is missing");
-
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`
-      );
-      const data = await response.json();
-      if (data.status === "OK" && data.results.length > 0) {
-        const addressComponents = data.results[0].address_components;
-        let city = "";
-        addressComponents.forEach((component) => {
-          if (component.types.includes("locality")) city = component.long_name;
-        });
-        setCurrentLocation({ city });
-        setLocationError("");
-      } else {
-        setCurrentLocation({ city: "" });
-        setLocationError("Location not found");
-      }
-    } catch (error) {
-      setCurrentLocation({ city: "" });
-      setLocationError("Unable to fetch location");
-    }
-  };
 
   // Token check
   useEffect(() => {
@@ -100,34 +77,6 @@ function Navbar() {
 
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
-  // Geolocation
-  useEffect(() => {
-    let isMounted = true;
-    if (navigator.geolocation) {
-      const timeoutId = setTimeout(() => {
-        if (isMounted) setLocationError("Location request timed out");
-      }, 10000);
-
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          if (isMounted) {
-            clearTimeout(timeoutId);
-            const { latitude, longitude } = position.coords;
-            getCurrentLocation(latitude, longitude);
-          }
-        },
-        () => {
-          if (isMounted) {
-            clearTimeout(timeoutId);
-            setLocationError("Location not found");
-          }
-        },
-        { timeout: 10000 }
-      );
-    }
-    return () => { isMounted = false; };
   }, []);
 
   // GSAP animations
@@ -189,20 +138,19 @@ function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18">
             {/* Logo */}
-            
             <motion.div
-  ref={logoRef}
-  whileHover={{ scale: 1.05 }}
-  className="flex-shrink-0"
->
-  <NavLink to="/" className="block">
-    <img
-      src={logo}
-      alt="GharZo"
-      className="h-10 sm:h-12 w-auto object-contain"
-    />
-  </NavLink>
-</motion.div>
+              ref={logoRef}
+              whileHover={{ scale: 1.05 }}
+              className="flex-shrink-0"
+            >
+              <NavLink to="/" className="block">
+                <img
+                  src={logo}
+                  alt="GharZo"
+                  className="h-10 sm:h-12 w-auto object-contain"
+                />
+              </NavLink>
+            </motion.div>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1.5">
@@ -236,8 +184,8 @@ function Navbar() {
               })}
             </div>
 
-            {/* Right section - Auth + Location + Mobile menu */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            {/* Right section - Auth + Download App + Mobile menu */}
+            <div className="flex items-center gap-3 sm:gap-5">
               {/* Auth Button */}
               <div ref={buttonRef} className="relative">
                 <motion.button
@@ -246,7 +194,7 @@ function Navbar() {
                     if (hasToken) setShowUserMenu(!showUserMenu);
                     else navigate("/login");
                   }}
-                  className="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-orange-400 to-blue-600 text-transparent text-white shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 font-medium text-sm"
+                  className="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-orange-400 to-blue-600 text-white shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 font-medium text-sm"
                   aria-label={hasToken ? "User Menu" : "Login"}
                 >
                   <User size={18} className="drop-shadow-lg" />
@@ -280,10 +228,8 @@ function Navbar() {
                 )}
               </div>
 
-              {/* Location */}
-              {(currentLocation.city || locationError) && (
-                <LocationDisplay city={currentLocation.city} error={locationError} />
-              )}
+              {/* Download App Button - replaced location */}
+              <DownloadAppButton />
 
               {/* Mobile Menu Button */}
               <div className="lg:hidden">
@@ -335,11 +281,10 @@ function Navbar() {
               })}
 
               <div className="pt-3">
-                {(currentLocation.city || locationError) && (
-                  <div className="mb-4 px-4">
-                    <LocationDisplay city={currentLocation.city} error={locationError} />
-                  </div>
-                )}
+                {/* Download App in mobile menu */}
+                <div className="mb-4 px-4">
+                  <DownloadAppButton />
+                </div>
 
                 <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent my-4" />
 
