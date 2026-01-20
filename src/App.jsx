@@ -182,6 +182,7 @@ const ScrollToTop = () => {
 
 // Floating Add Button (imported from separate file)
 import FloatingAddButton from "./Components/FloatingAddButton";
+import AdsPopup from "./Components/User_Section/AdsPopup.jsx";
 
 function App() {
   useEffect(() => {
@@ -204,6 +205,9 @@ function App() {
               element={
                 <div className="flex flex-col min-h-screen">
                   <Navbar />
+
+                  <AdsPopup />
+
                   <div className="flex-grow pt-20">
                     <Routes>
                       <Route index element={<MainPage />} />
