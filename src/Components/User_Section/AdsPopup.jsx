@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const AdsPopup = () => {
   // 🔹 Enhanced Ads List with descriptions
@@ -34,48 +34,34 @@ const AdsPopup = () => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const firstTimer = useRef(null);
-  const closeTimer = useRef(null);
-  const nextAdTimer = useRef(null);
-
-  // 🔥 First ad after 3 seconds (reduced for demo)
+  // 🔥 Page load par ek hi baar ad show kare - har load par random ad
   useEffect(() => {
-    firstTimer.current = setTimeout(() => {
-      openAd();
-    }, 3000);
+    // Random ad select kare
+    const randomIndex = Math.floor(Math.random() * ads.length);
+    setCurrentAdIndex(randomIndex);
 
-    return () => clearAllTimers();
-  }, []);
+    // 3 seconds baad ad show kare
+  // 20 seconds baad ad show kare
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+      setShowClose(false);
+      setImageLoaded(false);
 
-  const openAd = () => {
-    setIsOpen(true);
-    setShowClose(false);
-    setImageLoaded(false);
+      // 5 seconds baad close button enable kare
+      const closeTimer = setTimeout(() => {
+        setShowClose(true);
+      }, 5000);
 
-    // 🔒 Enable close after 12 seconds
-    closeTimer.current = setTimeout(() => {
-      setShowClose(true);
-    }, 12000);
-  };
+      return () => clearTimeout(closeTimer);
+    }, 20000);
+
+    return () => clearTimeout(timer);
+  }, []); // Empty dependency array - sirf ek baar chalega
 
   const closeAd = () => {
     setIsOpen(false);
     setShowClose(false);
     setImageLoaded(false);
-
-    // 🔁 Rotate ad
-    setCurrentAdIndex((prev) => (prev + 1) % ads.length);
-
-    // ⏳ Next ad after 20 seconds
-    nextAdTimer.current = setTimeout(() => {
-      openAd();
-    }, 20000);
-  };
-
-  const clearAllTimers = () => {
-    clearTimeout(firstTimer.current);
-    clearTimeout(closeTimer.current);
-    clearTimeout(nextAdTimer.current);
   };
 
   if (!isOpen) return null;
@@ -153,20 +139,6 @@ const AdsPopup = () => {
                 </p>
               </div>
             )}
-
-            {/* Ad Counter */}
-            <div className="flex justify-center gap-1.5 mt-3">
-              {ads.map((_, index) => (
-                <div
-                  key={index}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === currentAdIndex 
-                      ? 'w-8 bg-white' 
-                      : 'w-1.5 bg-white/50'
-                  }`}
-                />
-              ))}
-            </div>
           </div>
         </div>
       </div>

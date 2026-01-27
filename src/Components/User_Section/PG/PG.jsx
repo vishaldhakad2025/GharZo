@@ -157,6 +157,12 @@ const PG = () => {
   const handleLandlordLogin = () => {
     navigate("/landlord_login");
   };
+  const handleSubowerLogin = () => {
+    navigate("/sub_owner_login");
+  };
+  const handleworkerLogin = () => {
+    navigate("/dr_worker_login");
+  };
 
   const renderStars = (rating) => {
     const stars = [];
@@ -222,7 +228,7 @@ const PG = () => {
               className="text-2xl md:text-2xl font-bold text-center mb-2 bg-gradient-to-r from-blue-700 via-purple-700 to-indigo-700 bg-clip-text text-transparent"
               data-aos="fade-down"
             >
-              Discover Premium PG Accommodations
+              Discover Premium PG And Hostel
             </h2>
             {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto lg:mx-0">
               Find your perfect PG stay with modern amenities, prime locations, and exceptional comfort
@@ -233,7 +239,7 @@ const PG = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={handleTenantLogin}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:from-green-600 hover:to-teal-700 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:from-orange-600 hover:to-blue-700  transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
               data-aos="zoom-in"
               data-aos-delay="100"
             >
@@ -243,12 +249,30 @@ const PG = () => {
 
             <button
               onClick={handleLandlordLogin}
-              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:from-orange-600 hover:to-red-700 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
+              className="px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:from-orange-600 hover:to-blue-700 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
               data-aos="zoom-in"
               data-aos-delay="200"
             >
               <FaHome className="w-5 h-5" />
               List Your Property
+            </button>
+            <button
+              onClick={handleSubowerLogin}
+              className="px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:from-orange-600 hover:to-blue-700 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
+              data-aos="zoom-in"
+              data-aos-delay="200"
+            >
+              <FaUser className="w-5 h-5" />
+              Sub Owner
+            </button>
+            <button
+              onClick={handleSubowerLogin}
+              className="px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:from-orange-600 hover:to-blue-700 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
+              data-aos="zoom-in"
+              data-aos-delay="200"
+            >
+              <FaUser className="w-5 h-5" />
+              Worker
             </button>
           </div>
         </div>

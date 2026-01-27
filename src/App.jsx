@@ -41,6 +41,11 @@ import ProfilePage from "./Components/User_Section/UserSection/pages/ProfilePage
 import BookingsPage from "./Components/User_Section/UserSection/pages/BookingPage";
 import PrivacyRefund from "./Components/User_Section/PrivacyRefund/PrivacyRefund.jsx";
 
+import AddChannelPartner from "./Components/User_Section/Main/AddChannelPartner.jsx";
+import HomeLoan from "./Components/User_Section/Main/HomeLoan.jsx";
+import FranchiseRequest from "./Components/User_Section/Main/FranchiseRequest.jsx";
+
+
 // Landlord Pages
 import Dashboard from "./Components/LandLoard/Dashboard/Dashboard";
 import AddProperty from "./Components/LandLoard/Property/AddProperty";
@@ -196,7 +201,7 @@ function App() {
           <ScrollToTop />
 
           {/* Floating Add Button - visible on all pages */}
-          <FloatingAddButton />
+          {/* <FloatingAddButton /> */}
 
           <Routes>
             {/* Public Website */}
@@ -210,6 +215,10 @@ function App() {
 
                   <div className="flex-grow pt-20">
                     <Routes>
+                      <Route path="/add-channel-partner" element={<AddChannelPartner />} />
+<Route path="/home-loan" element={<HomeLoan />} />
+<Route path="/franchise-request" element={<FranchiseRequest />} />
+
                       <Route index element={<MainPage />} />
                       <Route path="/properties" element={<AllProperty />} />
                       <Route

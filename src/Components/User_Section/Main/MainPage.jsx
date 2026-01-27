@@ -46,8 +46,9 @@ import { useAuth } from "../../User_Section/Context/AuthContext.jsx";
 import PropertyInquiryForm from "./PropertyInquiryForm.jsx";
 import PlotsHome from "./PlotsHome.jsx";
 import DownloadAppSection from "./DownloadAppSection.jsx";
+import HeroSection from "./HeroSection.jsx";
 
-function MainPage() {
+function MainPage() { 
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useAuth();
@@ -437,128 +438,7 @@ function MainPage() {
   return (
     <div className="flex flex-col min-h-screen" style={{ marginTop: "-20px" }}>
       {/* 🎬 HERO SECTION WITH CINEMATIC BACKGROUND SLIDER */}
-      <section
-        className="pt-12 h-[85vh] sm:h-[90vh] md:h-screen flex items-center justify-center text-white text-center relative overflow-hidden px-2 sm:px-6 hero-section"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        {/* Background Image Slider */}
-        <div className="absolute inset-0">
-          <AnimatePresence initial={false}>
-            <motion.img
-              key={currentImageIndex}
-              src={heroImages[currentImageIndex]}
-              alt={`Hero Background ${currentImageIndex + 1}`}
-              className="absolute inset-0 w-full h-full object-cover"
-              initial={{ opacity: 0, scale: 1 }}
-              animate={{
-                opacity: 1,
-                scale: 1.1,
-              }}
-              exit={{ opacity: 0, scale: 1.15 }}
-              transition={{
-                opacity: { duration: 1.5 },
-                scale: { duration: 8, ease: "linear" },
-              }}
-            />
-          </AnimatePresence>
-        </div>
-
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1E3A5F]/90 via-[#1E3A5F]/70 to-orange-600/50 z-10" />
-
-        {/* Animated particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-orange-400/30 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [0, -30, 0],
-                opacity: [0.1, 0.5, 0.2],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Navigation Arrows */}
-        <button
-          onClick={() =>
-            setCurrentImageIndex((prev) =>
-              prev === 0 ? heroImages.length - 1 : prev - 1
-            )
-          }
-          className="absolute -left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-14 h-14 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full transition-all duration-300 shadow-xl group"
-          aria-label="Previous image"
-        >
-          <span className="text-white text-7xl sm:text-6xl transition-transform duration-300 group-hover:-translate-x-1.5 group-hover:-translate-y-2">
-            ‹
-          </span>
-        </button>
-
-        <button
-          onClick={() =>
-            setCurrentImageIndex((prev) =>
-              prev === heroImages.length - 1 ? 0 : prev + 1
-            )
-          }
-          className="absolute -right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-14 h-14 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full transition-all duration-300 shadow-xl group"
-          aria-label="Next image"
-        >
-          <span className="text-white text-4xl sm:text-5xl transition-transform duration-300 group-hover:-translate-y-2">
-            ›
-          </span>
-        </button>
-
-        {/* Slide Indicators */}
-        <div className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2 z-30 flex flex-col items-center gap-3 pointer-events-none">
-          <div className="flex gap-2.5">
-            {heroImages.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImageIndex(index)}
-                className={`transition-all duration-300 rounded-full ${
-                  index === currentImageIndex
-                    ? "w-8 h-2.5 bg-orange-500 shadow-md"
-                    : "w-2.5 h-2.5 bg-white/60 hover:bg-white/90"
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="relative z-30 px-2 sm:px-4" data-aos="fade-up">
-          <motion.h1
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 bg-gradient-to-r from-white via-cyan-100 to-orange-200 bg-clip-text text-transparent drop-shadow-2xl"
-          >
-            Welcome to GharZo
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-sm sm:text-lg md:text-2xl max-w-md sm:max-w-xl md:max-w-2xl mx-auto mb-6 sm:mb-8 text-gray-100 font-light"
-          >
-            Your one-stop solution to rent, buy, and sell property
-          </motion.p>
-        </div>
-      </section>
-
+      <HeroSection />
       <PGHostelSection />
 
       <RentalPropety />

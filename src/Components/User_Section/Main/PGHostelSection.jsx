@@ -13,6 +13,15 @@ import {
   Home,
   IndianRupee,
   ChevronDown,
+  Building2,
+  Hotel,
+  Briefcase,
+  ShoppingCart,
+  BadgeIndianRupee,
+  Landmark,
+  PlusCircle,
+  Projector,
+  ProjectorIcon,
 } from "lucide-react";
 import baseurl from "../../../../BaseUrl.js";
 
@@ -23,15 +32,12 @@ const PGHostelSection = () => {
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [selectedBudget, setSelectedBudget] = useState("");
-
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
   const [showBudgetDropdown, setShowBudgetDropdown] = useState(false);
 
-  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const propertiesPerPage = 9;
 
@@ -44,11 +50,9 @@ const PGHostelSection = () => {
         const res = await axios.get(`${baseurl}api/public/all-properties`);
         const pgHostels = (res.data.properties || []).filter(
           (p) =>
-            (p.type?.toLowerCase() === "pg" ||
-              p.type?.toLowerCase() === "hostel") &&
+            (p.type?.toLowerCase() === "pg" || p.type?.toLowerCase() === "hostel") &&
             p.isActive === true
         );
-
         setProperties(pgHostels);
         setFilteredProperties(pgHostels);
       } catch (error) {
@@ -82,9 +86,7 @@ const PGHostelSection = () => {
 
     let filtered = properties.filter((property) => {
       const price = parseFloat(property.lowestPrice) || 0;
-
       const matchesPrice = price >= minPrice && price <= maxPrice;
-
       const matchesText =
         !textQuery ||
         property.name?.toLowerCase().includes(textQuery) ||
@@ -94,8 +96,7 @@ const PGHostelSection = () => {
         property.location?.state?.toLowerCase().includes(textQuery);
 
       const matchesType =
-        !selectedType ||
-        property.type?.toLowerCase() === selectedType.toLowerCase();
+        !selectedType || property.type?.toLowerCase() === selectedType.toLowerCase();
 
       const matchesBudget =
         !selectedBudget ||
@@ -127,78 +128,107 @@ const PGHostelSection = () => {
   const goToPG = () => navigate("/pg");
   const goToHostels = () => navigate("/hostels");
   const goToServices = () => navigate("/services");
+  const goToHomeLoan = () => navigate("/home-loan");
 
-  // Pagination
+  const goToAddProject = () => {
+    if (isAuthenticated) {
+      navigate("/add-project");
+    } else {
+      navigate("/login", { state: { from: "/add-project" } });
+    }
+  };
+
   const indexOfLast = currentPage * propertiesPerPage;
   const indexOfFirst = indexOfLast - propertiesPerPage;
   const currentProperties = filteredProperties.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
 
   const categoryButtons = [
-    { label: "Rent", onClick: goToRent },
-    { label: "Buy", onClick: goToSale },
-    { label: "Commercial", onClick: goToCommercial },
-    { label: "PG/Hostel", onClick: goToPG, isActive: true },
-    { label: "Hotels / Banquets", onClick: goToHostels },
-    { label: "Services", onClick: goToServices },
+    { label: "Rent", onClick: goToRent, icon: Home },
+    { label: "Buy", onClick: goToSale, icon: ShoppingCart },
+    { label: "Commercial", onClick: goToCommercial, icon: Building2 },
+    { label: "PG/Hostel", onClick: goToPG, isActive: true, icon: Hotel },
+    { label: "Hotels / Banquets", onClick: goToHostels, icon: Briefcase },
+    { label: "Services", onClick: goToServices, icon: BadgeIndianRupee },
+    { label: "Home Loan", onClick: goToHomeLoan, icon: Landmark },
+    { label: "Project", onClick: goToCommercial, icon: ProjectorIcon },
   ];
 
   return (
-    <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-10 bg-gradient-to-b from-amber-50/50 to-white min-h-screen">
-      <div className="text-center mb-8 md:mb-10">
-        {/* Category Buttons - Responsive Grid */}
-        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 max-w-6xl mx-auto px-2">
-          {categoryButtons.map((btn) => (
-           <button
-  key={btn.label}
-  onClick={btn.onClick}
-  className={`
-    group relative 
-    px-3 sm:px-5 lg:px-4 py-3 sm:py-4 lg:py-2   /* desktop padding reduced */
-    rounded-xl sm:rounded-2xl 
-    font-medium sm:font-semibold 
-    text-sm sm:text-base
-    transition-all duration: 0.5 
-    hover:scale-105 active:scale-120
-    delay: index * 0.1
-    min-h-[72px] sm:min-h-[88px] lg:min-h-[64px]
-    flex items-center justify-center
-    overflow-hidden
+    <section className="py-6 sm:py-8 px-4 sm:px-5 lg:px-6 bg-gradient-to-b from-blue-50 via-indigo-50/30 to-white min-h-screen">
+      <div className="text-center mb-6 md:mb-8">
+        {/* Ultra Compact & Attractive Gradient Buttons */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2 max-w-7xl mx-auto px-1">
+          {categoryButtons.map((btn, index) => {
+            const IconComponent = btn.icon;
+            return (
+              <motion.button
+                key={btn.label}
+                onClick={btn.onClick}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05, duration: 0.3 }}
+                whileHover={{ scale: 1.08, y: -3 }}
+                whileTap={{ scale: 0.96 }}
+                className={`
+                  group relative overflow-hidden
+                  px-2 sm:px-2.5 py-2 sm:py-2.5 
+                  rounded-lg sm:rounded-xl font-semibold text-[10px] sm:text-xs
+                  min-h-[58px] sm:min-h-[62px] 
+                  flex flex-col items-center justify-center gap-0.5 sm:gap-1
+                  border transition-all duration-300
+                  ${
+                    btn.isActive
+                      ? "bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 text-white border-orange-400/50 shadow-lg shadow-orange-500/40 hover:shadow-xl hover:shadow-orange-600/50"
+                      : "bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 text-white/95 border-slate-600/40 shadow-md shadow-slate-800/30 hover:shadow-lg hover:shadow-slate-700/40 hover:text-white"
+                  }
+                `}
+              >
+                {/* Shine Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                
+                {/* Top Glow */}
+                <div className={`absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 rounded-lg sm:rounded-xl transition-opacity duration-300`} />
 
-    shadow-[0_8px_25px_rgba(0,0,0,0.35)] 
-    hover:shadow-[0_12px_35px_rgba(0,0,0,0.45)]   /* custom box shadow */
+                {/* Bottom Shadow Glow */}
+                <div className={`absolute -inset-1 ${btn.isActive ? 'bg-slate-600/20' : 'bg-slate-600/20'} blur-md -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg sm:rounded-xl`} />
 
-    ${
-      btn.isActive
-        ? "bg-gradient-to-br from-[#0b4f91] via-[#0c2344] to-[#1565c0] text-white shadow-blue-600/50"
-        : "bg-gradient-to-br from-[#0b4f91] via-[#0c2344] to-[#1565c0] text-white hover:shadow-blue-500/50"
-    }
-  `}
->
+                <span className="relative z-10 flex flex-col items-center gap-0.5 sm:gap-1">
+                  <IconComponent
+                    size={16}
+                    className={`transition-all duration-300 group-hover:scale-125 ${
+                      btn.isActive 
+                        ? "drop-shadow-[0_2px_8px_rgba(255,255,255,0.6)]" 
+                        : "group-hover:drop-shadow-[0_2px_6px_rgba(255,255,255,0.4)]"
+                    }`}
+                  />
+                  <span className="text-center leading-tight font-bold tracking-wide drop-shadow-sm">
+                    {btn.label}
+                  </span>
+                </span>
 
-              <span className="relative z-10 flex flex-col items-center gap-1 sm:gap-2">
-                {/* You can add icons back here if you want */}
-                <span className="text-center">{btn.label}</span>
-              </span>
-
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-            </button>
-          ))}
+                {/* Active Indicator Pulse */}
+                {btn.isActive && (
+                  <motion.div
+                    className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full shadow-lg"
+                    animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                )}
+              </motion.button>
+            );
+          })}
         </div>
       </div>
 
       {/* Search + Filters */}
-      <div className="max-w-5xl mx-auto mb-10 md:mb-12">
-        <div className="bg-white border-2 rounded-2xl shadow-xl p-4 flex flex-col md:flex-row items-center gap-4">
-          {/* Location Search */}
+      {/* <div className="max-w-5xl mx-auto mb-7 md:mb-9">
+        <div className="bg-white/75 backdrop-blur-xl border border-blue-200/40 rounded-xl shadow-xl p-3 flex flex-col md:flex-row items-center gap-3">
           <div className="flex-1 relative w-full">
-            <MapPin
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-500"
-              size={20}
-            />
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-600" size={18} />
             <input
               type="text"
-              placeholder="Search by city, area, project..."
+              placeholder="City, area, landmark..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => {
@@ -207,25 +237,23 @@ const PGHostelSection = () => {
                   handleSearch();
                 }
               }}
-              className="w-full pl-12 pr-4 py-3 rounded-xl border border-orange-500 text-gray-700 focus:border-orange-600 focus:outline-none"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-blue-400/60 text-gray-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-400 bg-white/80 text-sm"
             />
           </div>
 
-          <div className="hidden md:block w-px h-10 bg-gray-300" />
+          <div className="hidden md:block w-px h-8 bg-blue-200/50" />
 
-          {/* Type Filter */}
           <div className="relative w-full md:w-auto">
             <button
               onClick={() => setShowTypeDropdown(!showTypeDropdown)}
-              className="flex items-center justify-center gap-2 w-full md:w-auto px-5 py-3 rounded-xl border border-orange-400 text-gray-700"
+              className="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2.5 rounded-xl border border-blue-400/60 text-gray-700 bg-white/80 hover:bg-blue-50/60 transition-colors text-sm"
             >
-              <Home size={18} />
+              <Home size={17} />
               <span className="whitespace-nowrap">{selectedType || "Type"}</span>
-              <ChevronDown size={18} />
+              <ChevronDown size={16} />
             </button>
-
             {showTypeDropdown && (
-              <div className="absolute z-50 mt-2 w-48 bg-white shadow-lg rounded-lg border p-2 left-0 md:left-auto right-0 md:right-auto">
+              <div className="absolute z-50 mt-2 w-44 bg-white/95 backdrop-blur-xl shadow-xl rounded-xl border border-blue-200/40 p-2">
                 {["Rent", "Buy", "Rooms", "Commercial", "PG", "Hostels", "Services"].map((t) => (
                   <p
                     key={t}
@@ -233,7 +261,7 @@ const PGHostelSection = () => {
                       setSelectedType(t);
                       setShowTypeDropdown(false);
                     }}
-                    className="p-2 cursor-pointer hover:bg-orange-50 rounded-md text-sm"
+                    className="p-2 cursor-pointer hover:bg-blue-50 rounded-lg text-sm"
                   >
                     {t}
                   </p>
@@ -242,19 +270,17 @@ const PGHostelSection = () => {
             )}
           </div>
 
-          {/* Budget Filter */}
           <div className="relative w-full md:w-auto">
             <button
               onClick={() => setShowBudgetDropdown(!showBudgetDropdown)}
-              className="flex items-center justify-center gap-2 w-full md:w-auto px-5 py-3 rounded-xl border border-orange-400 text-gray-700"
+              className="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2.5 rounded-xl border border-blue-400/60 text-gray-700 bg-white/80 hover:bg-blue-50/60 transition-colors text-sm"
             >
-              <IndianRupee size={18} />
+              <IndianRupee size={17} />
               <span className="whitespace-nowrap">{selectedBudget || "Budget"}</span>
-              <ChevronDown size={18} />
+              <ChevronDown size={16} />
             </button>
-
             {showBudgetDropdown && (
-              <div className="absolute z-50 mt-2 w-48 bg-white shadow-lg rounded-lg border p-2 left-0 md:left-auto right-0 md:right-auto">
+              <div className="absolute z-50 mt-2 w-44 bg-white/95 backdrop-blur-xl shadow-xl rounded-xl border border-blue-200/40 p-2">
                 {["Under 5000", "5000-8000", "8000-12000", "Above 12000"].map((b) => (
                   <p
                     key={b}
@@ -262,7 +288,7 @@ const PGHostelSection = () => {
                       setSelectedBudget(b);
                       setShowBudgetDropdown(false);
                     }}
-                    className="p-2 cursor-pointer hover:bg-orange-50 rounded-md text-sm"
+                    className="p-2 cursor-pointer hover:bg-blue-50 rounded-lg text-sm"
                   >
                     {b}
                   </p>
@@ -271,69 +297,69 @@ const PGHostelSection = () => {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {/* Property Cards */}
+      {/* Property cards section */}
       {loading ? (
-        <div className="flex justify-center items-center py-20">
-          <div className="w-14 h-14 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+        <div className="flex justify-center items-center py-16">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : filteredProperties.length === 0 ? (
-        <p className="text-center text-gray-500 py-20 text-lg">
+        <p className="text-center text-gray-600 py-16 text-base sm:text-lg">
           No PG/Hostel found matching your filters.
         </p>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-7xl mx-auto">
             {currentProperties.map((property, index) => (
               <motion.div
                 key={property.id}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.08 }}
-                whileHover={{ y: -8, scale: 1.03 }}
+                transition={{ delay: index * 0.07, duration: 0.45 }}
+                whileHover={{ y: -6, scale: 1.03 }}
                 onClick={() => handlePropertyClick(property.id)}
-                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden cursor-pointer transition-all duration-500"
+                className="group bg-white/85 backdrop-blur-md rounded-xl shadow-lg hover:shadow-xl overflow-hidden cursor-pointer transition-all duration-300 border border-blue-100/60"
               >
                 <div className="relative">
                   <img
-                    src={property.images?.[0] || "https://via.placeholder.com/400x300"}
+                    src={property.images?.[0] || "https://via.placeholder.com/400x260"}
                     alt={property.name}
-                    className="w-full h-56 sm:h-60 object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-44 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute top-4 left-4 bg-orange-600 text-white px-4 py-2 rounded-full font-semibold text-sm shadow-lg">
+                  <div className="absolute top-3 left-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-full font-semibold text-xs sm:text-sm shadow-md backdrop-blur-sm">
                     ₹{property.lowestPrice}/mo
                   </div>
                 </div>
 
-                <div className="p-5 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 line-clamp-1">
+                <div className="p-4 sm:p-5">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 line-clamp-1">
                     {property.name}
                   </h3>
 
-                  <div className="flex items-center text-gray-600 mt-2 text-sm">
-                    <MapPin size={16} className="text-orange-500 mr-1 flex-shrink-0" />
+                  <div className="flex items-center text-gray-600 mt-1.5 text-xs sm:text-sm">
+                    <MapPin size={14} className="text-blue-600 mr-1 flex-shrink-0" />
                     <span className="truncate">
                       {property?.location?.city}, {property?.location?.area}
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-3 mt-5 text-center text-gray-700 text-sm">
+                  <div className="grid grid-cols-3 gap-2 mt-4 text-center text-gray-700 text-xs sm:text-sm">
                     <div>
-                      <BedDouble size={20} className="mx-auto text-orange-500" />
+                      <BedDouble size={18} className="mx-auto text-blue-600" />
                       <p className="mt-1">{property.totalBeds || "N/A"} Beds</p>
                     </div>
                     <div>
-                      <Bath size={20} className="mx-auto text-orange-500" />
+                      <Bath size={18} className="mx-auto text-blue-600" />
                       <p className="mt-1">{property.totalRooms || "N/A"} Baths</p>
                     </div>
                     <div>
-                      <CarFront size={20} className="mx-auto text-orange-500" />
+                      <CarFront size={18} className="mx-auto text-blue-600" />
                       <p className="mt-1">Parking</p>
                     </div>
                   </div>
 
-                  <p className="mt-4 text-sm font-medium text-orange-600 uppercase tracking-wider">
+                  <p className="mt-4 text-xs sm:text-sm font-semibold text-blue-700 uppercase tracking-wide">
                     {property.type}
                   </p>
                 </div>
@@ -341,13 +367,12 @@ const PGHostelSection = () => {
             ))}
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center mt-10 sm:mt-12 gap-2 sm:gap-3 flex-wrap">
+            <div className="flex justify-center mt-8 sm:mt-10 gap-2 flex-wrap">
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white border border-orange-500 text-orange-600 rounded-xl disabled:opacity-50 hover:bg-orange-50 text-sm sm:text-base"
+                className="px-4 sm:px-5 py-2 bg-white/80 backdrop-blur-sm border border-blue-400 text-blue-700 rounded-xl disabled:opacity-50 hover:bg-blue-50 text-sm transition-all"
               >
                 Previous
               </button>
@@ -356,10 +381,10 @@ const PGHostelSection = () => {
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
-                  className={`px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base min-w-[40px] sm:min-w-[48px] ${
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-sm min-w-[38px] sm:min-w-[44px] transition-all ${
                     currentPage === i + 1
-                      ? "bg-orange-600 text-white"
-                      : "bg-white border border-orange-300 text-orange-600 hover:bg-orange-50"
+                      ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md"
+                      : "bg-white/80 backdrop-blur-sm border border-blue-300 text-blue-700 hover:bg-blue-50"
                   }`}
                 >
                   {i + 1}
@@ -369,7 +394,7 @@ const PGHostelSection = () => {
               <button
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white border border-orange-500 text-orange-600 rounded-xl disabled:opacity-50 hover:bg-orange-50 text-sm sm:text-base"
+                className="px-4 sm:px-5 py-2 bg-white/80 backdrop-blur-sm border border-blue-400 text-blue-700 rounded-xl disabled:opacity-50 hover:bg-blue-50 text-sm transition-all"
               >
                 Next
               </button>
