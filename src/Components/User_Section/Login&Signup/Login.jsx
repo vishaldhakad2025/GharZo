@@ -66,6 +66,13 @@ function Login({ onClose }) {
     setIsNewUser(false);
   }, [phone]);
 
+  // Clear OTP when name/role fields appear (new user registration)
+  useEffect(() => {
+    if (isNewUser && otpSent) {
+      setOtp("");
+    }
+  }, [isNewUser]);
+
   // Countdown timer for resend
   useEffect(() => {
     let interval;
@@ -104,16 +111,11 @@ function Login({ onClose }) {
         setOtpSent(true);
         toast.success(response.data.message || "OTP sent successfully!");
         setResendAttempts(0);
-        setCountdown(60); // 60 seconds rate limit as per docs
+        setCountdown(10); // Changed from 10 to 30 seconds
       }
     } catch (error) {
       const errorMsg = error.response?.data?.message || "Failed to send OTP";
       toast.error(errorMsg);
-      
-      // Handle rate limit error
-      if (error.response?.data?.waitTime) {
-        setCountdown(error.response.data.waitTime);
-      }
     } finally {
       setIsSendingOtp(false);
     }
@@ -143,13 +145,13 @@ function Login({ onClose }) {
       if (response.data.success) {
         toast.success(response.data.message || "New OTP sent successfully!");
         setResendAttempts((prev) => prev + 1);
-        setCountdown(30); // 30 seconds cooldown as per docs
+        setCountdown(30); // 30 seconds cooldown
       }
     } catch (error) {
       const errorMsg = error.response?.data?.message || "Failed to resend OTP";
       toast.error(errorMsg);
       
-      // Handle rate limit error
+      // Handle rate limit error - backend se jo wait time aaye use karo
       if (error.response?.data?.waitTime) {
         setCountdown(error.response.data.waitTime);
       }
@@ -257,6 +259,15 @@ function Login({ onClose }) {
 
   const particlesInit = async (main) => await loadFull(main);
 
+  // Handle Change Number button - Reset countdown timer
+  const handleChangeNumber = () => {
+    setOtpSent(false);
+    setOtp("");
+    setName("");
+    setIsNewUser(false);
+    setCountdown(0); // Important: Clear the countdown timer
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="relative w-full max-w-5xl h-[650px] bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex">
@@ -356,7 +367,7 @@ function Login({ onClose }) {
                   {!otpSent ? (
                     <>
                       New user?{" "}
-                      <button
+                      {/* <button
                         onClick={() => {
                           setIsNewUser(true);
                           if (phone.length === 10) {
@@ -366,7 +377,7 @@ function Login({ onClose }) {
                         className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors"
                       >
                         Sign up here →
-                      </button>
+                      </button> */}
                     </>
                   ) : isNewUser ? (
                     <span>Please provide your details to continue</span>
@@ -513,28 +524,7 @@ function Login({ onClose }) {
                     />
                   </div>
 
-                  <motion.button
-                    whileHover={{ scale: isVerifying ? 1 : 1.01 }}
-                    whileTap={{ scale: isVerifying ? 1 : 0.99 }}
-                    disabled={isVerifying}
-                    className={`w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/30 transition-all duration-300 ${
-                      isVerifying ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                    onClick={handleVerifyOtp}
-                  >
-                    {isVerifying ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Verifying...
-                      </span>
-                    ) : (
-                      isNewUser ? 'Complete Registration' : 'Verify & Continue'
-                    )}
-                  </motion.button>
-
+                  {/* Resend OTP Button - Now positioned above Verify button */}
                   <button
                     disabled={countdown > 0 || isResending}
                     className={`w-full py-3.5 font-medium rounded-xl transition-all duration-300 ${
@@ -559,14 +549,31 @@ function Login({ onClose }) {
                     )}
                   </button>
 
+                  <motion.button
+                    whileHover={{ scale: isVerifying ? 1 : 1.01 }}
+                    whileTap={{ scale: isVerifying ? 1 : 0.99 }}
+                    disabled={isVerifying}
+                    className={`w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/30 transition-all duration-300 ${
+                      isVerifying ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    onClick={handleVerifyOtp}
+                  >
+                    {isVerifying ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Verifying...
+                      </span>
+                    ) : (
+                      isNewUser ? 'Complete Registration' : 'Verify & Continue'
+                    )}
+                  </motion.button>
+
                   <button
                     className="w-full py-3.5 bg-slate-800/50 hover:bg-slate-800 border border-slate-700 text-slate-300 font-medium rounded-xl transition-all duration-300"
-                    onClick={() => {
-                      setOtpSent(false);
-                      setOtp("");
-                      setName("");
-                      setIsNewUser(false);
-                    }}
+                    onClick={handleChangeNumber}
                   >
                     ← Change Number
                   </button>

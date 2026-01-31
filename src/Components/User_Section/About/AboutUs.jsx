@@ -97,6 +97,7 @@ const AboutUs = () => {
               gradient: "from-orange-500 to-orange-600",
               bgGradient: "from-orange-50 to-orange-100/50",
             },
+            
             {
               title: "Our Vision",
               text: "To become India's most reliable platform for discovering and booking rental and commercial properties by blending innovation, integrity, and intelligent service.",

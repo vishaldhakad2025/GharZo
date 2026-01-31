@@ -98,7 +98,7 @@ const AddListingForm = () => {
     { number: 6, title: 'Contact Info' }
   ];
 
-  const categoryOptions = ['Residential', 'Commercial', 'Agricultural'];
+  const categoryOptions = ['Residential', 'Commercial'];
   
   const propertyTypeOptions = {
     Residential: ['Apartment', 'Villa', 'House', 'Plot'],

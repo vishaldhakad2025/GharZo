@@ -105,7 +105,7 @@ const CommercialListingPage = () => {
         >
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900">
             <span className="bg-gradient-to-b from-[#0c2344] to-[#0b4f91] bg-clip-text text-transparent">
-              Commercial Properties 
+              Commercial Properties ..
             </span>
           </h2>
           {/* <p className="mt-2 text-gray-600">Find affordable rooms with great amenities</p> */}
